@@ -1,0 +1,52 @@
+import json, os, sys
+from functools import partial
+from dotenv import load_dotenv
+from openai import OpenAI
+from tokenizers import Tokenizer
+from tools import LAST_ROUND, SEARCH_SYSTEM, SYSTEM, TOOLS
+from serpapi_search import serpapi_search
+
+load_dotenv()
+client = OpenAI(base_url=os.environ["OLLAMA_BASE_URL"], api_key="ollama")
+MODEL = os.environ["LOCAL_MODEL"]
+tokenizer = Tokenizer.from_pretrained("Qwen/Qwen3.8-27B")  # count tokens the way Qwen sees them
+MAX_ROUNDS = 4
+
+def ask(question, search=serpapi_search, history=()):
+    """Yields each search as it happens, then the answer. Pass search=None for no search."""
+    system = SEARCH_SYSTEM if search else SYSTEM  # the baseline never hears about tools it doesn't have
+    messages = [{"role": "system", "content": system}, *history, {"role": "user", "content": question}]
+    run = {"searches": [], "prompt_tokens": 0, "completion_tokens": 0}
+    for round_number in range(1, MAX_ROUNDS + 1):
+        last_round = round_number == MAX_ROUNDS
+        if last_round:  # Qwen is still searching: make it answer with what it found
+            messages.append({"role": "user", "content": LAST_ROUND})
+        resp = client.chat.completions.create(model=MODEL, messages=messages,
+                                              tools=TOOLS if search and not last_round else [])
+        run["prompt_tokens"] += resp.usage.prompt_tokens
+        run["completion_tokens"] += resp.usage.completion_tokens
+        reply = resp.choices[0].message
+        if not reply.tool_calls:
+            yield {"answer": reply.content, **run}
+            return
+        messages.append(reply.model_dump(exclude_none=True))
+        for call in reply.tool_calls:
+            query = json.loads(call.function.arguments)["query"]
+            try:
+                result = search(call.function.name, query)
+            except Exception as e:  # tell Qwen the search failed and let it carry on
+                result = {"engine": call.function.name, "format": "error", "text": f"Search failed: {type(e).__name__}", "seconds": 0}
+            step = {"tool": call.function.name, "query": query, "engine": result["engine"], "format": result["format"],
+                    "tokens": len(tokenizer.encode(result["text"]).ids), "seconds": result["seconds"]}
+            run["searches"].append(step)
+            yield {"search": step, "payload": result["text"]}
+            messages.append({"role": "tool", "tool_call_id": call.id, "content": result["text"]})
+
+if __name__ == "__main__":
+    fmt = sys.argv[1] if len(sys.argv) > 1 else "md"  # python chat.py md | json
+    while True:
+        for event in ask(input("\nYou: "), partial(serpapi_search, fmt=fmt)):
+            if s := event.get("search"):
+                print(f"  [search] {s['tool']} | {s['format']} | {s['tokens']} tokens | {s['seconds']}s | \"{s['query']}\"")
+            else:
+                print("\nQwen:", event["answer"])

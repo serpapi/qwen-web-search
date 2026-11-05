@@ -1,0 +1,8 @@
+openai
+requests
+serpapi
+python-dotenv
+pyyaml
+tokenizers
+fastapi
+uvicorn

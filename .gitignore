@@ -1,0 +1,25 @@
+.env
+.venv/
+__pycache__/
+.DS_Store
+
+# Benchmark output
+app/results.jsonl
+
+# Optional native SearXNG install
+.searxng/
+
+# Claude Code
+CLAUDE.md
+CLAUDE.local.md
+.claude/
+.mcp.json
+
+# Qwen Code
+QWEN.md
+.qwen/
+
+# OpenAI Codex / generic agents
+AGENTS.md
+.agents/
+.codex/
