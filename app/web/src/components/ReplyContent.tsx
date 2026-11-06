@@ -25,7 +25,7 @@ export function ReplyContent({ turn, compact = false }: ReplyContentProps) {
         <ol aria-label="Searches" className="space-y-2">
           {turn.searches.map((event, index) => (
             <li key={index}>
-              <SearchCard event={event} setup={turn.setup} compact={compact} />
+              <SearchCard event={event} compact={compact} />
             </li>
           ))}
         </ol>

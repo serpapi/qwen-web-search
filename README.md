@@ -84,15 +84,8 @@ The **Turn stats** panel adds up the searches, tokens and time for each answer.
 | No search | Nowhere. Qwen answers from its training data. |
 | SerpApi · Markdown | SerpApi, top 5 results as Markdown |
 | SerpApi · JSON | SerpApi, top 5 results as JSON |
-| SearXNG | A self-hosted SearXNG metasearch engine (optional) |
 
 In the SerpApi setups, Qwen chooses Google, Google News, Baidu or Naver for each search.
-
-To use SearXNG, start it with Docker from `app/`. [`searxng/settings.yml`](app/searxng/settings.yml) turns on its JSON output.
-
-```bash
-docker run -d --name searxng -p 8080:8080 -v ./searxng:/etc/searxng searxng/searxng
-```
 
 ### Chat in the terminal
 
@@ -119,7 +112,7 @@ Type a question after `You:`. A `[search]` line appears for each search Qwen mak
 The benchmark asks every question in [`questions.yaml`](app/questions.yaml) with each setup and saves the answers to `results.jsonl`. From `app/`:
 
 ```bash
-python bench.py                     # all setups: none, searxng, serpapi-md and serpapi-json
+python bench.py                     # all setups: none, serpapi-md and serpapi-json
 python bench.py none serpapi-md     # only the setups you name
 python report.py                    # summary tables
 ```
@@ -140,11 +133,9 @@ qwen-web-search/
 │   ├── chat.py                       # Search loop with local Qwen, and the terminal chat
 │   ├── tools.py                      # Prompts and search tools Qwen sees
 │   ├── serpapi_search.py             # SerpApi search
-│   ├── searxng_search.py             # SearXNG search
 │   ├── setups.py                     # The setups shared by the UI and the benchmark
 │   ├── bench.py, report.py           # Benchmark and summary tables
 │   ├── questions.yaml                # Benchmark questions
-│   ├── searxng/settings.yml          # SearXNG configuration
 │   └── web/                          # React chat UI
 ├── assets/                           # Images
 ├── .env.example
@@ -164,7 +155,6 @@ To work on the UI, run `python server.py` in `app/` and `npm run dev` in `app/we
 | `model "..." not found` | Pull the model with `ollama pull`, or set `LOCAL_MODEL` (app) or `MODEL` (examples) to a name from `ollama list`. |
 | `KeyError: 'SERPAPI_API_KEY'` | Create `.env` in the repository root, as in [Setup](#setup). |
 | `401 Unauthorized` from SerpApi | The key in `.env` is wrong. Copy it again from your [SerpApi dashboard](https://serpapi.com/dashboard). |
-| SearXNG searches fail | SearXNG isn't running on port 8080. Start it as in [Setups](#setups). |
 | Your computer slows down while Qwen answers | Close other apps or pick a smaller model. Run `ollama stop <model>` to free the memory. |
 
 ## Learn more

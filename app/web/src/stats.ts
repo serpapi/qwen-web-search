@@ -33,7 +33,7 @@ export function turnStats(turn: AssistantTurn): TurnStats {
 
   const engines = new Map<string, number>()
   for (const step of steps) {
-    const label = servedBy(step, turn.setup)
+    const label = servedBy(step)
     engines.set(label, (engines.get(label) ?? 0) + 1)
   }
 

@@ -1,18 +1,17 @@
 import { ChevronDown, Search } from 'lucide-react'
 import { useId, useState } from 'react'
 import { formatCount, formatSeconds } from '../format'
-import { servedBy, toolName } from '../setups'
-import type { SearchEvent, SetupId } from '../types'
+import { toolName } from '../setups'
+import type { SearchEvent } from '../types'
 import { FormatBadge } from './FormatBadge'
 import { PayloadViewer } from './PayloadViewer'
 
 interface SearchCardProps {
   event: SearchEvent
-  setup: SetupId
   compact?: boolean
 }
 
-export function SearchCard({ event: { search, payload }, setup, compact = false }: SearchCardProps) {
+export function SearchCard({ event: { search, payload }, compact = false }: SearchCardProps) {
   const [open, setOpen] = useState(false)
   const payloadId = useId()
 
@@ -30,8 +29,6 @@ export function SearchCard({ event: { search, payload }, setup, compact = false 
       <dl className="mt-1.5 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 pl-5.5">
         <dt className="text-neutral-600">Qwen chose</dt>
         <dd>{toolName(search.tool)}</dd>
-        <dt className="text-neutral-600">Served by</dt>
-        <dd>{servedBy(search, setup)}</dd>
       </dl>
 
       <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 pl-5.5">

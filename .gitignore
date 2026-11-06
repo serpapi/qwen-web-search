@@ -6,9 +6,6 @@ __pycache__/
 # Benchmark output
 app/results.jsonl
 
-# Optional native SearXNG install
-.searxng/
-
 # Claude Code
 CLAUDE.md
 CLAUDE.local.md

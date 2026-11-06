@@ -1,6 +1,6 @@
 // The backend contract: server.py and chat.py.
 
-export type SetupId = 'none' | 'searxng' | 'serpapi-md' | 'serpapi-json'
+export type SetupId = 'none' | 'serpapi-md' | 'serpapi-json'
 
 /** GET /api/config */
 export interface Config {
@@ -25,7 +25,7 @@ export interface SearchStep {
   /** The engine Qwen chose: google, google_news, baidu or naver. */
   tool: string
   query: string
-  /** What served it: a SerpApi engine or "searxng (<upstream engines>)". */
+  /** The SerpApi engine that served it. Always the same as tool, even when the search failed. */
   engine: string
   format: 'markdown' | 'json' | 'error'
   tokens: number

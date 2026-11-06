@@ -1,5 +1,4 @@
 openai
-requests
 serpapi
 python-dotenv
 pyyaml
