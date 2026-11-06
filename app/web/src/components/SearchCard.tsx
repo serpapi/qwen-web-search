@@ -15,9 +15,6 @@ interface SearchCardProps {
 export function SearchCard({ event: { search, payload }, setup, compact = false }: SearchCardProps) {
   const [open, setOpen] = useState(false)
   const payloadId = useId()
-  const cost: string[] = []
-  if (search.tokens !== undefined) cost.push(formatCount(search.tokens, 'token'))
-  if (search.seconds !== undefined) cost.push(formatSeconds(search.seconds))
 
   return (
     <div className={`rounded-lg border border-neutral-200 bg-neutral-50 ${compact ? 'p-2.5 text-xs' : 'p-3 text-sm'}`}>
@@ -38,24 +35,22 @@ export function SearchCard({ event: { search, payload }, setup, compact = false 
       </dl>
 
       <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 pl-5.5">
-        {cost.length > 0 && <span className="font-mono text-neutral-600 tabular-nums">{cost.join(' · ')}</span>}
-        {payload === undefined ? (
-          <span className="text-neutral-600">Payload isn't exposed by the hosted search</span>
-        ) : (
-          <button
-            type="button"
-            aria-expanded={open}
-            aria-controls={payloadId}
-            onClick={() => setOpen(!open)}
-            className="ml-auto inline-flex items-center gap-1 font-bold text-brand-blue-text hover:underline"
-          >
-            {open ? 'Hide payload' : 'View payload'}
-            <ChevronDown className={`size-3.5 transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
-          </button>
-        )}
+        <span className="font-mono text-neutral-600 tabular-nums">
+          {formatCount(search.tokens, 'token')} · {formatSeconds(search.seconds)}
+        </span>
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={payloadId}
+          onClick={() => setOpen(!open)}
+          className="ml-auto inline-flex items-center gap-1 font-bold text-brand-blue-text hover:underline"
+        >
+          {open ? 'Hide payload' : 'View payload'}
+          <ChevronDown className={`size-3.5 transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
+        </button>
       </div>
 
-      {payload !== undefined && <PayloadViewer id={payloadId} hidden={!open} payload={payload} step={search} />}
+      <PayloadViewer id={payloadId} hidden={!open} payload={payload} step={search} />
     </div>
   )
 }

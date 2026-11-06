@@ -1,6 +1,5 @@
 from functools import partial
 from chat import ask
-from cloud import ask_cloud
 from searxng_search import searxng_search
 from serpapi_search import serpapi_search
 
@@ -10,5 +9,4 @@ SETUPS = {
     "searxng": partial(ask, search=searxng_search),
     "serpapi-md": partial(ask, search=partial(serpapi_search, fmt="md")),
     "serpapi-json": partial(ask, search=partial(serpapi_search, fmt="json")),
-    "cloud": ask_cloud,
 }

@@ -4,7 +4,6 @@ import type { SearchStep } from '../types'
 const STYLES: Record<SearchStep['format'], string> = {
   markdown: 'bg-brand-blue/10 text-brand-blue-text',
   json: 'bg-brand-purple/10 text-brand-purple',
-  hosted: 'bg-neutral-200 text-neutral-700',
   error: 'bg-red-100 text-red-800',
 }
 

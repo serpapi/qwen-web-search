@@ -16,8 +16,7 @@ export function PayloadViewer({ id, hidden, payload, step }: PayloadViewerProps)
       <p className="mb-1 flex justify-between gap-2 text-xs text-neutral-600">
         <span>What Qwen read</span>
         <span>
-          {FORMAT_LABELS[step.format]}
-          {step.tokens !== undefined && ` · ${formatCount(step.tokens, 'token')}`}
+          {FORMAT_LABELS[step.format]} · {formatCount(step.tokens, 'token')}
         </span>
       </p>
       <pre

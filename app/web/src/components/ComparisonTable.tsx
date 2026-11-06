@@ -63,11 +63,6 @@ export function ComparisonTable({ round, setups }: ComparisonTableProps) {
             const done = turn.status === 'done'
             // Searches stream in, so their counts are live while the setup runs.
             const hasCounts = done || turn.status === 'streaming'
-            const searchTokens = !hasCounts
-              ? '—'
-              : stats.searchTokens === undefined
-                ? 'n/a'
-                : formatNumber(stats.searchTokens)
             const status = engineStatus(turn, stats)
             return (
               <tr key={setup} className="border-t border-neutral-200 align-top">
@@ -91,10 +86,10 @@ export function ComparisonTable({ round, setups }: ComparisonTableProps) {
                 <td className={NUMBER_CELL}>{hasCounts ? formatNumber(stats.searches) : '—'}</td>
                 <td className={NUMBER_CELL}>
                   <BestValue
-                    best={done && stats.searches > 0 && stats.searchTokens !== undefined && stats.searchTokens === leastSearchTokens}
+                    best={done && stats.searches > 0 && stats.searchTokens === leastSearchTokens}
                     label="lowest search tokens"
                   >
-                    {searchTokens}
+                    {hasCounts ? formatNumber(stats.searchTokens) : '—'}
                   </BestValue>
                 </td>
                 <td className={NUMBER_CELL}>{show(stats.promptTokens, formatNumber)}</td>
@@ -111,8 +106,7 @@ export function ComparisonTable({ round, setups }: ComparisonTableProps) {
       </table>
       <p className="flex items-center gap-1.5 border-t border-neutral-200 px-3 py-1.5 text-xs text-neutral-600">
         <span className="size-1.5 rounded-full bg-brand-gradient" aria-hidden="true" />
-        Lowest search tokens among setups that searched, and fastest total time. Search tokens are n/a where the hosted
-        search hides its payload.
+        Lowest search tokens among setups that searched, and fastest total time.
       </p>
     </div>
   )

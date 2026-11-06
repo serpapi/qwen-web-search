@@ -4,7 +4,7 @@ from setups import SETUPS
 
 RUNS = 1
 
-setups = sys.argv[1:] or ["none", "searxng", "serpapi-md", "serpapi-json"]  # python bench.py none serpapi-md cloud
+setups = sys.argv[1:] or list(SETUPS)  # python bench.py none serpapi-md
 questions = yaml.safe_load(open("questions.yaml", encoding="utf-8"))
 
 with open("results.jsonl", "a", encoding="utf-8") as out:

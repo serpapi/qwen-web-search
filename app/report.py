@@ -20,8 +20,8 @@ for setup, rs in by_setup.items():
     searches = [s for r in rs for s in r["searches"]]
     ok = [s for s in searches if s["format"] != "error"]
     print(f"| {setup} | {grades[True]} | {grades['partial']} | {grades[False]} | {len(searches)} "
-          f"| {len(searches) - len(ok)} | {sum('error' in r for r in rs)} | {avg([s['tokens'] for s in ok if 'tokens' in s])} "
-          f"| {avg([s['seconds'] for s in ok if 'seconds' in s])} | {avg([r['total_seconds'] for r in rs])} "
+          f"| {len(searches) - len(ok)} | {sum('error' in r for r in rs)} | {avg([s['tokens'] for s in ok])} "
+          f"| {avg([s['seconds'] for s in ok])} | {avg([r['total_seconds'] for r in rs])} "
           f"| {sum(r.get('prompt_tokens', 0) for r in rs)} | {sum(r.get('completion_tokens', 0) for r in rs)} |")
 
 tools = Counter((category[r["question"]], s["tool"]) for r in rows for s in r["searches"])

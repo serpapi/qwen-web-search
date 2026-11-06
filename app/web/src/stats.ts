@@ -4,15 +4,14 @@ import { servedBy } from './setups'
 /** Counts for one turn or several. A value is undefined until it is known. */
 export interface Usage {
   searches: number
-  /** Undefined when a search didn't report its tokens (hosted search). */
-  searchTokens?: number
+  searchTokens: number
   promptTokens?: number
   completionTokens?: number
   totalSeconds?: number
 }
 
 export interface TurnStats extends Usage {
-  searchSeconds?: number
+  searchSeconds: number
   modelSeconds?: number
   engines: { label: string; count: number }[]
 }
@@ -29,7 +28,7 @@ function sumIfAll(values: (number | undefined)[]): number | undefined {
 
 export function turnStats(turn: AssistantTurn): TurnStats {
   const steps = turn.searches.map((event) => event.search)
-  const searchSeconds = sumIfAll(steps.map((step) => step.seconds))
+  const searchSeconds = steps.reduce((total, step) => total + step.seconds, 0)
   const result = turn.result
 
   const engines = new Map<string, number>()
@@ -40,13 +39,12 @@ export function turnStats(turn: AssistantTurn): TurnStats {
 
   return {
     searches: steps.length,
-    searchTokens: sumIfAll(steps.map((step) => step.tokens)),
+    searchTokens: steps.reduce((total, step) => total + step.tokens, 0),
     promptTokens: result?.prompt_tokens,
     completionTokens: result?.completion_tokens,
     totalSeconds: result?.total_seconds,
     searchSeconds,
-    modelSeconds:
-      result && searchSeconds !== undefined ? Math.max(0, result.total_seconds - searchSeconds) : undefined,
+    modelSeconds: result ? Math.max(0, result.total_seconds - searchSeconds) : undefined,
     engines: [...engines].map(([label, count]) => ({ label, count })),
   }
 }
@@ -58,7 +56,7 @@ export function totalUsage(turns: AssistantTurn[]): Usage | undefined {
   const sum = (pick: (stats: TurnStats) => number | undefined) => sumIfAll(finished.map(pick))
   return {
     searches: finished.reduce((total, stats) => total + stats.searches, 0),
-    searchTokens: sum((stats) => stats.searchTokens),
+    searchTokens: finished.reduce((total, stats) => total + stats.searchTokens, 0),
     promptTokens: sum((stats) => stats.promptTokens),
     completionTokens: sum((stats) => stats.completionTokens),
     totalSeconds: sum((stats) => stats.totalSeconds),

@@ -31,7 +31,7 @@ export function ReplyContent({ turn, compact = false }: ReplyContentProps) {
         </ol>
       )}
       {turn.result && <Answer text={turn.result.answer} compact={compact} />}
-      {turn.error && <ErrorNotice message={turn.error} setup={turn.setup} />}
+      {turn.error && <ErrorNotice message={turn.error} />}
     </div>
   )
 }

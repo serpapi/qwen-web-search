@@ -1,6 +1,6 @@
-// The backend contract: server.py, chat.py and cloud.py.
+// The backend contract: server.py and chat.py.
 
-export type SetupId = 'none' | 'searxng' | 'serpapi-md' | 'serpapi-json' | 'cloud'
+export type SetupId = 'none' | 'searxng' | 'serpapi-md' | 'serpapi-json'
 
 /** GET /api/config */
 export interface Config {
@@ -20,23 +20,23 @@ export interface ChatRequest {
   history: HistoryMessage[]
 }
 
-/** One search Qwen ran. Hosted (Qwen Cloud) searches have no tokens or seconds. */
+/** One search Qwen ran. */
 export interface SearchStep {
-  /** The engine Qwen chose: google, google_news, baidu or naver (web_search on Qwen Cloud). */
+  /** The engine Qwen chose: google, google_news, baidu or naver. */
   tool: string
   query: string
-  /** What served it: a SerpApi engine, "searxng (<upstream engines>)" or "qwen-cloud". */
+  /** What served it: a SerpApi engine or "searxng (<upstream engines>)". */
   engine: string
-  format: 'markdown' | 'json' | 'hosted' | 'error'
-  tokens?: number
-  seconds?: number
+  format: 'markdown' | 'json' | 'error'
+  tokens: number
+  seconds: number
 }
 
 /** Sent as soon as a search finishes. */
 export interface SearchEvent {
   search: SearchStep
-  /** The raw Markdown or JSON Qwen read. Hosted searches don't expose it. */
-  payload?: string
+  /** The raw Markdown or JSON Qwen read, or "Search failed: <ExceptionType>". */
+  payload: string
 }
 
 /** The final event of a successful request. */

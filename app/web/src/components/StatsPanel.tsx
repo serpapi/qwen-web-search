@@ -30,8 +30,6 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
 
   const { reply } = exchange
   const stats = turnStats(reply)
-  // Token counts and the total time arrive with the answer.
-  const modelMissing = reply.result ? 'Not reported' : 'Pending'
 
   return (
     <div className="space-y-6 p-4">
@@ -76,7 +74,7 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
                   segments={[
                     { label: 'Prompt', value: reply.result.prompt_tokens, color: 'bg-brand-blue' },
                     { label: 'Completion', value: reply.result.completion_tokens, color: 'bg-brand-purple' },
-                    { label: 'Search payload', value: stats.searchTokens ?? 0, color: 'bg-ink' },
+                    { label: 'Search payload', value: stats.searchTokens, color: 'bg-ink' },
                   ]}
                 />
               )}
@@ -84,7 +82,7 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
                 items={[
                   { label: 'Prompt', value: show(stats.promptTokens, 'Pending'), swatch: 'bg-brand-blue' },
                   { label: 'Completion', value: show(stats.completionTokens, 'Pending'), swatch: 'bg-brand-purple' },
-                  { label: 'Search payload', value: show(stats.searchTokens, 'Not exposed'), swatch: 'bg-ink' },
+                  { label: 'Search payload', value: formatNumber(stats.searchTokens), swatch: 'bg-ink' },
                 ]}
               />
             </div>
@@ -95,8 +93,8 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
             <StatList
               items={[
                 { label: 'Total', value: show(stats.totalSeconds, 'Pending', formatSeconds) },
-                { label: 'Search', value: show(stats.searchSeconds, 'Not reported', formatSeconds) },
-                { label: 'Model', value: show(stats.modelSeconds, modelMissing, formatSeconds) },
+                { label: 'Search', value: formatSeconds(stats.searchSeconds) },
+                { label: 'Model', value: show(stats.modelSeconds, 'Pending', formatSeconds) },
               ]}
             />
           </section>
