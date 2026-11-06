@@ -1,118 +1,131 @@
-# Qwen + SerpApi: real-time web search for local Qwen models
+# Qwen + SerpApi: web search for local Qwen models
 
-Give a local Qwen model real-time web search with [SerpApi](https://serpapi.com). Qwen decides when a question needs current information and which search engine fits it. Your code runs the search through SerpApi and sends back compact results, and Qwen answers with sources.
+A chat app and two short Python examples that give a local Qwen model real-time web search with [SerpApi](https://serpapi.com). Qwen runs on your computer in [Ollama](https://ollama.com), searches when a question needs current information, and answers with sources.
 
 ![How a local Qwen model searches the web with SerpApi](assets/qwen-serpapi-flow.png)
 
-The repository has two parts:
-
-- **[`examples/`](examples)**: two short, standalone scripts from the blog post. Start here.
-- **[`app/`](app)**: a chat UI and a benchmark that compare Qwen with no search, SearXNG, SerpApi (Markdown and JSON) and Qwen Cloud's built-in search.
+- **[Chat app](#run-the-chat-app)** (`app/`): ask questions in your browser, see every search Qwen makes, and compare Qwen with and without search.
+- **[Examples](#run-the-examples)** (`examples/`): two standalone Python scripts with the minimum code to connect Qwen to SerpApi.
 
 ## Requirements
 
-- [Ollama](https://ollama.com/download) and a Qwen model with tool support (see below)
+- [Ollama](https://ollama.com/download)
 - Python 3.10 or newer
+- Node.js 20 or newer, to build the chat app
 - A [SerpApi API key](https://serpapi.com/dashboard). The free plan includes 250 searches a month.
-- For the app: Node.js 20 or newer
-- Optional: Docker, to run SearXNG for the comparison, and a Qwen Cloud API key
-
-### Pick a Qwen model
-
-A model needs about its download size in memory, plus a little for the conversation. Pick one that leaves room for your other apps:
-
-| Your memory | Model | Download size |
-|---|---|---|
-| 8 GB | `qwen3.5:4b` | about 3.5 GB |
-| 16 GB | `qwen3.5:9b` | about 7 GB |
-| 32 GB or more | `qwen3.8:27b` | about 18 GB |
-
-Any Qwen model with the [tools tag on Ollama](https://ollama.com/search?c=tools&q=qwen) works.
 
 ## Setup
+
+**1. Clone the repository and install the Python packages:**
 
 ```bash
 git clone https://github.com/serpapi/qwen-web-search.git
 cd qwen-web-search
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env        # add your SerpApi key, and set LOCAL_MODEL to your model
-ollama pull qwen3.5:9b      # or the model you picked
 ```
 
-Start Ollama in its own terminal, with a 32k context and an 8-bit KV cache. If the Ollama app is already running, quit it first.
+**2. Add your SerpApi key.** Copy the example file, then set `SERPAPI_API_KEY` in `.env`:
+
+```bash
+cp .env.example .env
+```
+
+**3. Download a Qwen model** that fits your computer's memory, and set `LOCAL_MODEL` in `.env` to its name:
+
+| Model | Download size | Memory needed |
+|---|---|---|
+| qwen3.5:4b | 3.4 GB | 6 GB |
+| qwen3.5:9b | 6.6 GB | 8 GB |
+| qwen3.8:27b | 18 GB | 24 GB |
+| qwen3-coder:30b | 19 GB | 24 GB |
+
+```bash
+ollama pull qwen3.5:9b
+```
+
+Any Qwen model with the [tools tag on Ollama](https://ollama.com/search?c=tools&q=qwen) works.
+
+**4. Start Ollama** in its own terminal and leave it running. If the Ollama app is open, quit it first.
 
 ```bash
 OLLAMA_CONTEXT_LENGTH=32768 OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 ollama serve
 ```
 
-## Run the examples
+## Run the chat app
 
-Set `MODEL` at the top of the file to the model you pulled, then run:
-
-```bash
-python examples/qwen_search.py                  # Google only
-python examples/qwen_search_multi_engines.py    # Qwen picks Google, Google News, Baidu or Naver
-```
-
-Each one starts a chat in your terminal. A `[search]` line shows each search Qwen asked for:
-
-```
-You: 2026年全国高考报名人数是多少？
-  [search] baidu: 2026年全国高考报名人数
-  [search] google_news: 2026年全国高考报名人数
-
-Qwen: 根据教育部2026年6月3日发布的数据，2026年全国高考报名人数为1290万人。...
-```
-
-| File | What it shows |
-|---|---|
-| [`qwen_search.py`](examples/qwen_search.py) | One `google_search` tool, and the loop that lets Qwen search, then answer |
-| [`qwen_search_multi_engines.py`](examples/qwen_search_multi_engines.py) | One `serpapi_search` tool where Qwen also passes the SerpApi engine |
-
-Each question uses 1–6 SerpApi searches. Press Ctrl+C to quit.
-
-## Run the app
-
-Run the app's commands from `app/`. Build the UI once, then start the server:
+Build the UI once, then start the server from `app/`:
 
 ```bash
 cd app/web && npm install && npm run build && cd ..
-python server.py    # open http://localhost:8000
+python server.py
 ```
 
-- **Dedicated mode:** chat with one setup and watch each search as it happens: the engine, the query, tokens, time and the raw results Qwen read.
-- **Battleground mode:** send the same question to several setups side by side and compare searches, tokens and time. Setups run one after another, so they don't compete for the local model.
+Open http://localhost:8000.
 
-| Setup | Search | Needs |
-|---|---|---|
-| `none` | No search (baseline) | |
-| `serpapi-md` | SerpApi, Markdown results | `SERPAPI_API_KEY` |
-| `serpapi-json` | SerpApi, JSON results | `SERPAPI_API_KEY` |
-| `searxng` | Self-hosted SearXNG | SearXNG running (see below) |
-| `cloud` | Qwen Cloud with its built-in `web_search` | `QWEN_CLOUD_API_KEY` |
+### Use the app
 
-The local setups use the model in `LOCAL_MODEL`. To run SearXNG, start it from `app/` with Docker. [`searxng/settings.yml`](app/searxng/settings.yml) turns on JSON output and enables SearXNG's Google, Baidu and Naver engines.
+Switch between the two modes at the top of the page.
+
+**Dedicated:** chat with one setup. Pick a setup, then type a question or click an example prompt. Each search appears as a card while Qwen works, with:
+
+- the engine Qwen chose and its search query
+- the tokens and time the search took
+- **What Qwen read**: the results sent back to Qwen
+
+The **Turn stats** panel adds up the searches, tokens and time for each answer.
+
+**Battleground:** send one question to several setups and read their answers side by side. A table compares the engines used, searches, tokens and total time, and highlights the lowest search tokens and the fastest setup. Setups run one after another, so they don't compete for your computer's memory.
+
+### Setups
+
+| Setup | Where the search results come from |
+|---|---|
+| No search | Nowhere. Qwen answers from its training data. |
+| SerpApi · Markdown | SerpApi, top 5 results as Markdown |
+| SerpApi · JSON | SerpApi, top 5 results as JSON |
+| SearXNG | A self-hosted SearXNG metasearch engine (optional) |
+
+In the SerpApi setups, Qwen chooses Google, Google News, Baidu or Naver for each search.
+
+To use SearXNG, start it with Docker from `app/`. [`searxng/settings.yml`](app/searxng/settings.yml) turns on its JSON output.
 
 ```bash
 docker run -d --name searxng -p 8080:8080 -v ./searxng:/etc/searxng searxng/searxng
 ```
 
-You can also chat in the terminal: `python chat.py md` or `python chat.py json` for SerpApi, and `python cloud.py` for Qwen Cloud.
+### Chat in the terminal
 
-For frontend work, run `python server.py` and `cd web && npm run dev` together. The dev UI at http://localhost:5173 sends `/api` requests to port 8000.
+From `app/`, run `python chat.py` to chat with SerpApi Markdown results, or `python chat.py json` for JSON results.
+
+## Run the examples
+
+Each example is one file. Set `MODEL` at the top of the file to the model you pulled, then run it from the repository root:
+
+```bash
+python examples/qwen_search.py
+python examples/qwen_search_multi_engines.py
+```
+
+| File | What it does |
+|---|---|
+| [`qwen_search.py`](examples/qwen_search.py) | Qwen searches Google. |
+| [`qwen_search_multi_engines.py`](examples/qwen_search_multi_engines.py) | Qwen chooses Google, Google News, Baidu or Naver for each search. |
+
+Type a question after `You:`. A `[search]` line appears for each search Qwen makes before it answers. Press Ctrl+C to quit.
 
 ## Run the benchmark
 
+The benchmark asks every question in [`questions.yaml`](app/questions.yaml) with each setup and saves the answers to `results.jsonl`. From `app/`:
+
 ```bash
-cd app
-python bench.py                     # none, searxng, serpapi-md, serpapi-json
-python bench.py serpapi-md cloud    # only some setups
-python report.py                    # summary tables from results.jsonl
+python bench.py                     # all setups: none, searxng, serpapi-md and serpapi-json
+python bench.py none serpapi-md     # only the setups you name
+python report.py                    # summary tables
 ```
 
-- [`questions.yaml`](app/questions.yaml) has 15 questions with answers verified on 2026-10-19: recent facts, news, prices, local information, Chinese and Korean questions, and controls. Several are real user prompts from [lmarena Search Arena](https://huggingface.co/datasets/lmarena-ai/search-arena-24k) and [FreshQA](https://github.com/freshllms/freshqa). Re-check fast-changing answers before you run it.
-- `bench.py` appends one line per answer to `results.jsonl`. `correct` is a simple match against the accepted answers, so review the results by hand.
+- The answers to the 15 questions were verified on 2026-10-19. Some change quickly, so check them before you run.
+- An answer counts as correct when it contains an accepted answer, so review the results by hand.
 - A full run uses about 45 SerpApi searches.
 
 ## Project structure
@@ -121,41 +134,40 @@ python report.py                    # summary tables from results.jsonl
 qwen-web-search/
 ├── examples/
 │   ├── qwen_search.py                # Google search in one file
-│   └── qwen_search_multi_engines.py  # Qwen picks the SerpApi engine
+│   └── qwen_search_multi_engines.py  # Qwen chooses the SerpApi engine
 ├── app/
-│   ├── server.py                     # Web API: streams searches and answers to the UI
-│   ├── chat.py                       # Tool loop with local Qwen, and the terminal chat
-│   ├── cloud.py                      # Qwen Cloud with its built-in web_search
+│   ├── server.py                     # Web server for the chat UI
+│   ├── chat.py                       # Search loop with local Qwen, and the terminal chat
 │   ├── tools.py                      # Prompts and search tools Qwen sees
-│   ├── serpapi_search.py             # SerpApi search: Markdown or JSON, top 5 results
-│   ├── searxng_search.py             # SearXNG search, for comparison
+│   ├── serpapi_search.py             # SerpApi search
+│   ├── searxng_search.py             # SearXNG search
 │   ├── setups.py                     # The setups shared by the UI and the benchmark
-│   ├── bench.py                      # Runs questions.yaml across setups
-│   ├── report.py                     # Summary tables from results.jsonl
-│   ├── questions.yaml                # Benchmark questions with verified answers
+│   ├── bench.py, report.py           # Benchmark and summary tables
+│   ├── questions.yaml                # Benchmark questions
 │   ├── searxng/settings.yml          # SearXNG configuration
-│   └── web/                          # React + Vite + Tailwind UI
+│   └── web/                          # React chat UI
 ├── assets/                           # Images
 ├── .env.example
 └── requirements.txt
 ```
 
+## Development
+
+To work on the UI, run `python server.py` in `app/` and `npm run dev` in `app/web/` at the same time, then open http://localhost:5173. Restart `server.py` after you change Python files.
+
 ## Troubleshooting
 
 | Problem | Fix |
 |---|---|
-| `address already in use` when you start Ollama | Ollama is already running. Quit the Ollama app, then start it again with the command above. |
+| `address already in use` when you start Ollama | Ollama is already running. Quit the Ollama app, then start Ollama again. |
 | `openai.APIConnectionError: Connection error` | Ollama isn't running. Start it as in [Setup](#setup). |
-| `model "..." not found` | Pull the model with `ollama pull`, or set `MODEL` (examples) or `LOCAL_MODEL` (app) to a tag from `ollama list`. |
+| `model "..." not found` | Pull the model with `ollama pull`, or set `LOCAL_MODEL` (app) or `MODEL` (examples) to a name from `ollama list`. |
 | `KeyError: 'SERPAPI_API_KEY'` | Create `.env` in the repository root, as in [Setup](#setup). |
-| `HTTPError: 401 ... Unauthorized` from SerpApi | The key in `.env` is wrong. Copy it again from your [SerpApi dashboard](https://serpapi.com/dashboard). |
-| SearXNG searches fail with `ConnectionError` | SearXNG isn't running on port 8080. Start it as in [Run the app](#run-the-app). |
-| Qwen Cloud returns `401 InvalidApiKey` | Set `QWEN_CLOUD_API_KEY` in `.env`. |
-| The UI doesn't show your changes | Rebuild it with `npm run build`, and restart `server.py` after Python changes. |
-| Your computer slows down while Qwen answers | Close other apps or pick a smaller model. Run `ollama stop <model>` to free the memory right away. |
+| `401 Unauthorized` from SerpApi | The key in `.env` is wrong. Copy it again from your [SerpApi dashboard](https://serpapi.com/dashboard). |
+| SearXNG searches fail | SearXNG isn't running on port 8080. Start it as in [Setups](#setups). |
+| Your computer slows down while Qwen answers | Close other apps or pick a smaller model. Run `ollama stop <model>` to free the memory. |
 
 ## Learn more
 
 - [How to Connect Your Local LLM with Web Search Data](https://serpapi.com/blog/how-to-connect-your-local-llm-with-web-search-data/) (SerpApi blog)
 - SerpApi [Markdown output](https://serpapi.com/markdown-output) and [JSON Restrictor](https://serpapi.com/json-restrictor)
-- [Qwen Cloud web search](https://docs.qwencloud.com/developer-guides/tool-calling/web-search)
