@@ -4,7 +4,7 @@ from setups import SETUPS
 
 RUNS = 1
 
-setups = sys.argv[1:] or list(SETUPS)  # python bench.py none serpapi-md
+setups = sys.argv[1:] or list(SETUPS)  # python bench.py serpapi
 questions = yaml.safe_load(open("questions.yaml", encoding="utf-8"))
 
 with open("results.jsonl", "a", encoding="utf-8") as out:

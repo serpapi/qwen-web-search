@@ -1,23 +1,19 @@
 import { formatCount } from '../format'
-import { FORMAT_LABELS } from '../setups'
-import type { SearchStep } from '../types'
 
 interface PayloadViewerProps {
   id: string
   hidden: boolean
   payload: string
-  step: SearchStep
+  tokens: number
 }
 
 /** The raw search result text, exactly as Qwen read it. */
-export function PayloadViewer({ id, hidden, payload, step }: PayloadViewerProps) {
+export function PayloadViewer({ id, hidden, payload, tokens }: PayloadViewerProps) {
   return (
     <div id={id} hidden={hidden} className="mt-2">
       <p className="mb-1 flex justify-between gap-2 text-xs text-neutral-600">
         <span>What Qwen read</span>
-        <span>
-          {FORMAT_LABELS[step.format]} · {formatCount(step.tokens, 'token')}
-        </span>
+        <span>{formatCount(tokens, 'token')}</span>
       </p>
       <pre
         tabIndex={0}

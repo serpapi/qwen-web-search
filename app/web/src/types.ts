@@ -1,6 +1,6 @@
 // The backend contract: server.py and chat.py.
 
-export type SetupId = 'none' | 'serpapi-md' | 'serpapi-json'
+export type SetupId = 'none' | 'serpapi'
 
 /** GET /api/config */
 export interface Config {
@@ -27,7 +27,7 @@ export interface SearchStep {
   query: string
   /** The SerpApi engine that served it. Always the same as tool, even when the search failed. */
   engine: string
-  format: 'markdown' | 'json' | 'error'
+  format: 'markdown' | 'error'
   tokens: number
   seconds: number
 }
@@ -35,7 +35,7 @@ export interface SearchStep {
 /** Sent as soon as a search finishes. */
 export interface SearchEvent {
   search: SearchStep
-  /** The raw Markdown or JSON Qwen read, or "Search failed: <ExceptionType>". */
+  /** The raw Markdown Qwen read, or "Search failed: <ExceptionType>". */
   payload: string
 }
 

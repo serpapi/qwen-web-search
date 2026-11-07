@@ -20,7 +20,7 @@ interface DedicatedViewProps {
 }
 
 export function DedicatedView({ hidden, setups, exchanges, disabled, onSend }: DedicatedViewProps) {
-  const [setup, setSetup] = useState<SetupId>('serpapi-md')
+  const [setup, setSetup] = useState<SetupId>('serpapi')
   // The turn whose stats are shown. Null (or a cleared turn) means the latest one.
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const scrollRef = useStickToBottom<HTMLDivElement>(exchanges)

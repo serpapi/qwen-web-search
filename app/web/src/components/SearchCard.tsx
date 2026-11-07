@@ -3,7 +3,6 @@ import { useId, useState } from 'react'
 import { formatCount, formatSeconds } from '../format'
 import { toolName } from '../setups'
 import type { SearchEvent } from '../types'
-import { FormatBadge } from './FormatBadge'
 import { PayloadViewer } from './PayloadViewer'
 
 interface SearchCardProps {
@@ -23,7 +22,9 @@ export function SearchCard({ event: { search, payload }, compact = false }: Sear
           <span className="sr-only">Search query: </span>
           {search.query}
         </p>
-        <FormatBadge format={search.format} />
+        {search.format === 'error' && (
+          <span className="shrink-0 rounded bg-red-100 px-1.5 py-0.5 text-[11px] font-bold text-red-800">Failed</span>
+        )}
       </div>
 
       <dl className="mt-1.5 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 pl-5.5">
@@ -47,7 +48,7 @@ export function SearchCard({ event: { search, payload }, compact = false }: Sear
         </button>
       </div>
 
-      <PayloadViewer id={payloadId} hidden={!open} payload={payload} step={search} />
+      <PayloadViewer id={payloadId} hidden={!open} payload={payload} tokens={search.tokens} />
     </div>
   )
 }

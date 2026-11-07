@@ -1,5 +1,4 @@
-import json, os, sys
-from functools import partial
+import json, os
 from dotenv import load_dotenv
 from openai import OpenAI
 from tokenizers import Tokenizer
@@ -43,10 +42,9 @@ def ask(question, search=serpapi_search, history=()):
             messages.append({"role": "tool", "tool_call_id": call.id, "content": result["text"]})
 
 if __name__ == "__main__":
-    fmt = sys.argv[1] if len(sys.argv) > 1 else "md"  # python chat.py md | json
     while True:
-        for event in ask(input("\nYou: "), partial(serpapi_search, fmt=fmt)):
+        for event in ask(input("\nYou: ")):
             if s := event.get("search"):
-                print(f"  [search] {s['tool']} | {s['format']} | {s['tokens']} tokens | {s['seconds']}s | \"{s['query']}\"")
+                print(f"  [search] {s['tool']} | {s['tokens']} tokens | {s['seconds']}s | \"{s['query']}\"")
             else:
                 print("\nQwen:", event["answer"])
