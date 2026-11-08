@@ -20,7 +20,12 @@ export function ReplyContent({ turn, compact = false }: ReplyContentProps) {
           Queued
         </p>
       )}
-      {turn.status === 'streaming' && turn.startedAt !== undefined && <ThinkingIndicator startedAt={turn.startedAt} />}
+      {turn.status === 'streaming' && turn.startedAt !== undefined && (
+        <ThinkingIndicator
+          label={turn.loadingModel ? `Loading ${turn.loadingModel}` : 'Thinking'}
+          startedAt={turn.startedAt}
+        />
+      )}
       {turn.searches.length > 0 && (
         <ol aria-label="Searches" className="space-y-2">
           {turn.searches.map((event, index) => (

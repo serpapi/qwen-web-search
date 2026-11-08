@@ -75,7 +75,16 @@ Pick a model and switch between the two modes at the top of the page. Switching 
 
 The **Turn stats** panel adds up the searches, tokens and time for each answer.
 
-**Battleground:** send one question to several setups and read their answers side by side. A table compares the engines used, searches, tokens and total time, and highlights the lowest search tokens and the fastest setup. Setups run one after another, so they don't compete for your computer's memory.
+**Battleground:** send one question to up to four columns and read their answers side by side. Each column is a model and a setup, so you can compare search with no search, Google with multiple engines, or one model with another. The presets fill the columns in one click:
+
+| Preset | Columns |
+|---|---|
+| Search vs no search | Your model with SerpApi, and without search |
+| Google vs multiple engines | Your model with SerpApi · Google, and with SerpApi · Multiple engines |
+| Model vs model | Every Qwen model you've pulled (up to four), each with SerpApi |
+| Small + search vs big alone | Your smallest model with SerpApi, and your biggest without search |
+
+A table compares the engines used, searches, tokens and total time, and highlights the lowest search tokens and the fastest column. Columns run one after another, so they don't compete for your computer's memory. When a column needs a different model, Ollama loads it first; the time shown doesn't include loading.
 
 ### Setups
 

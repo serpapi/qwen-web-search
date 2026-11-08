@@ -1,63 +1,96 @@
 import { useState } from 'react'
+import { columnLabel, type Column } from '../columns'
 import type { Round } from '../conversation'
 import { formatCount } from '../format'
-import { SETUP_IDS, SETUP_INFO } from '../setups'
-import type { SetupId } from '../types'
+import { buildPresets } from '../presets'
+import type { ModelInfo, SetupId } from '../types'
 import { BattleColumn } from './BattleColumn'
+import { ColumnSetup } from './ColumnSetup'
+import { ColumnSummary } from './ColumnSummary'
 import { ComparisonTable } from './ComparisonTable'
 import { Composer } from './Composer'
 import { EmptyState } from './EmptyState'
 import { ExamplePrompts } from './ExamplePrompts'
-import { SetupChips } from './SetupChips'
 
 interface BattlegroundViewProps {
   hidden: boolean
+  models: ModelInfo[]
+  /** The backend's default model. Null until the config arrives, or when there's no model at all. */
+  defaultModel: string | null
   setups: SetupId[]
   rounds: Round[]
-  /** True while this mode's setups are running. */
-  running: boolean
   /** Why sending is disabled, such as a request running in either mode. Undefined when sending is allowed. */
   disabledReason: string | undefined
-  onSend: (question: string, setups: SetupId[]) => void
+  onSend: (question: string, columns: Column[]) => void
+  onNewComparison: () => void
 }
 
-/** "Running SerpApi · Google (2 of 3)" for the setup currently streaming. */
-function progress(round: Round, setups: SetupId[]): string | undefined {
-  const order = setups.filter((setup) => round.replies[setup])
-  const index = order.findIndex((setup) => round.replies[setup]?.status === 'streaming')
+/** "Running column 2 of 3: qwen3.8:27b · SerpApi · Google", or undefined when no column is running. */
+function progress(round: Round): string | undefined {
+  const index = round.replies.findIndex((turn) => turn.status === 'streaming')
   if (index === -1) return undefined
-  return `Running ${SETUP_INFO[order[index]].name} (${index + 1} of ${order.length})`
+  const turn = round.replies[index]
+  const position = `column ${index + 1} of ${round.replies.length}`
+  return turn.loadingModel ? `Loading ${turn.loadingModel} for ${position}` : `Running ${position}: ${columnLabel(turn)}`
 }
 
-export function BattlegroundView({ hidden, setups, rounds, running, disabledReason, onSend }: BattlegroundViewProps) {
+export function BattlegroundView({
+  hidden,
+  models,
+  defaultModel,
+  setups,
+  rounds,
+  disabledReason,
+  onSend,
+  onNewComparison,
+}: BattlegroundViewProps) {
   const disabled = disabledReason !== undefined
-  const [selected, setSelected] = useState<SetupId[]>(SETUP_IDS)
-  const participants = setups.filter((setup) => selected.includes(setup))
+  const presets = defaultModel === null ? [] : buildPresets(models.map((model) => model.name), defaultModel)
+  // Null until the user picks columns, so the first preset applies once the config arrives.
+  const [pickedColumns, setPickedColumns] = useState<Column[] | null>(null)
+  const columns = pickedColumns ?? presets.at(0)?.columns ?? []
+  // Each column keeps its own conversation, so the columns can't change until a new comparison starts.
+  const locked = rounds.length > 0
   const latest = rounds.at(-1)
-  const status = latest && progress(latest, setups)
-  const audience = formatCount(participants.length, 'selected setup')
+  const status =
+    (latest && progress(latest)) ??
+    (locked
+      ? 'Columns stay the same for the whole comparison. Start a new comparison to change them.'
+      : 'Columns run one after another, in this order, so they never compete for the local model.')
 
   function send(question: string) {
-    onSend(question, participants)
+    onSend(question, columns)
   }
 
   return (
     <main hidden={hidden} className="flex min-h-0 flex-1 flex-col">
       <div className="min-h-0 flex-1 overflow-y-auto">
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-neutral-200 px-4 py-3 sm:px-6">
-          <SetupChips setups={setups} selected={selected} onChange={setSelected} disabled={running} />
-          <p aria-live="polite" className="ml-auto text-sm text-neutral-600">
-            {status ?? 'Setups run one after another, so they never compete for the local model.'}
+        <div className="space-y-3 border-b border-neutral-200 px-4 py-3 sm:px-6">
+          {defaultModel !== null &&
+            (locked ? (
+              <ColumnSummary columns={columns} onNewComparison={onNewComparison} />
+            ) : (
+              <ColumnSetup
+                columns={columns}
+                presets={presets}
+                models={models}
+                defaultModel={defaultModel}
+                setups={setups}
+                onChange={setPickedColumns}
+              />
+            ))}
+          <p aria-live="polite" className="text-sm text-neutral-600">
+            {status}
           </p>
         </div>
 
         {latest ? (
           <div className="space-y-4 p-4 sm:px-6">
-            <ComparisonTable round={latest} setups={setups} />
+            <ComparisonTable round={latest} />
             <div className="overflow-x-auto pb-1">
               <div className="grid auto-cols-[minmax(20rem,1fr)] grid-flow-col items-start gap-3">
-                {participants.map((setup) => (
-                  <BattleColumn key={setup} setup={setup} rounds={rounds} />
+                {columns.map((column, index) => (
+                  <BattleColumn key={index} column={column} index={index} rounds={rounds} />
                 ))}
               </div>
             </div>
@@ -65,8 +98,8 @@ export function BattlegroundView({ hidden, setups, rounds, running, disabledReas
         ) : (
           <div className="px-4 sm:px-6">
             <EmptyState
-              title="Compare search setups side by side"
-              description={`Each message goes to the ${audience}, one after another. Every setup keeps its own conversation, so follow-up questions work in each column.`}
+              title="Compare models and search setups side by side"
+              description="Each message goes to every column, one after another. Every column keeps its own conversation, so follow-up questions work in each one."
             >
               <ExamplePrompts onPick={send} disabled={disabled} />
             </EmptyState>
@@ -78,7 +111,7 @@ export function BattlegroundView({ hidden, setups, rounds, running, disabledReas
         <Composer
           onSend={send}
           disabled={disabled}
-          placeholder={disabledReason ?? `Ask the ${audience}`}
+          placeholder={disabledReason ?? `Ask ${formatCount(columns.length, 'column')}`}
         />
       </div>
     </main>

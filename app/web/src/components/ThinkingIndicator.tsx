@@ -1,7 +1,14 @@
 import { LoaderCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-export function ThinkingIndicator({ startedAt }: { startedAt: number }) {
+interface ThinkingIndicatorProps {
+  /** What's happening, such as "Thinking". */
+  label: string
+  /** When the request started, in epoch milliseconds. */
+  startedAt: number
+}
+
+export function ThinkingIndicator({ label, startedAt }: ThinkingIndicatorProps) {
   const [now, setNow] = useState(Date.now)
 
   useEffect(() => {
@@ -14,7 +21,7 @@ export function ThinkingIndicator({ startedAt }: { startedAt: number }) {
     <p className="flex items-center gap-2 text-sm text-neutral-600">
       <LoaderCircle className="size-4 animate-spin text-brand-blue" aria-hidden="true" />
       <span>
-        Thinking · <span className="tabular-nums">{seconds} s</span>
+        {label} · <span className="tabular-nums">{seconds} s</span>
       </span>
     </p>
   )

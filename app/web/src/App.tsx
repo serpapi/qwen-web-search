@@ -12,28 +12,28 @@ import type { SetupId } from './types'
 export default function App() {
   const config = useConfig()
   const [mode, setMode] = useState<Mode>('dedicated')
-  // Null until the user picks a model, so the backend's default applies once the config arrives.
+  // The Dedicated-mode model. Null until the user picks one, so the backend's default applies once the config arrives.
   const [pickedModel, setPickedModel] = useState<string | null>(null)
   const dedicated = useDedicatedChat()
   const battle = useBattleground()
 
   const ready = config.status === 'ready' ? config.config : undefined
   const setups = ready?.setups ?? SETUP_IDS
-  const model = pickedModel ?? ready?.default_model ?? null
+  // Null while the config loads, or when there's no model at all. Then neither mode can send.
+  const defaultModel = ready?.default_model ?? null
+  const model = pickedModel ?? defaultModel
   // Both modes share one local Ollama, so only one request runs at a time.
   const busy = dedicated.busy || battle.busy
-  const disabledReason = model === null ? 'No model available' : busy ? 'Waiting for the current response…' : undefined
+  const disabledReason =
+    defaultModel === null ? 'No model available' : busy ? 'Waiting for the current response…' : undefined
   const current =
     mode === 'dedicated'
       ? { reset: dedicated.reset, empty: dedicated.exchanges.length === 0 }
       : { reset: battle.reset, empty: battle.rounds.length === 0 }
 
-  // Sending is disabled while there's no model, so these checks only narrow the type.
+  // Sending is disabled while there's no model, so this check only narrows the type.
   function sendDedicated(question: string, setup: SetupId) {
     if (model !== null) dedicated.send(question, setup, model)
-  }
-  function sendBattle(question: string, participants: SetupId[]) {
-    if (model !== null) battle.send(question, participants, model)
   }
 
   return (
@@ -57,11 +57,13 @@ export default function App() {
       />
       <BattlegroundView
         hidden={mode !== 'battleground'}
+        models={ready?.models ?? []}
+        defaultModel={defaultModel}
         setups={setups}
         rounds={battle.rounds}
-        running={battle.busy}
         disabledReason={disabledReason}
-        onSend={sendBattle}
+        onSend={battle.send}
+        onNewComparison={battle.reset}
       />
     </div>
   )

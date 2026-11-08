@@ -1,30 +1,31 @@
+import { columnLabel, type Column } from '../columns'
 import type { Round } from '../conversation'
-import { SETUP_INFO } from '../setups'
 import { totalUsage, turnStats } from '../stats'
-import type { SetupId } from '../types'
+import { ColumnLabel } from './ColumnLabel'
 import { ReplyContent } from './ReplyContent'
 import { UsageRow } from './UsageRow'
 import { UserMessage } from './UserMessage'
 
 interface BattleColumnProps {
-  setup: SetupId
+  column: Column
+  /** The column's position. Its reply in every round is at this index. */
+  index: number
   rounds: Round[]
 }
 
-/** One setup's own conversation: the rounds it took part in. */
-export function BattleColumn({ setup, rounds }: BattleColumnProps) {
-  const turns = rounds.flatMap((round) => {
-    const reply = round.replies[setup]
-    return reply ? [{ round, reply }] : []
-  })
+/** One column's own conversation. */
+export function BattleColumn({ column, index, rounds }: BattleColumnProps) {
+  const turns = rounds.map((round) => ({ round, reply: round.replies[index] }))
   const totals = totalUsage(turns.map(({ reply }) => reply))
 
   return (
-    <section aria-label={SETUP_INFO[setup].name} className="flex flex-col rounded-xl border border-neutral-200 bg-white">
-      <header className="space-y-1 rounded-t-xl border-b border-neutral-200 bg-neutral-50 px-3 py-2.5">
-        <h2 className="flex items-center gap-2 font-bold">
-          <span className="size-2 rounded-full bg-brand-gradient" aria-hidden="true" />
-          {SETUP_INFO[setup].name}
+    <section
+      aria-label={`Column ${index + 1}: ${columnLabel(column)}`}
+      className="flex flex-col rounded-xl border border-neutral-200 bg-white"
+    >
+      <header className="space-y-1.5 rounded-t-xl border-b border-neutral-200 bg-neutral-50 px-3 py-2.5">
+        <h2 className="text-sm">
+          <ColumnLabel position={index + 1} model={column.model} setup={column.setup} />
         </h2>
         {totals ? (
           <div className="flex flex-wrap items-baseline gap-x-2">
@@ -41,7 +42,6 @@ export function BattleColumn({ setup, rounds }: BattleColumnProps) {
             <UserMessage text={round.question} compact />
             <ReplyContent turn={reply} compact />
             <div className="space-y-1 border-t border-neutral-200 pt-2">
-              {/* The model can change between messages, so each turn names its own. */}
               <p className="text-xs">
                 <span className="text-neutral-600">Model</span>{' '}
                 <span className="font-mono font-bold wrap-anywhere">{reply.model}</span>

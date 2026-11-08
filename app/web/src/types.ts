@@ -55,6 +55,15 @@ export interface SearchStep {
   seconds: number
 }
 
+/**
+ * Sent first when the requested model isn't in memory yet. The server loads it before it starts timing,
+ * so total_seconds never includes loading.
+ */
+export interface LoadingEvent {
+  /** The model being loaded. */
+  loading: string
+}
+
 /** Sent as soon as a search finishes. */
 export interface SearchEvent {
   search: SearchStep
@@ -76,4 +85,4 @@ export interface ErrorEvent {
   error: string
 }
 
-export type ChatEvent = SearchEvent | AnswerEvent | ErrorEvent
+export type ChatEvent = LoadingEvent | SearchEvent | AnswerEvent | ErrorEvent

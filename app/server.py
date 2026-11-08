@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from models import MODEL, qwen_models
+from models import MODEL, is_loaded, load, qwen_models
 from setups import SETUPS
 
 app = FastAPI()
@@ -24,8 +24,11 @@ def config():
 @app.post("/api/chat")
 def chat(request: ChatRequest):
     def events():
-        start = time.time()
         try:
+            if not is_loaded(request.model):  # load it first, so loading doesn't count as answer time
+                yield f"data: {json.dumps({'loading': request.model})}\n\n"
+                load(request.model)
+            start = time.time()
             for event in SETUPS[request.setup](request.message, history=request.history, model=request.model):
                 if "answer" in event:
                     event["total_seconds"] = round(time.time() - start, 2)

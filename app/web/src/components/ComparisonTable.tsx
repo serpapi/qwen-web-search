@@ -1,14 +1,8 @@
 import type { AssistantTurn, Round } from '../conversation'
 import { formatNumber, formatSeconds } from '../format'
-import { SETUP_INFO } from '../setups'
 import { turnStats, type TurnStats } from '../stats'
-import type { SetupId } from '../types'
 import { BestValue } from './BestValue'
-
-interface ComparisonTableProps {
-  round: Round
-  setups: SetupId[]
-}
+import { ColumnLabel } from './ColumnLabel'
 
 function lowest(values: (number | undefined)[]): number | undefined {
   const known = values.filter((value) => value !== undefined)
@@ -19,6 +13,7 @@ function lowest(values: (number | undefined)[]): number | undefined {
 function engineStatus(turn: AssistantTurn, stats: TurnStats): string | undefined {
   if (turn.status === 'queued') return 'Queued'
   if (turn.status === 'error') return 'Failed'
+  if (turn.loadingModel) return 'Loading model…'
   if (stats.engines.length === 0) return turn.status === 'streaming' ? 'Running…' : 'No searches'
   return undefined
 }
@@ -29,14 +24,11 @@ function show(value: number | undefined, format: (value: number) => string): str
 
 const NUMBER_CELL = 'px-3 py-2 text-right font-mono tabular-nums'
 
-/** One row per setup for the latest message, with the lowest search tokens and fastest time marked. */
-export function ComparisonTable({ round, setups }: ComparisonTableProps) {
-  const rows = setups.flatMap((setup) => {
-    const turn = round.replies[setup]
-    return turn ? [{ setup, turn, stats: turnStats(turn) }] : []
-  })
+/** One row per column for the latest message, with the lowest search tokens and fastest time marked. */
+export function ComparisonTable({ round }: { round: Round }) {
+  const rows = round.replies.map((turn) => ({ turn, stats: turnStats(turn) }))
   const finished = rows.filter(({ turn }) => turn.status === 'done')
-  // Setups that didn't search have no search tokens to compare.
+  // Columns that didn't search have no search tokens to compare.
   const leastSearchTokens = lowest(finished.filter(({ stats }) => stats.searches > 0).map(({ stats }) => stats.searchTokens))
   const fastest = lowest(finished.map(({ stats }) => stats.totalSeconds))
 
@@ -49,7 +41,7 @@ export function ComparisonTable({ round, setups }: ComparisonTableProps) {
         </caption>
         <thead className="text-xs text-neutral-600">
           <tr>
-            <th scope="col" className="px-3 py-2 text-left font-bold">Setup</th>
+            <th scope="col" className="px-3 py-2 text-left font-bold">Column</th>
             <th scope="col" className="px-3 py-2 text-left font-bold">Engines used</th>
             <th scope="col" className="px-3 py-2 text-right font-bold">Searches</th>
             <th scope="col" className="px-3 py-2 text-right font-bold">Search tokens</th>
@@ -59,15 +51,15 @@ export function ComparisonTable({ round, setups }: ComparisonTableProps) {
           </tr>
         </thead>
         <tbody>
-          {rows.map(({ setup, turn, stats }) => {
+          {rows.map(({ turn, stats }, index) => {
             const done = turn.status === 'done'
-            // Searches stream in, so their counts are live while the setup runs.
+            // Searches stream in, so their counts are live while the column runs.
             const hasCounts = done || turn.status === 'streaming'
             const status = engineStatus(turn, stats)
             return (
-              <tr key={setup} className="border-t border-neutral-200 align-top">
-                <th scope="row" className="px-3 py-2 text-left font-bold whitespace-nowrap">
-                  {SETUP_INFO[setup].name}
+              <tr key={index} className="border-t border-neutral-200 align-top">
+                <th scope="row" className="px-3 py-2 text-left font-normal whitespace-nowrap">
+                  <ColumnLabel position={index + 1} model={turn.model} setup={turn.setup} />
                 </th>
                 <td className="px-3 py-2">
                   {status ? (
@@ -106,7 +98,7 @@ export function ComparisonTable({ round, setups }: ComparisonTableProps) {
       </table>
       <p className="flex items-center gap-1.5 border-t border-neutral-200 px-3 py-1.5 text-xs text-neutral-600">
         <span className="size-1.5 rounded-full bg-brand-gradient" aria-hidden="true" />
-        Lowest search tokens among setups that searched, and fastest total time.
+        Lowest search tokens among columns that searched, and fastest total time.
       </p>
     </div>
   )

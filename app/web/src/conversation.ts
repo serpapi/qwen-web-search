@@ -6,6 +6,8 @@ export interface AssistantTurn {
   /** The Ollama model asked to answer, kept so the UI can show it after the user switches models. */
   model: string
   status: 'queued' | 'streaming' | 'done' | 'error'
+  /** The model Ollama is loading for this turn, until the first search or answer shows it's ready. */
+  loadingModel?: string
   /** When the request started, in epoch milliseconds. Drives the live elapsed timer. */
   startedAt?: number
   searches: SearchEvent[]
@@ -20,11 +22,12 @@ export interface Exchange {
   reply: AssistantTurn
 }
 
-/** A user message sent to several setups (Battleground mode). */
+/** A user message sent to every column (Battleground mode). */
 export interface Round {
   id: string
   question: string
-  replies: Partial<Record<SetupId, AssistantTurn>>
+  /** One reply per column, in column order. A column is known by its position, since columns can repeat. */
+  replies: AssistantTurn[]
 }
 
 let lastId = 0
@@ -43,9 +46,11 @@ export function startTurn(turn: AssistantTurn): AssistantTurn {
 }
 
 export function applyEvent(turn: AssistantTurn, event: ChatEvent): AssistantTurn {
-  if ('search' in event) return { ...turn, searches: [...turn.searches, event] }
-  if ('answer' in event) return { ...turn, status: 'done', result: event }
-  return { ...turn, status: 'error', error: event.error }
+  if ('loading' in event) return { ...turn, loadingModel: event.loading }
+  const loaded = { ...turn, loadingModel: undefined }
+  if ('search' in event) return { ...loaded, searches: [...turn.searches, event] }
+  if ('answer' in event) return { ...loaded, status: 'done', result: event }
+  return { ...loaded, status: 'error', error: event.error }
 }
 
 /** Fails a turn whose stream closed without an answer or an error. */

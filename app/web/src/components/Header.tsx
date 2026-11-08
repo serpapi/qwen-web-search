@@ -6,7 +6,7 @@ import { ModeToggle, type Mode } from './ModeToggle'
 
 interface HeaderProps {
   config: ConfigState
-  /** The model for the next messages, or null when there's none to pick. */
+  /** The Dedicated-mode model, or null when there's none to pick. */
   model: string | null
   onModelChange: (model: string) => void
   mode: Mode
@@ -37,12 +37,15 @@ export function Header({ config, model, onModelChange, mode, onModeChange, onNew
               <code className="font-mono font-bold">ollama pull qwen3.5:9b</code>, then reload.
             </p>
           ) : (
-            <ModelPicker
-              models={config.config.models}
-              defaultModel={config.config.default_model}
-              value={model}
-              onChange={onModelChange}
-            />
+            // Battleground columns each pick their own model.
+            mode === 'dedicated' && (
+              <ModelPicker
+                models={config.config.models}
+                defaultModel={config.config.default_model}
+                value={model}
+                onChange={onModelChange}
+              />
+            )
           ))}
       </div>
       <div className="ml-auto flex items-center gap-3">
