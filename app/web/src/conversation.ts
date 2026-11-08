@@ -3,6 +3,8 @@ import type { AnswerEvent, ChatEvent, HistoryMessage, SearchEvent, SetupId } fro
 /** One assistant reply, built up from the stream events. */
 export interface AssistantTurn {
   setup: SetupId
+  /** The Ollama model asked to answer, kept so the UI can show it after the user switches models. */
+  model: string
   status: 'queued' | 'streaming' | 'done' | 'error'
   /** When the request started, in epoch milliseconds. Drives the live elapsed timer. */
   startedAt?: number
@@ -32,8 +34,8 @@ export function newId(): string {
   return String(lastId)
 }
 
-export function queuedTurn(setup: SetupId): AssistantTurn {
-  return { setup, status: 'queued', searches: [] }
+export function queuedTurn(setup: SetupId, model: string): AssistantTurn {
+  return { setup, model, status: 'queued', searches: [] }
 }
 
 export function startTurn(turn: AssistantTurn): AssistantTurn {

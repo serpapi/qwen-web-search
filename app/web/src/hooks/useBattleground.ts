@@ -13,7 +13,7 @@ import {
 import type { SetupId } from '../types'
 import { useChatStream } from './useChatStream'
 
-/** Sends each message to several setups. Every setup keeps its own history. */
+/** Sends each message to several setups, all on the same model. Every setup keeps its own history. */
 export function useBattleground() {
   const [rounds, setRounds] = useState<Round[]>([])
   const { streamChat, cancel } = useChatStream()
@@ -32,16 +32,16 @@ export function useBattleground() {
   )
 
   const send = useCallback(
-    async (question: string, setups: SetupId[]) => {
+    async (question: string, setups: SetupId[], model: string) => {
       const id = newId()
-      const replies = Object.fromEntries(setups.map((setup) => [setup, queuedTurn(setup)]))
+      const replies = Object.fromEntries(setups.map((setup) => [setup, queuedTurn(setup, model)]))
       setRounds((list) => [...list, { id, question, replies }])
 
       // One setup at a time: they share one local model, so parallel runs would skew the timings.
       for (const setup of setups) {
         const history = buildHistory(rounds.map((round) => ({ question: round.question, reply: round.replies[setup] })))
         updateReply(id, setup, startTurn)
-        const finished = await streamChat({ setup, message: question, history }, (event) =>
+        const finished = await streamChat({ setup, model, message: question, history }, (event) =>
           updateReply(id, setup, (turn) => applyEvent(turn, event)),
         )
         if (!finished) return

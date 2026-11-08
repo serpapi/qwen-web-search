@@ -40,11 +40,14 @@ export function BattleColumn({ setup, rounds }: BattleColumnProps) {
           <li key={round.id} className="space-y-2.5">
             <UserMessage text={round.question} compact />
             <ReplyContent turn={reply} compact />
-            {reply.result && (
-              <div className="border-t border-neutral-200 pt-2">
-                <UsageRow usage={turnStats(reply)} />
-              </div>
-            )}
+            <div className="space-y-1 border-t border-neutral-200 pt-2">
+              {/* The model can change between messages, so each turn names its own. */}
+              <p className="text-xs">
+                <span className="text-neutral-600">Model</span>{' '}
+                <span className="font-mono font-bold wrap-anywhere">{reply.model}</span>
+              </p>
+              {reply.result && <UsageRow usage={turnStats(reply)} />}
+            </div>
           </li>
         ))}
       </ol>

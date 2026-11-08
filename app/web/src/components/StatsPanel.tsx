@@ -13,6 +13,7 @@ interface StatsPanelProps {
 }
 
 const SECTION_TITLE = 'mb-2 text-xs font-bold text-neutral-600'
+const SUBSECTION_TITLE = 'mt-3 mb-1.5 text-xs text-neutral-600'
 
 function show(value: number | undefined, missing: string, format: (value: number) => string = formatNumber) {
   return value === undefined ? missing : format(value)
@@ -46,7 +47,9 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
       <section>
         <h3 className={SECTION_TITLE}>Setup</h3>
         <SetupTag setup={reply.setup} />
-        <h4 className="mt-3 mb-1.5 text-xs text-neutral-600">Engines used</h4>
+        <h4 className={SUBSECTION_TITLE}>Model</h4>
+        <p className="font-mono text-sm wrap-anywhere">{reply.model}</p>
+        <h4 className={SUBSECTION_TITLE}>Engines used</h4>
         {stats.engines.length === 0 ? (
           <p className="text-sm">{reply.status === 'streaming' ? 'None yet' : 'No searches'}</p>
         ) : (

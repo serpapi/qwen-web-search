@@ -16,8 +16,8 @@ interface BattlegroundViewProps {
   rounds: Round[]
   /** True while this mode's setups are running. */
   running: boolean
-  /** True while any request is running, in either mode. */
-  disabled: boolean
+  /** Why sending is disabled, such as a request running in either mode. Undefined when sending is allowed. */
+  disabledReason: string | undefined
   onSend: (question: string, setups: SetupId[]) => void
 }
 
@@ -29,7 +29,8 @@ function progress(round: Round, setups: SetupId[]): string | undefined {
   return `Running ${SETUP_INFO[order[index]].name} (${index + 1} of ${order.length})`
 }
 
-export function BattlegroundView({ hidden, setups, rounds, running, disabled, onSend }: BattlegroundViewProps) {
+export function BattlegroundView({ hidden, setups, rounds, running, disabledReason, onSend }: BattlegroundViewProps) {
+  const disabled = disabledReason !== undefined
   const [selected, setSelected] = useState<SetupId[]>(SETUP_IDS)
   const participants = setups.filter((setup) => selected.includes(setup))
   const latest = rounds.at(-1)
@@ -77,7 +78,7 @@ export function BattlegroundView({ hidden, setups, rounds, running, disabled, on
         <Composer
           onSend={send}
           disabled={disabled}
-          placeholder={disabled ? 'Waiting for the current response…' : `Ask the ${audience}`}
+          placeholder={disabledReason ?? `Ask the ${audience}`}
         />
       </div>
     </main>

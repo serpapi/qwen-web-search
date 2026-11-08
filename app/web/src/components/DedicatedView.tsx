@@ -14,12 +14,13 @@ interface DedicatedViewProps {
   hidden: boolean
   setups: SetupId[]
   exchanges: Exchange[]
-  /** True while any request is running, in either mode. */
-  disabled: boolean
+  /** Why sending is disabled, such as a request running in either mode. Undefined when sending is allowed. */
+  disabledReason: string | undefined
   onSend: (question: string, setup: SetupId) => void
 }
 
-export function DedicatedView({ hidden, setups, exchanges, disabled, onSend }: DedicatedViewProps) {
+export function DedicatedView({ hidden, setups, exchanges, disabledReason, onSend }: DedicatedViewProps) {
+  const disabled = disabledReason !== undefined
   const [setup, setSetup] = useState<SetupId>('serpapi')
   // The turn whose stats are shown. Null (or a cleared turn) means the latest one.
   const [selectedId, setSelectedId] = useState<string | null>(null)
@@ -74,7 +75,7 @@ export function DedicatedView({ hidden, setups, exchanges, disabled, onSend }: D
           <Composer
             onSend={send}
             disabled={disabled}
-            placeholder={disabled ? 'Waiting for the current response…' : 'Ask anything'}
+            placeholder={disabledReason ?? 'Ask anything'}
           />
         </div>
       </section>

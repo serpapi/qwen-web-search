@@ -13,7 +13,7 @@ import {
 import type { SetupId } from '../types'
 import { useChatStream } from './useChatStream'
 
-/** One conversation where each message goes to the setup picked at the time. */
+/** One conversation where each message goes to the setup and model picked at the time. */
 export function useDedicatedChat() {
   const [exchanges, setExchanges] = useState<Exchange[]>([])
   const { streamChat, cancel } = useChatStream()
@@ -23,11 +23,11 @@ export function useDedicatedChat() {
   }, [])
 
   const send = useCallback(
-    async (question: string, setup: SetupId) => {
+    async (question: string, setup: SetupId, model: string) => {
       const id = newId()
       const history = buildHistory(exchanges)
-      setExchanges((list) => [...list, { id, question, reply: startTurn(queuedTurn(setup)) }])
-      const finished = await streamChat({ setup, message: question, history }, (event) =>
+      setExchanges((list) => [...list, { id, question, reply: startTurn(queuedTurn(setup, model)) }])
+      const finished = await streamChat({ setup, model, message: question, history }, (event) =>
         updateReply(id, (turn) => applyEvent(turn, event)),
       )
       if (finished) updateReply(id, endTurn)

@@ -2,16 +2,16 @@ import json, os
 from dotenv import load_dotenv
 from openai import OpenAI
 from tokenizers import Tokenizer
+from models import MODEL
 from tools import LAST_ROUND, SERPAPI_TOOLS, SYSTEM
 from serpapi_search import serpapi_search
 
 load_dotenv()
 client = OpenAI(base_url=os.environ["OLLAMA_BASE_URL"], api_key="ollama")
-MODEL = os.environ["LOCAL_MODEL"]
 tokenizer = Tokenizer.from_pretrained("Qwen/Qwen3.8-27B")  # count tokens the way Qwen sees them
 MAX_ROUNDS = 4
 
-def ask(question, tools=SERPAPI_TOOLS, history=()):
+def ask(question, tools=SERPAPI_TOOLS, history=(), model=MODEL):
     """Yields each search as it happens, then the answer. Pass tools=None for no search."""
     messages = [{"role": "system", "content": SYSTEM}, *history, {"role": "user", "content": question}]
     run = {"searches": [], "prompt_tokens": 0, "completion_tokens": 0}
@@ -19,7 +19,7 @@ def ask(question, tools=SERPAPI_TOOLS, history=()):
         last_round = round_number == MAX_ROUNDS
         if last_round:  # Qwen is still searching: make it answer with what it found
             messages.append({"role": "user", "content": LAST_ROUND})
-        resp = client.chat.completions.create(model=MODEL, messages=messages,
+        resp = client.chat.completions.create(model=model, messages=messages,
                                               tools=tools if tools and not last_round else [])
         run["prompt_tokens"] += resp.usage.prompt_tokens
         run["completion_tokens"] += resp.usage.completion_tokens

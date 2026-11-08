@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from chat import MODEL
+from models import MODEL, qwen_models
 from setups import SETUPS
 
 app = FastAPI()
@@ -14,17 +14,19 @@ class ChatRequest(BaseModel):
     setup: str
     message: str
     history: list[dict] = []  # earlier {"role", "content"} turns of this conversation
+    model: str | None = MODEL
 
 @app.get("/api/config")
 def config():
-    return {"model": MODEL, "setups": list(SETUPS)}
+    models = [{"name": m["name"], "parameters": m["details"]["parameter_size"]} for m in qwen_models()]
+    return {"models": models, "default_model": MODEL, "setups": list(SETUPS)}
 
 @app.post("/api/chat")
 def chat(request: ChatRequest):
     def events():
         start = time.time()
         try:
-            for event in SETUPS[request.setup](request.message, history=request.history):
+            for event in SETUPS[request.setup](request.message, history=request.history, model=request.model):
                 if "answer" in event:
                     event["total_seconds"] = round(time.time() - start, 2)
                 yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n"

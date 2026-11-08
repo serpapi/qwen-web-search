@@ -2,9 +2,22 @@
 
 export type SetupId = 'none' | 'serpapi-google' | 'serpapi'
 
+/** A Qwen model installed in Ollama that supports tool calling. */
+export interface ModelInfo {
+  name: string
+  /** The parameter count Ollama reports, such as "27.3B". */
+  parameters: string
+}
+
 /** GET /api/config */
 export interface Config {
-  model: string
+  /** Biggest first. Empty when no Qwen model with tool support is installed. */
+  models: ModelInfo[]
+  /**
+   * LOCAL_MODEL from .env, otherwise the biggest model. It can name a model that isn't in models.
+   * Null when LOCAL_MODEL isn't set and there's no Qwen model.
+   */
+  default_model: string | null
   setups: SetupId[]
 }
 
@@ -16,6 +29,8 @@ export interface HistoryMessage {
 /** POST /api/chat request body. */
 export interface ChatRequest {
   setup: SetupId
+  /** The Ollama model that answers, such as "qwen3.8:27b". */
+  model: string
   message: string
   history: HistoryMessage[]
 }

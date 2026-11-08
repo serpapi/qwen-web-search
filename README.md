@@ -31,7 +31,7 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-**3. Download a Qwen model** that fits your computer's memory, and set `LOCAL_MODEL` in `.env` to its name:
+**3. Download a Qwen model** that fits your computer's memory:
 
 | Model | Download size | Memory needed |
 |---|---|---|
@@ -44,7 +44,7 @@ cp .env.example .env
 ollama pull qwen3.5:9b
 ```
 
-Any Qwen model with the [tools tag on Ollama](https://ollama.com/search?c=tools&q=qwen) works.
+Any Qwen model with the [tools tag on Ollama](https://ollama.com/search?c=tools&q=qwen) works. The app lists every Qwen model you've pulled and starts with the biggest. To start with a different one, set `LOCAL_MODEL` in `.env`.
 
 **4. Start Ollama** in its own terminal and leave it running. If the Ollama app is open, quit it first.
 
@@ -65,7 +65,7 @@ Open http://localhost:8000.
 
 ### Use the app
 
-Switch between the two modes at the top of the page.
+Pick a model and switch between the two modes at the top of the page. Switching to a model that isn't loaded yet makes the next answer slower while Ollama loads it.
 
 **Dedicated:** chat with one setup. Pick a setup, then type a question or click an example prompt. Each search appears as a card while Qwen works, with:
 
@@ -131,6 +131,7 @@ qwen-web-search/
 ├── app/
 │   ├── server.py                     # Web server for the chat UI
 │   ├── chat.py                       # Search loop with local Qwen, and the terminal chat
+│   ├── models.py                     # The installed Qwen models, and the default one
 │   ├── tools.py                      # The prompt and search tools Qwen sees
 │   ├── serpapi_search.py             # SerpApi search
 │   ├── setups.py                     # The setups shared by the UI and the benchmark
@@ -151,8 +152,9 @@ To work on the UI, run `python server.py` in `app/` and `npm run dev` in `app/we
 | Problem | Fix |
 |---|---|
 | `address already in use` when you start Ollama | Ollama is already running. Quit the Ollama app, then start Ollama again. |
-| `openai.APIConnectionError: Connection error` | Ollama isn't running. Start it as in [Setup](#setup). |
+| `openai.APIConnectionError: Connection error` or `URLError: Connection refused` | Ollama isn't running. Start it as in [Setup](#setup), then start the app. |
 | `model "..." not found` | Pull the model with `ollama pull`, or set `LOCAL_MODEL` (app) or `MODEL` (examples) to a name from `ollama list`. |
+| The app says no Qwen model was found | Pull one, for example `ollama pull qwen3.5:9b`, then reload the page. Only Qwen models with tool support are listed. |
 | `KeyError: 'SERPAPI_API_KEY'` | Create `.env` in the repository root, as in [Setup](#setup). |
 | `401 Unauthorized` from SerpApi | The key in `.env` is wrong. Copy it again from your [SerpApi dashboard](https://serpapi.com/dashboard). |
 | Your computer slows down while Qwen answers | Close other apps or pick a smaller model. Run `ollama stop <model>` to free the memory. |
