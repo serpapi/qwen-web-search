@@ -85,7 +85,7 @@ The **Turn stats** panel adds up the searches, tokens and time for each answer.
 | SerpApi · Google | Google, through SerpApi, like [`qwen_search.py`](examples/qwen_search.py) |
 | SerpApi · Multiple engines | Qwen chooses Google, Google News, Baidu or Naver for each search, like [`qwen_search_multi_engines.py`](examples/qwen_search_multi_engines.py) |
 
-The SerpApi setups get the top 5 results as Markdown.
+The SerpApi setups get the top 5 results as Markdown. In the app, Qwen can also limit a Google search to the past day, week, month or year when a question is about recent events. The examples leave this out to stay short.
 
 ### Chat in the terminal
 
@@ -131,7 +131,7 @@ qwen-web-search/
 ├── app/
 │   ├── server.py                     # Web server for the chat UI
 │   ├── chat.py                       # Search loop with local Qwen, and the terminal chat
-│   ├── tools.py                      # Prompts and search tools Qwen sees
+│   ├── tools.py                      # The prompt and search tools Qwen sees
 │   ├── serpapi_search.py             # SerpApi search
 │   ├── setups.py                     # The setups shared by the UI and the benchmark
 │   ├── bench.py, report.py           # Benchmark and summary tables

@@ -28,6 +28,11 @@ export interface SearchStep {
    */
   tool: string
   query: string
+  /**
+   * How recent Qwen asked the results to be: day, week, month or year, or null when it didn't ask.
+   * Only Google applies it. A plain string, because Ollama doesn't enforce the enum.
+   */
+  recency: string | null
   /** The SerpApi engine that served it. Always the same as tool, even when the search failed. */
   engine: string
   format: 'markdown' | 'error'

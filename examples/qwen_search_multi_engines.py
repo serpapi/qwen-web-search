@@ -29,9 +29,8 @@ def serpapi_search(engine, query):
         "output": "md",
     })
 
-SYSTEM = f"""You are a helpful assistant with access to web search. Today's date is {date.today()}.
-- Search when the answer depends on current or changing information, such as news, releases, prices or who holds a role. Answer directly when it can't have changed.
-- Base your answer on the search results. If they don't answer the question, say so instead of guessing.
+SYSTEM = f"""You are a helpful assistant. Today's date is {date.today()}.
+- If you don't know something or can't confirm it, say so instead of guessing.
 - Cite the sources you used as Markdown links.
 - Reply in the user's language, and keep it concise."""
 LAST_ROUND = "That was your last search. Answer now with the results you have."
@@ -45,7 +44,8 @@ TOOLS = [{"type": "function", "function": {
             "engine": {
                 "type": "string",
                 "enum": list(RESTRICTORS),  # the SerpApi engines Qwen can choose from
-                "description": "google: Google web search. google_news: Google News, recent news articles. "
+                "description": "google: Google web search. "
+                               "google_news: Google News, recent news articles. "
                                "baidu: China's main search engine, Chinese-language web. "
                                "naver: South Korea's main search engine, Korean-language web.",
             },

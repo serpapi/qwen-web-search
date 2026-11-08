@@ -2,7 +2,7 @@ import json, os
 from dotenv import load_dotenv
 from openai import OpenAI
 from tokenizers import Tokenizer
-from tools import LAST_ROUND, SEARCH_SYSTEM, SERPAPI_TOOLS, SYSTEM
+from tools import LAST_ROUND, SERPAPI_TOOLS, SYSTEM
 from serpapi_search import serpapi_search
 
 load_dotenv()
@@ -13,8 +13,7 @@ MAX_ROUNDS = 4
 
 def ask(question, tools=SERPAPI_TOOLS, history=()):
     """Yields each search as it happens, then the answer. Pass tools=None for no search."""
-    system = SEARCH_SYSTEM if tools else SYSTEM  # the baseline never hears about tools it doesn't have
-    messages = [{"role": "system", "content": system}, *history, {"role": "user", "content": question}]
+    messages = [{"role": "system", "content": SYSTEM}, *history, {"role": "user", "content": question}]
     run = {"searches": [], "prompt_tokens": 0, "completion_tokens": 0}
     for round_number in range(1, MAX_ROUNDS + 1):
         last_round = round_number == MAX_ROUNDS
@@ -33,10 +32,10 @@ def ask(question, tools=SERPAPI_TOOLS, history=()):
             args = json.loads(call.function.arguments)
             engine, query = args.get("engine", "google"), args["query"]  # google_search has no engine argument
             try:
-                result = serpapi_search(engine, query)
+                result = serpapi_search(engine, query, args.get("recency"))
             except Exception as e:  # tell Qwen the search failed and let it carry on
                 result = {"engine": engine, "format": "error", "text": f"Search failed: {type(e).__name__}", "seconds": 0}
-            step = {"tool": engine, "query": query, "engine": result["engine"], "format": result["format"],
+            step = {"tool": engine, "query": query, "recency": args.get("recency"), "engine": result["engine"], "format": result["format"],
                     "tokens": len(tokenizer.encode(result["text"]).ids), "seconds": result["seconds"]}
             run["searches"].append(step)
             yield {"search": step, "payload": result["text"]}

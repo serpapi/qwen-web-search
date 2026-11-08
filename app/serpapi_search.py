@@ -13,9 +13,11 @@ RESTRICTORS = {
     "naver": "web_results[0:5].{title,link,snippet}",
 }
 
-def serpapi_search(engine, query):
+def serpapi_search(engine, query, recency=None):
     params = {"engine": engine, "query" if engine == "naver" else "q": query,
               "json_restrictor": RESTRICTORS[engine], "output": "md"}  # Markdown uses fewer tokens than JSON
+    if recency and engine == "google":  # only Google has this filter: day -> qdr:d, week -> qdr:w, ...
+        params["tbs"] = "qdr:" + recency[0]
     start = time.time()
     results = serpapi_client.search(params)
     return {
