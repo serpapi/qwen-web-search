@@ -82,13 +82,14 @@ The **Turn stats** panel adds up the searches, tokens and time for each answer.
 | Setup | Where the search results come from |
 |---|---|
 | No search | Nowhere. Qwen answers from its training data. |
-| SerpApi | SerpApi, top 5 results as Markdown |
+| SerpApi · Google | Google, through SerpApi, like [`qwen_search.py`](examples/qwen_search.py) |
+| SerpApi · Multiple engines | Qwen chooses Google, Google News, Baidu or Naver for each search, like [`qwen_search_multi_engines.py`](examples/qwen_search_multi_engines.py) |
 
-In the SerpApi setup, Qwen chooses Google, Google News, Baidu or Naver for each search.
+The SerpApi setups get the top 5 results as Markdown.
 
 ### Chat in the terminal
 
-From `app/`, run `python chat.py` to chat with SerpApi search in the terminal.
+From `app/`, run `python chat.py` to chat in the terminal, with Qwen choosing the SerpApi engine.
 
 ## Run the examples
 
@@ -111,14 +112,14 @@ Type a question after `You:`. A `[search]` line appears for each search Qwen mak
 The benchmark asks every question in [`questions.yaml`](app/questions.yaml) with each setup and saves the answers to `results.jsonl`. From `app/`:
 
 ```bash
-python bench.py                     # all setups: none and serpapi
-python bench.py serpapi             # only the setups you name
-python report.py                    # summary tables
+python bench.py                         # all setups: none, serpapi-google and serpapi
+python bench.py serpapi-google serpapi  # only the setups you name
+python report.py                        # summary tables
 ```
 
 - The answers to the 15 questions were verified on 2026-10-19. Some change quickly, so check them before you run.
 - An answer counts as correct when it contains an accepted answer, so review the results by hand.
-- A full run uses about 25 SerpApi searches.
+- A full run uses about 45 SerpApi searches.
 
 ## Project structure
 

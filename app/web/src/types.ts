@@ -1,6 +1,6 @@
 // The backend contract: server.py and chat.py.
 
-export type SetupId = 'none' | 'serpapi'
+export type SetupId = 'none' | 'serpapi-google' | 'serpapi'
 
 /** GET /api/config */
 export interface Config {
@@ -22,7 +22,10 @@ export interface ChatRequest {
 
 /** One search Qwen ran. */
 export interface SearchStep {
-  /** The engine Qwen chose: google, google_news, baidu or naver. */
+  /**
+   * The SerpApi engine Qwen chose: google, google_news, baidu or naver. Always google for serpapi-google.
+   * A plain string, because Ollama doesn't enforce the engine enum.
+   */
   tool: string
   query: string
   /** The SerpApi engine that served it. Always the same as tool, even when the search failed. */

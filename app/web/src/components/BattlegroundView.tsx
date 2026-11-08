@@ -21,7 +21,7 @@ interface BattlegroundViewProps {
   onSend: (question: string, setups: SetupId[]) => void
 }
 
-/** "Running SerpApi (2 of 2)" for the setup currently streaming. */
+/** "Running SerpApi · Google (2 of 3)" for the setup currently streaming. */
 function progress(round: Round, setups: SetupId[]): string | undefined {
   const order = setups.filter((setup) => round.replies[setup])
   const index = order.findIndex((setup) => round.replies[setup]?.status === 'streaming')

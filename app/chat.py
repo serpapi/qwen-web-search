@@ -2,7 +2,7 @@ import json, os
 from dotenv import load_dotenv
 from openai import OpenAI
 from tokenizers import Tokenizer
-from tools import LAST_ROUND, SEARCH_SYSTEM, SYSTEM, TOOLS
+from tools import LAST_ROUND, SEARCH_SYSTEM, SERPAPI_TOOLS, SYSTEM
 from serpapi_search import serpapi_search
 
 load_dotenv()
@@ -11,9 +11,9 @@ MODEL = os.environ["LOCAL_MODEL"]
 tokenizer = Tokenizer.from_pretrained("Qwen/Qwen3.8-27B")  # count tokens the way Qwen sees them
 MAX_ROUNDS = 4
 
-def ask(question, search=serpapi_search, history=()):
-    """Yields each search as it happens, then the answer. Pass search=None for no search."""
-    system = SEARCH_SYSTEM if search else SYSTEM  # the baseline never hears about tools it doesn't have
+def ask(question, tools=SERPAPI_TOOLS, history=()):
+    """Yields each search as it happens, then the answer. Pass tools=None for no search."""
+    system = SEARCH_SYSTEM if tools else SYSTEM  # the baseline never hears about tools it doesn't have
     messages = [{"role": "system", "content": system}, *history, {"role": "user", "content": question}]
     run = {"searches": [], "prompt_tokens": 0, "completion_tokens": 0}
     for round_number in range(1, MAX_ROUNDS + 1):
@@ -21,7 +21,7 @@ def ask(question, search=serpapi_search, history=()):
         if last_round:  # Qwen is still searching: make it answer with what it found
             messages.append({"role": "user", "content": LAST_ROUND})
         resp = client.chat.completions.create(model=MODEL, messages=messages,
-                                              tools=TOOLS if search and not last_round else [])
+                                              tools=tools if tools and not last_round else [])
         run["prompt_tokens"] += resp.usage.prompt_tokens
         run["completion_tokens"] += resp.usage.completion_tokens
         reply = resp.choices[0].message
@@ -30,12 +30,13 @@ def ask(question, search=serpapi_search, history=()):
             return
         messages.append(reply.model_dump(exclude_none=True))
         for call in reply.tool_calls:
-            query = json.loads(call.function.arguments)["query"]
+            args = json.loads(call.function.arguments)
+            engine, query = args.get("engine", "google"), args["query"]  # google_search has no engine argument
             try:
-                result = search(call.function.name, query)
+                result = serpapi_search(engine, query)
             except Exception as e:  # tell Qwen the search failed and let it carry on
-                result = {"engine": call.function.name, "format": "error", "text": f"Search failed: {type(e).__name__}", "seconds": 0}
-            step = {"tool": call.function.name, "query": query, "engine": result["engine"], "format": result["format"],
+                result = {"engine": engine, "format": "error", "text": f"Search failed: {type(e).__name__}", "seconds": 0}
+            step = {"tool": engine, "query": query, "engine": result["engine"], "format": result["format"],
                     "tokens": len(tokenizer.encode(result["text"]).ids), "seconds": result["seconds"]}
             run["searches"].append(step)
             yield {"search": step, "payload": result["text"]}

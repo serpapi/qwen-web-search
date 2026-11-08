@@ -13,7 +13,7 @@ export function SetupPicker({ setups, value, onChange }: SetupPickerProps) {
   return (
     <fieldset>
       <legend className="mb-3 text-sm font-bold text-neutral-600">Search setup</legend>
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+      <div className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1">
         {setups.map((setup) => {
           const checked = setup === value
           return (
@@ -48,8 +48,7 @@ export function SetupPicker({ setups, value, onChange }: SetupPickerProps) {
         })}
       </div>
       <p className="mt-4 text-xs leading-relaxed text-neutral-600">
-        Qwen picks the engine for each search itself: Google, Google News, Baidu or Naver. You can switch setups
-        between messages.
+        SerpApi setups send Qwen the top 5 results as compact Markdown. You can switch setups between messages.
       </p>
     </fieldset>
   )

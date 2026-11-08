@@ -1,9 +1,10 @@
 from functools import partial
 from chat import ask
-from serpapi_search import serpapi_search
+from tools import GOOGLE_TOOLS, SERPAPI_TOOLS
 
-# Same model, prompt and tools everywhere; only search on or off changes.
+# Same model and prompt everywhere; only the search tools Qwen gets change.
 SETUPS = {
-    "none": partial(ask, search=None),
-    "serpapi": partial(ask, search=serpapi_search),
+    "none": partial(ask, tools=None),
+    "serpapi-google": partial(ask, tools=GOOGLE_TOOLS),  # Google only
+    "serpapi": partial(ask, tools=SERPAPI_TOOLS),  # Qwen picks Google, Google News, Baidu or Naver
 }
