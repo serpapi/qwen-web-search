@@ -19,9 +19,12 @@ interface BattlegroundViewProps {
   defaultModel: string | null
   setups: SetupId[]
   rounds: Round[]
-  /** Why sending is disabled, such as a request running in either mode. Undefined when sending is allowed. */
+  /** True while the latest round is running. */
+  running: boolean
+  /** Why sending is disabled, such as Dedicated mode answering. Undefined when sending is allowed. */
   disabledReason: string | undefined
   onSend: (question: string, columns: Column[]) => void
+  onStop: () => void
   onNewComparison: () => void
 }
 
@@ -40,8 +43,10 @@ export function BattlegroundView({
   defaultModel,
   setups,
   rounds,
+  running,
   disabledReason,
   onSend,
+  onStop,
   onNewComparison,
 }: BattlegroundViewProps) {
   const disabled = disabledReason !== undefined
@@ -64,7 +69,11 @@ export function BattlegroundView({
 
   return (
     <main hidden={hidden} className="flex min-h-0 flex-1 flex-col">
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      {/*
+        This scroll area and the columns' horizontal one are relative, so the sr-only text inside them (absolutely
+        positioned) is laid out and clipped there. Otherwise it escapes to the page, and the page scrolls past the composer.
+      */}
+      <div className="relative min-h-0 flex-1 overflow-y-auto">
         <div className="space-y-3 border-b border-neutral-200 px-4 py-3 sm:px-6">
           {defaultModel !== null &&
             (locked ? (
@@ -87,7 +96,7 @@ export function BattlegroundView({
         {latest ? (
           <div className="space-y-4 p-4 sm:px-6">
             <ComparisonTable round={latest} />
-            <div className="overflow-x-auto pb-1">
+            <div className="relative overflow-x-auto pb-1">
               <div className="grid auto-cols-[minmax(20rem,1fr)] grid-flow-col items-start gap-3">
                 {columns.map((column, index) => (
                   <BattleColumn key={index} column={column} index={index} rounds={rounds} />
@@ -110,6 +119,8 @@ export function BattlegroundView({
       <div className="border-t border-neutral-200 bg-white px-4 pt-3 pb-2 sm:px-6">
         <Composer
           onSend={send}
+          onStop={onStop}
+          pendingQuestion={running ? latest?.question : undefined}
           disabled={disabled}
           placeholder={disabledReason ?? `Ask ${formatCount(columns.length, 'column')}`}
         />

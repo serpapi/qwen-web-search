@@ -9,9 +9,11 @@ function lowest(values: (number | undefined)[]): number | undefined {
   return known.length > 0 ? Math.min(...known) : undefined
 }
 
-/** What to show instead of the engine list, if anything. */
-function engineStatus(turn: AssistantTurn, stats: TurnStats): string | undefined {
+/** The row's state, shown under its engines (if any). Undefined for a finished row that searched. */
+function rowStatus(turn: AssistantTurn, stats: TurnStats): string | undefined {
   if (turn.status === 'queued') return 'Queued'
+  if (turn.status === 'skipped') return 'Not run'
+  if (turn.status === 'stopped') return 'Stopped'
   if (turn.status === 'error') return 'Failed'
   if (turn.loadingModel) return 'Loading model…'
   if (stats.engines.length === 0) return turn.status === 'streaming' ? 'Running…' : 'No searches'
@@ -33,7 +35,8 @@ export function ComparisonTable({ round }: { round: Round }) {
   const fastest = lowest(finished.map(({ stats }) => stats.totalSeconds))
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-neutral-200">
+    // relative keeps the sr-only text (absolutely positioned) inside this scroll area, so it can't make the page scroll.
+    <div className="relative overflow-x-auto rounded-xl border border-neutral-200">
       <table className="w-full min-w-[44rem] text-sm">
         <caption className="border-b border-neutral-200 bg-neutral-50 px-3 py-2 text-left">
           <span className="font-bold">Latest turn</span>
@@ -53,18 +56,16 @@ export function ComparisonTable({ round }: { round: Round }) {
         <tbody>
           {rows.map(({ turn, stats }, index) => {
             const done = turn.status === 'done'
-            // Searches stream in, so their counts are live while the column runs.
-            const hasCounts = done || turn.status === 'streaming'
-            const status = engineStatus(turn, stats)
+            // Searches stream in, so their counts are live while the column runs, and stay if it stops or fails.
+            const started = turn.status !== 'queued' && turn.status !== 'skipped'
+            const status = rowStatus(turn, stats)
             return (
               <tr key={index} className="border-t border-neutral-200 align-top">
                 <th scope="row" className="px-3 py-2 text-left font-normal whitespace-nowrap">
                   <ColumnLabel position={index + 1} model={turn.model} setup={turn.setup} />
                 </th>
                 <td className="px-3 py-2">
-                  {status ? (
-                    <span className="text-neutral-600">{status}</span>
-                  ) : (
+                  {stats.engines.length > 0 && (
                     <ul>
                       {stats.engines.map(({ label, count }) => (
                         <li key={label}>
@@ -74,14 +75,15 @@ export function ComparisonTable({ round }: { round: Round }) {
                       ))}
                     </ul>
                   )}
+                  {status && <p className="text-neutral-600">{status}</p>}
                 </td>
-                <td className={NUMBER_CELL}>{hasCounts ? formatNumber(stats.searches) : '—'}</td>
+                <td className={NUMBER_CELL}>{started ? formatNumber(stats.searches) : '—'}</td>
                 <td className={NUMBER_CELL}>
                   <BestValue
                     best={done && stats.searches > 0 && stats.searchTokens === leastSearchTokens}
                     label="lowest search tokens"
                   >
-                    {hasCounts ? formatNumber(stats.searchTokens) : '—'}
+                    {started ? formatNumber(stats.searchTokens) : '—'}
                   </BestValue>
                 </td>
                 <td className={NUMBER_CELL}>{show(stats.promptTokens, formatNumber)}</td>

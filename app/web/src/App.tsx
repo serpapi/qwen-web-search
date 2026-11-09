@@ -22,14 +22,16 @@ export default function App() {
   // Null while the config loads, or when there's no model at all. Then neither mode can send.
   const defaultModel = ready?.default_model ?? null
   const model = pickedModel ?? defaultModel
-  // Both modes share one local Ollama, so only one request runs at a time.
-  const busy = dedicated.busy || battle.busy
-  const disabledReason =
-    defaultModel === null ? 'No model available' : busy ? 'Waiting for the current response…' : undefined
   const current =
     mode === 'dedicated'
       ? { reset: dedicated.reset, empty: dedicated.exchanges.length === 0 }
       : { reset: battle.reset, empty: battle.rounds.length === 0 }
+
+  /** Why a mode can't send. Both modes share one local Ollama, so each waits while the other one answers. */
+  function disabledReason(otherMode: string, otherModeBusy: boolean): string | undefined {
+    if (defaultModel === null) return 'No model available'
+    return otherModeBusy ? `Waiting for the ${otherMode} response…` : undefined
+  }
 
   // Sending is disabled while there's no model, so this check only narrows the type.
   function sendDedicated(question: string, setup: SetupId) {
@@ -52,8 +54,10 @@ export default function App() {
         hidden={mode !== 'dedicated'}
         setups={setups}
         exchanges={dedicated.exchanges}
-        disabledReason={disabledReason}
+        running={dedicated.busy}
+        disabledReason={disabledReason('Battleground', battle.busy)}
         onSend={sendDedicated}
+        onStop={dedicated.stop}
       />
       <BattlegroundView
         hidden={mode !== 'battleground'}
@@ -61,8 +65,10 @@ export default function App() {
         defaultModel={defaultModel}
         setups={setups}
         rounds={battle.rounds}
-        disabledReason={disabledReason}
+        running={battle.busy}
+        disabledReason={disabledReason('Dedicated', dedicated.busy)}
         onSend={battle.send}
+        onStop={battle.stop}
         onNewComparison={battle.reset}
       />
     </div>

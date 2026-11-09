@@ -31,6 +31,28 @@ async function* readEvents(body: ReadableStream<Uint8Array>): AsyncGenerator<Cha
   if (last) yield last
 }
 
+/** Collects events and hands them over together, once per animation frame or when flushed. */
+function frameBatcher(deliver: (events: ChatEvent[]) => void) {
+  let pending: ChatEvent[] = []
+  let frame: number | undefined
+
+  function flush() {
+    if (frame !== undefined) cancelAnimationFrame(frame)
+    frame = undefined
+    if (pending.length === 0) return
+    const events = pending
+    pending = []
+    deliver(events)
+  }
+
+  function add(event: ChatEvent) {
+    pending.push(event)
+    frame ??= requestAnimationFrame(flush)
+  }
+
+  return { add, flush }
+}
+
 /**
  * Streams POST /api/chat. EventSource can't send a POST, so the body is read with fetch.
  * Each caller owns one stream at a time and can cancel it.
@@ -41,11 +63,16 @@ export function useChatStream() {
   const cancel = useCallback(() => controllerRef.current?.abort(), [])
   useEffect(() => cancel, [cancel])
 
-  /** Streams one request, passing each event to onEvent. Resolves to false if it was cancelled. */
+  /**
+   * Streams one request. Qwen's reply arrives as dozens of small events a second, so onEvents gets them in batches, at
+   * most one per animation frame. Every event is delivered before the promise resolves, even when it was cancelled.
+   * Resolves to false if it was cancelled, which isn't an error.
+   */
   const streamChat = useCallback(
-    async (request: ChatRequest, onEvent: (event: ChatEvent) => void): Promise<boolean> => {
+    async (request: ChatRequest, onEvents: (events: ChatEvent[]) => void): Promise<boolean> => {
       const controller = new AbortController()
       controllerRef.current = controller
+      const batch = frameBatcher(onEvents)
       try {
         const response = await fetch('/api/chat', {
           method: 'POST',
@@ -56,12 +83,15 @@ export function useChatStream() {
         if (!response.ok || !response.body) {
           throw new Error(`The server answered ${response.status} ${response.statusText}`)
         }
-        for await (const event of readEvents(response.body)) onEvent(event)
+        for await (const event of readEvents(response.body)) batch.add(event)
         return true
       } catch (error) {
+        // Cancelling rejects fetch or the reader with an AbortError.
         if (controller.signal.aborted) return false
-        onEvent({ error: error instanceof Error ? error.message : String(error) })
+        batch.add({ error: error instanceof Error ? error.message : String(error) })
         return true
+      } finally {
+        batch.flush()
       }
     },
     [],

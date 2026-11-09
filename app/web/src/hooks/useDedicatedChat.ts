@@ -7,6 +7,7 @@ import {
   newId,
   queuedTurn,
   startTurn,
+  stopTurn,
   type AssistantTurn,
   type Exchange,
 } from '../conversation'
@@ -27,10 +28,10 @@ export function useDedicatedChat() {
       const id = newId()
       const history = buildHistory(exchanges)
       setExchanges((list) => [...list, { id, question, reply: startTurn(queuedTurn(setup, model)) }])
-      const finished = await streamChat({ setup, model, message: question, history }, (event) =>
-        updateReply(id, (turn) => applyEvent(turn, event)),
+      const finished = await streamChat({ setup, model, message: question, history }, (events) =>
+        updateReply(id, (turn) => events.reduce(applyEvent, turn)),
       )
-      if (finished) updateReply(id, endTurn)
+      updateReply(id, finished ? endTurn : stopTurn)
     },
     [exchanges, streamChat, updateReply],
   )
@@ -40,5 +41,5 @@ export function useDedicatedChat() {
     setExchanges([])
   }, [cancel])
 
-  return { exchanges, busy: isPending(exchanges.at(-1)?.reply), send, reset }
+  return { exchanges, busy: isPending(exchanges.at(-1)?.reply), send, stop: cancel, reset }
 }

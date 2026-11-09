@@ -64,6 +64,19 @@ export interface LoadingEvent {
   loading: string
 }
 
+/** A piece of Qwen's reasoning, streamed before each search or answer. Many per request. */
+export interface ThinkingEvent {
+  thinking: string
+}
+
+/**
+ * A piece of Qwen's reply text, streamed token by token. Usually the answer, but when a search event follows, the text
+ * streamed before it wasn't: Qwen sometimes writes a line before it searches.
+ */
+export interface DeltaEvent {
+  delta: string
+}
+
 /** Sent as soon as a search finishes. */
 export interface SearchEvent {
   search: SearchStep
@@ -73,6 +86,7 @@ export interface SearchEvent {
 
 /** The final event of a successful request. */
 export interface AnswerEvent {
+  /** The full reply, which replaces the text streamed in delta events. */
   answer: string
   searches: SearchStep[]
   /** Summed over every tool round, so each extra round adds the whole conversation again. */
@@ -85,4 +99,4 @@ export interface ErrorEvent {
   error: string
 }
 
-export type ChatEvent = LoadingEvent | SearchEvent | AnswerEvent | ErrorEvent
+export type ChatEvent = LoadingEvent | ThinkingEvent | DeltaEvent | SearchEvent | AnswerEvent | ErrorEvent

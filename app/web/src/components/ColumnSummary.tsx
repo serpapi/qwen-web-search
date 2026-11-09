@@ -1,8 +1,7 @@
 import { Plus } from 'lucide-react'
 import { useId } from 'react'
 import type { Column } from '../columns'
-import { SETUP_INFO } from '../setups'
-import { ColumnNumber } from './ColumnNumber'
+import { ColumnLabel } from './ColumnLabel'
 
 interface ColumnSummaryProps {
   columns: Column[]
@@ -20,11 +19,8 @@ export function ColumnSummary({ columns, onNewComparison }: ColumnSummaryProps) 
       </span>
       <ol aria-labelledby={labelId} className="flex flex-wrap gap-2">
         {columns.map((column, index) => (
-          <li key={index} className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 py-0.5 pr-2.5 pl-0.5 text-xs">
-            <ColumnNumber position={index + 1} />
-            <span>
-              <span className="font-mono font-bold">{column.model}</span> · {SETUP_INFO[column.setup].name}
-            </span>
+          <li key={index} className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-1">
+            <ColumnLabel position={index + 1} model={column.model} setup={column.setup} inline />
           </li>
         ))}
       </ol>

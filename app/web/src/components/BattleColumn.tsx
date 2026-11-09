@@ -23,8 +23,8 @@ export function BattleColumn({ column, index, rounds }: BattleColumnProps) {
       aria-label={`Column ${index + 1}: ${columnLabel(column)}`}
       className="flex flex-col rounded-xl border border-neutral-200 bg-white"
     >
-      <header className="space-y-1.5 rounded-t-xl border-b border-neutral-200 bg-neutral-50 px-3 py-2.5">
-        <h2 className="text-sm">
+      <header className="space-y-2 rounded-t-xl border-b border-neutral-200 bg-neutral-50 px-3 py-2.5">
+        <h2>
           <ColumnLabel position={index + 1} model={column.model} setup={column.setup} />
         </h2>
         {totals ? (

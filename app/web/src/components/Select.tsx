@@ -24,7 +24,7 @@ export function Select<T extends string>({ id, value, options, onChange, mono = 
         value={value}
         // The options render in order, so the selected index gives the typed value.
         onChange={(event) => onChange(options[event.target.selectedIndex].value)}
-        className={`w-full appearance-none rounded-lg border border-neutral-300 bg-white py-1 pr-7 pl-2.5 text-xs hover:border-neutral-400 ${
+        className={`w-full appearance-none rounded-lg border border-neutral-300 bg-white py-1 pr-7 pl-2.5 text-sm hover:border-neutral-400 ${
           mono ? 'font-mono' : ''
         }`}
       >

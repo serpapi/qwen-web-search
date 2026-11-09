@@ -31,6 +31,8 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
 
   const { reply } = exchange
   const stats = turnStats(reply)
+  // Stopped turns never get the counts that come with the answer.
+  const missing = reply.status === 'stopped' ? 'n/a' : 'Pending'
 
   return (
     <div className="space-y-6 p-4">
@@ -83,8 +85,8 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
               )}
               <StatList
                 items={[
-                  { label: 'Prompt', value: show(stats.promptTokens, 'Pending'), swatch: 'bg-brand-blue' },
-                  { label: 'Completion', value: show(stats.completionTokens, 'Pending'), swatch: 'bg-brand-purple' },
+                  { label: 'Prompt', value: show(stats.promptTokens, missing), swatch: 'bg-brand-blue' },
+                  { label: 'Completion', value: show(stats.completionTokens, missing), swatch: 'bg-brand-purple' },
                   { label: 'Search payload', value: formatNumber(stats.searchTokens), swatch: 'bg-ink' },
                 ]}
               />
@@ -95,9 +97,9 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
             <h3 className={SECTION_TITLE}>Time</h3>
             <StatList
               items={[
-                { label: 'Total', value: show(stats.totalSeconds, 'Pending', formatSeconds) },
+                { label: 'Total', value: show(stats.totalSeconds, missing, formatSeconds) },
                 { label: 'Search', value: formatSeconds(stats.searchSeconds) },
-                { label: 'Model', value: show(stats.modelSeconds, 'Pending', formatSeconds) },
+                { label: 'Model', value: show(stats.modelSeconds, missing, formatSeconds) },
               ]}
             />
           </section>

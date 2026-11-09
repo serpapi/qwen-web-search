@@ -14,12 +14,15 @@ interface DedicatedViewProps {
   hidden: boolean
   setups: SetupId[]
   exchanges: Exchange[]
-  /** Why sending is disabled, such as a request running in either mode. Undefined when sending is allowed. */
+  /** True while the latest reply is running. */
+  running: boolean
+  /** Why sending is disabled, such as Battleground mode answering. Undefined when sending is allowed. */
   disabledReason: string | undefined
   onSend: (question: string, setup: SetupId) => void
+  onStop: () => void
 }
 
-export function DedicatedView({ hidden, setups, exchanges, disabledReason, onSend }: DedicatedViewProps) {
+export function DedicatedView({ hidden, setups, exchanges, running, disabledReason, onSend, onStop }: DedicatedViewProps) {
   const disabled = disabledReason !== undefined
   const [setup, setSetup] = useState<SetupId>('serpapi')
   // The turn whose stats are shown. Null (or a cleared turn) means the latest one.
@@ -36,19 +39,22 @@ export function DedicatedView({ hidden, setups, exchanges, disabledReason, onSen
   }
 
   return (
+    // Every scroll area is relative: the whole view on narrow screens, and each panel on wide ones. That way the sr-only
+    // text inside (absolutely positioned) is laid out and clipped there. Otherwise it escapes to the page, and the page
+    // scrolls past the composer.
     <main
       hidden={hidden}
-      className="min-h-0 flex-1 overflow-y-auto lg:grid lg:grid-cols-[16rem_minmax(0,1fr)_19rem] lg:overflow-hidden xl:grid-cols-[18rem_minmax(0,1fr)_21rem]"
+      className="relative min-h-0 flex-1 overflow-y-auto lg:grid lg:grid-cols-[16rem_minmax(0,1fr)_19rem] lg:overflow-hidden xl:grid-cols-[18rem_minmax(0,1fr)_21rem]"
     >
       <aside
         aria-label="Search setup"
-        className="border-b border-neutral-200 bg-neutral-50 p-4 lg:overflow-y-auto lg:border-r lg:border-b-0"
+        className="relative border-b border-neutral-200 bg-neutral-50 p-4 lg:overflow-y-auto lg:border-r lg:border-b-0"
       >
         <SetupPicker setups={setups} value={setup} onChange={setSetup} />
       </aside>
 
       <section aria-label="Conversation" className="flex min-h-0 flex-col">
-        <div ref={scrollRef} className="flex-1 lg:overflow-y-auto">
+        <div ref={scrollRef} className="relative flex-1 lg:overflow-y-auto">
           <div className="mx-auto max-w-3xl space-y-4 px-4 py-6 sm:px-6">
             {exchanges.length === 0 ? (
               <EmptyState
@@ -74,6 +80,8 @@ export function DedicatedView({ hidden, setups, exchanges, disabledReason, onSen
         <div className="sticky bottom-0 border-t border-neutral-200 bg-white px-4 pt-3 pb-2 sm:px-6">
           <Composer
             onSend={send}
+            onStop={onStop}
+            pendingQuestion={running ? exchanges.at(-1)?.question : undefined}
             disabled={disabled}
             placeholder={disabledReason ?? 'Ask anything'}
           />
@@ -82,7 +90,7 @@ export function DedicatedView({ hidden, setups, exchanges, disabledReason, onSen
 
       <aside
         aria-label="Turn stats"
-        className="border-t border-neutral-200 bg-neutral-50 lg:overflow-y-auto lg:border-t-0 lg:border-l"
+        className="relative border-t border-neutral-200 bg-neutral-50 lg:overflow-y-auto lg:border-t-0 lg:border-l"
       >
         <StatsPanel exchange={selected} position={selectedIndex + 1} count={exchanges.length} />
       </aside>
