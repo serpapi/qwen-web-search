@@ -36,7 +36,9 @@ def summary(column):
 table(["Model", "Setup", "Correct", "Partly", "Wrong", "Errors", "Searches per question", "Answer in results",
        "Failed searches", "Tokens per search", "Answer s", "Completion tokens"], map(summary, columns))
 
-for field in ("language", "category", "difficulty", "hop"):  # correct answers per group, for each model and setup
+for field in ("language", "category", "difficulty", "hop", "locality"):  # correct answers per group, for each model and setup
+    if field not in next(iter(questions.values())):
+        continue
     groups = list(dict.fromkeys(q[field] for q in questions.values()))
     lines = []
     for group in groups:

@@ -1,0 +1,1575 @@
+# Google only vs multiple engines: 100 questions asked with the serpapi-google and serpapi setups on the biggest model.
+# 40 Chinese and 40 Korean questions about local and long-tail 2026 facts, where Baidu and Naver may know more than
+# Google, plus 20 English controls (recent news and general web). Every answer was verified on recorded_on against
+# `source`. accept: case-insensitive substrings (whitespace ignored) that count as correct. Review every answer by hand;
+# `review` says what makes an answer wrong when a false match is possible.
+
+- id: e001
+  language: zh
+  category: consumer
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 小米18 Pro起售价多少钱
+  expected: 5999元起（12GB+256GB；2026年9月23日发布；界面新闻/新浪财经）[Xiaomi 18 Pro starts at 5,999 yuan]
+  accept:
+  - '5999'
+  - 5,999
+  review: Must be the Xiaomi 18 Pro. 5499 is the price after the national subsidy; 6999 is the 18 Pro Max. Huawei's Mate 90
+    also starts at 5999, so 5999 attached to another phone is wrong.
+  source: https://finance.sina.com.cn/roll/2026-09-23/doc-inisvqct5906428.shtml
+  recorded_on: '2026-11-10'
+
+- id: e002
+  language: zh
+  category: consumer
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: OPPO Find X10 Pro Max的起售价是多少？
+  expected: 6799元起（2026年9月22日发布，9月24日开售；新浪财经）[OPPO Find X10 Pro Max starts at 6,799 yuan]
+  accept:
+  - '6799'
+  - 6,799
+  review: Find X10 starts at 5499 and Find X10 E at 4999; those are wrong for the Pro Max.
+  source: https://finance.sina.com.cn/stock/bxjj/2026-09-22/doc-inistmev8867643.shtml
+  recorded_on: '2026-11-10'
+
+- id: e003
+  language: zh
+  category: consumer
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: 小米那个增程SUV澎程系列，起售价多少？
+  expected: 20.99万元起（澎程N70 Pro；N70 Max 23.99万、N90 Max 26.99万、N90 Max探索版29.99万；2026年9月7日上市；每日经济新闻）[Xiaomi's extended-range
+    Pengcheng SUV series starts at 209,900 yuan]
+  accept:
+  - 20.99万
+  - 20.99 万
+  - 20.99萬
+  - 209,900
+  review: Pre-sale prices (25.99万 for the N70) and pre-launch predictions (28.99万 for the YU9) are wrong.
+  source: https://www.nbd.com.cn/articles/2026-09-07/4575132.html
+  recorded_on: '2026-11-10'
+
+- id: e004
+  language: zh
+  category: consumer
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: 据星图数据统计，2026年618大促期间全网电商销售额是多少？
+  expected: 9340亿元，同比增长4.0%（监测周期5月13日—6月18日；星图数据2026年6月22日发布）[934 billion yuan in total 618 online sales, per Syntun]
+  accept:
+  - 9340亿
+  - 9340 亿
+  - 9,340亿
+  - 9340億
+  review: 8636亿 is general e-commerce platforms only, not the all-network total.
+  source: https://finance.sina.com.cn/stock/t/2026-06-23/doc-iniekknt9768899.shtml
+  recorded_on: '2026-11-10'
+
+- id: e005
+  language: zh
+  category: culture
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: 第28届上海国际电影节金爵奖最佳影片是哪部？
+  expected: 《大西洋》，95后导演钟凯峰的长片首作，同时获最佳摄影（2026年6月20日颁奖；上海市人民政府网）[Atlantic, the feature debut of Zhong Kaifeng]
+  accept:
+  - 大西洋
+  - Atlantic
+  review: The Belgian film 《微光女孩》 won the Jury Grand Prix, not Best Film.
+  source: https://www.shanghai.gov.cn/nw4411/20260621/44c454094c5e4af9ac4c68a4b17903a8.html
+  recorded_on: '2026-11-10'
+
+- id: e006
+  language: zh
+  category: culture
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: 送外卖的诗人王计兵拿了第九届鲁迅文学奖，获奖诗集叫什么？
+  expected: 《低处飞行》（作家出版社；第九届鲁迅文学奖诗歌奖，2026年7月15日评出；中国作家协会获奖名单）[Flying Low]
+  accept:
+  - 低处飞行
+  - 低處飛行
+  review: Any other collection by 王计兵 is wrong.
+  source: https://www.hbwy.org.cn/c/2026/07/15/159507.shtml
+  recorded_on: '2026-11-10'
+
+- id: e007
+  language: zh
+  category: culture
+  difficulty: hard
+  hop: single
+  locality: province
+  prompt: 2026苏超决赛现场观众有多少人？
+  expected: 62356人（2026年10月31日南京奥体中心，无锡队2比1胜常州队夺冠，刷新2025年首届决赛62329人的纪录；光明网）[62,356 spectators at the 2026 Jiangsu city football
+    league final]
+  accept:
+  - '62356'
+  - 62,356
+  - 6.2356万
+  review: 62329 is the 2025 final's attendance and is wrong.
+  source: https://m.gmw.cn/2026-11/01/content_1304581387.htm
+  recorded_on: '2026-11-10'
+
+- id: e008
+  language: zh
+  category: economy
+  difficulty: easy
+  hop: single
+  locality: province
+  prompt: 四川今年前三季度GDP同比增长了多少？
+  expected: 4.9%（四川省统计局2026年10月20日发布：前三季度地区生产总值52121.45亿元，按不变价格计算同比增长4.9%，上半年为4.8%）[Sichuan Q1-Q3 2026 GDP grew 4.9% y/y,
+    to 5.21 trillion yuan]
+  accept:
+  - 4.9%
+  - 4.9％
+  - 百分之四点九
+  review: Wrong if 4.9% is not given as Sichuan's Q1-Q3 growth (H1 was 4.8%, the national Q1-Q3 rate was 4.6%).
+  source: https://www.thepaper.cn/newsDetail_forward_34287705
+  recorded_on: '2026-11-10'
+
+- id: e009
+  language: zh
+  category: economy
+  difficulty: medium
+  hop: multi
+  locality: province
+  prompt: 2026年前三季度经济总量排全国第二的省份，GDP同比增长多少？
+  expected: 江苏，同比增长5.2%（江苏省统计局2026年10月25日发布：前三季度地区生产总值108631.3亿元；广东以111090.77亿元居首）[Jiangsu, second after Guangdong, grew 5.2%
+    in Q1-Q3 2026]
+  accept:
+  - 5.2%
+  - 5.2％
+  - 百分之五点二
+  review: Must name Jiangsu. Guangdong (first, 4.6%) or any other province is wrong even if 5.2% appears elsewhere.
+  source: https://www.21jingji.com/article/20261025/herald/9de94cb26305535d26762fd3fafe8963.html
+  recorded_on: '2026-11-10'
+
+- id: e010
+  language: zh
+  category: economy
+  difficulty: medium
+  hop: single
+  locality: city
+  prompt: 大连2025年GDP是多少？
+  expected: 10002.1亿元，增长5.7%（大连市政府新闻办2026年1月23日发布，东北首个GDP万亿元城市；部分媒体写作10002.13亿元）[Dalian's 2025 GDP was 1.0002 trillion yuan,
+    the first trillion-yuan city in Northeast China]
+  accept:
+  - '10002'
+  - 1.0002万亿
+  - 1.0002萬億
+  source: https://news.gmw.cn/2026-01/25/content_38556624.htm
+  recorded_on: '2026-11-10'
+
+- id: e011
+  language: zh
+  category: economy
+  difficulty: medium
+  hop: single
+  locality: county
+  prompt: 昆山去年地区生产总值多少亿？
+  expected: 5615.34亿元，比上年增长5.8%（昆山市统计局《2025年昆山市国民经济和社会发展统计公报》，2026年5月发布）[Kunshan's 2025 GDP was 561.5 billion yuan, up 5.8%]
+  accept:
+  - '5615'
+  review: The January 2026 people's congress estimate was 'about 5600亿'; an answer of only ~5600 is not correct.
+  source: https://www.ks.gov.cn/kss/tjfx/202605/319700b1bdda44ecb0c30584163e79fc.shtml
+  recorded_on: '2026-11-10'
+
+- id: e012
+  language: zh
+  category: education
+  difficulty: easy
+  hop: single
+  locality: province
+  prompt: 广东今年高考本科线历史类是多少分？
+  expected: 440分（广东省招生委员会2026年6月24日公布：普通类本科历史440分、物理425分）[Guangdong's 2026 undergraduate cut-off, history track, is 440]
+  accept:
+  - '440'
+  review: Physics is 425; the 2025 history line was 464.
+  source: https://www.bjnews.com.cn/detail/1782269690129745.html
+  recorded_on: '2026-11-10'
+
+- id: e013
+  language: zh
+  category: education
+  difficulty: medium
+  hop: multi
+  locality: province
+  prompt: 河南今年高考物理类本科线比去年低了几分？
+  expected: 低8分：2026年物理类本科线419分（河南省教育考试院2026年6月24日公布），2025年为427分 [Henan's physics-track undergraduate line fell 8 points,
+    from 427 to 419]
+  accept:
+  - 8分
+  - 八分
+  review: '''8分'' also matches 18分 or 28分; check the difference is 8. 2025 line (427) per https://www.dxsbb.com/news/28127.html.
+    History track went 471 to 459 (12 points), which is wrong here.'
+  source: https://hn.cnr.cn/hnpdgb/whjy/20260625/t20260625_527675796.html
+  recorded_on: '2026-11-10'
+
+- id: e014
+  language: zh
+  category: education
+  difficulty: hard
+  hop: single
+  locality: city
+  prompt: 今年教育部批准设立的成都美术学院，是从哪所高校的美术学院独立出来的？
+  expected: 四川音乐学院（教育部2026年6月同意设立成都美术学院，原四川音乐学院美术学院本科专业整体划转）[Sichuan Conservatory of Music; its art college became Chengdu
+    Academy of Fine Arts]
+  accept:
+  - 四川音乐学院
+  - 川音
+  - 四川音樂學院
+  review: 四川美术学院 (Sichuan Fine Arts Institute, Chongqing) is wrong.
+  source: https://news.qq.com/rain/a/20260617A04ZL300
+  recorded_on: '2026-11-10'
+
+- id: e015
+  language: zh
+  category: entertainment
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 2026年暑期档票房冠军是哪部电影？
+  expected: 《功夫女足》，档期票房23.15亿元（暑期档2026年6月1日—8月31日，总票房124.98亿元；国家电影局2026年9月2日发布）[Kung Fu Women's Football, directed by Stephen
+    Chow, top film of the 2026 summer season with 2.315 billion yuan]
+  accept:
+  - 功夫女足
+  review: 《欢迎来龙餐馆》 (19.51亿) was second and 《八仙！》 (18.46亿) third.
+  source: https://www.chinafilm.gov.cn/xwzx/hyzx/202609/t20260902_1006502.html
+  recorded_on: '2026-11-10'
+
+- id: e016
+  language: zh
+  category: entertainment
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 歌手2026最后谁拿了歌王啊
+  expected: 胡彦斌（2026年8月7日总决赛，湖南卫视/芒果TV；齐豫亚军、万妮达季军；维基百科）[Hu Yanbin won Singer 2026]
+  accept:
+  - 胡彦斌
+  - 胡彥斌
+  - Hu Yanbin
+  review: Wrong if Hu Yanbin is named only as a finalist and someone else (e.g. 齐豫) as the winner.
+  source: https://zh.wikipedia.org/wiki/%E6%AD%8C%E6%89%8B2026
+  recorded_on: '2026-11-10'
+
+- id: e017
+  language: zh
+  category: entertainment
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 第31届上海电视节白玉兰奖最佳女主角是谁？
+  expected: 杨紫，凭《生命树》获奖（2026年6月26日上海临港演艺中心颁奖；澎湃新闻获奖名单）[Yang Zi, for The Tree of Life]
+  accept:
+  - 杨紫
+  - 楊紫
+  - Yang Zi
+  review: Wrong if Yang Zi is mentioned only as a nominee. Best actor was 于和伟 (《沉默的荣耀》).
+  source: https://m.thepaper.cn/newsDetail_forward_33473500
+  recorded_on: '2026-11-10'
+
+- id: e018
+  language: zh
+  category: entertainment
+  difficulty: medium
+  hop: multi
+  locality: national
+  prompt: 今年国庆档票房第一的那部片子是谁导演的？
+  expected: 陈思诚（编剧并执导《神探之痕迹》；该片以4.23亿元夺得2026年国庆档10月1日—7日票房冠军，档期总票房11.65亿元，国家电影局数据，见潮新闻 https://tidenews.com.cn/news.html?id=3579433）[Chen
+    Sicheng, writer-director of the 2026 National Day champion Shen Tan Zhi Hen Ji]
+  accept:
+  - 陈思诚
+  - 陳思誠
+  - Chen Sicheng
+  review: Chen Sicheng is also known for the 唐人街探案 films; the answer must tie him to 《神探之痕迹》, not to an older film.
+  source: https://ent.sina.cn/2026-10-05/detail-iniuevrx4162260.d.html
+  recorded_on: '2026-11-10'
+
+- id: e019
+  language: zh
+  category: entertainment
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: 乘风2026总冠军是哪个姐姐
+  expected: 曾沛慈（2026年6月27日《乘风2026》总决赛获年度总冠军，芒果TV/湖南卫视；张月第二、王濛第三；维基百科）[Pets Tseng won Ride the Wind 2026]
+  accept:
+  - 曾沛慈
+  - Pets Tseng
+  review: 张月 (年度队长, second place) is wrong.
+  source: https://zh.wikipedia.org/zh-hans/%E4%B9%98%E9%A3%8E2026
+  recorded_on: '2026-11-10'
+
+- id: e020
+  language: zh
+  category: entertainment
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: 第38届大众电影百花奖最佳女主角是哪位演员？
+  expected: 卫诗雅，凭《破·地狱》获奖（2026年8月10日北京颁奖；首都文明网）[Michelle Wai, for The Last Dance]
+  accept:
+  - 卫诗雅
+  - 衛詩雅
+  - Michelle Wai
+  review: 易烊千玺 won best actor; 《哪吒之魔童闹海》 won best film.
+  source: https://www.bjwmb.gov.cn/tt/10133376.html
+  recorded_on: '2026-11-10'
+
+- id: e021
+  language: zh
+  category: infrastructure
+  difficulty: easy
+  hop: single
+  locality: city
+  prompt: 南京地铁6号线是哪天开通的？
+  expected: 2026年9月29日早6点开通初期运营（南京市人民政府网站；南京南站至栖霞山站，32.365公里，19座车站，与S1号线贯通）[Nanjing Metro Line 6 opened on 2026-09-29]
+  accept:
+  - 9月29
+  source: https://www.nanjing.gov.cn/msxx/202609/t20260929_5919052.html
+  recorded_on: '2026-11-10'
+
+- id: e022
+  language: zh
+  category: infrastructure
+  difficulty: medium
+  hop: single
+  locality: county
+  prompt: 玉环是什么时候通高铁的？
+  expected: 2026年8月8日，杭台高铁温岭至玉环段（温玉段）开通运营，玉环结束不通铁路历史（新华网）[Yuhuan got high-speed rail on 2026-08-08 with the Wenling-Yuhuan
+    section]
+  accept:
+  - 8月8
+  source: https://www.news.cn/local/20260808/a5663441ad114addae4194edb5705d7a/c.html
+  recorded_on: '2026-11-10'
+
+- id: e023
+  language: zh
+  category: infrastructure
+  difficulty: medium
+  hop: single
+  locality: city
+  prompt: 蚌埠滕湖机场哪天正式通航的？
+  expected: 2026年4月29日，东海航空DZ6253深圳—蚌埠首航，安徽第8座民用运输机场（国际在线）[Bengbu Tenghu Airport opened on 2026-04-29]
+  accept:
+  - 4月29
+  source: https://city.cri.cn/20260430/c8450d43-55ce-496b-adb3-eec551c6ef17.html
+  recorded_on: '2026-11-10'
+
+- id: e024
+  language: zh
+  category: infrastructure
+  difficulty: easy
+  hop: single
+  locality: province
+  prompt: 西渝高铁西康段通车以后，西安到安康最快多长时间？
+  expected: 最快45分钟（西安东站至安康西站；西渝高铁西安至安康段2026年9月28日开通运营，全长171公里，设计时速350公里；国铁集团发布，安康市委宣传部转载）[Xi'an to Ankang now takes as little
+    as 45 minutes]
+  accept:
+  - 45分
+  review: '''45分'' also matches ''1小时45分''; check the answer is 45 minutes.'
+  source: https://xcb.ankang.gov.cn/Content-2949454.html
+  recorded_on: '2026-11-10'
+
+- id: e025
+  language: zh
+  category: infrastructure
+  difficulty: medium
+  hop: single
+  locality: city
+  prompt: 合肥地铁7号线一期是什么时候开通运营的？
+  expected: 2026年7月1日10时开通初期运营（光明网；全线16座车站，首批开通14座）[Hefei Metro Line 7 phase 1 opened on 2026-07-01]
+  accept:
+  - 7月1日
+  - 7月1号
+  source: https://m.gmw.cn/2026-07/01/content_1304515410.htm
+  recorded_on: '2026-11-10'
+
+- id: e026
+  language: zh
+  category: local_gov
+  difficulty: easy
+  hop: single
+  locality: city
+  prompt: 深圳现在的市长是谁？
+  expected: 李运（2026年8月24日深圳市七届人大常委会第四十九次会议决定其代理市长，接替覃伟中；9月20日正式当选市长）[Li Yun, acting mayor from 2026-08-24, elected mayor 2026-09-20]
+  accept:
+  - 李运
+  review: 覃伟中 (Qin Weizhong), the previous mayor, is wrong.
+  source: https://finance.sina.com.cn/jjxw/2026-08-24/doc-inipkzxu6143685.shtml
+  recorded_on: '2026-11-10'
+
+- id: e027
+  language: zh
+  category: local_gov
+  difficulty: hard
+  hop: multi
+  locality: province
+  prompt: 重庆现任市长以前在湖北哪个城市当过市长？
+  expected: 十堰（陈新武2016年12月至2021年4月任十堰市市长；2026年7月31日任重庆市代理市长，8月19日正式当选市长，前任胡衡华）[Shiyan; Chongqing mayor Chen Xinwu was mayor
+    of Shiyan, Hubei]
+  accept:
+  - 十堰
+  source: https://www.bjnews.com.cn/detail/1785494409129634.html
+  recorded_on: '2026-11-10'
+
+- id: e028
+  language: zh
+  category: local_gov
+  difficulty: hard
+  hop: single
+  locality: county
+  prompt: 喀什地区今年新设了一个县，叫什么县？
+  expected: 岑岭县（经党中央、国务院批准设立，县政府驻新华镇，由喀什地区管辖；新疆维吾尔自治区2026年3月26日公布，新华社）[Cenling County, created in March 2026]
+  accept:
+  - 岑岭
+  - 岑嶺
+  source: https://www.news.cn/politics/20260326/3482307548184245b1d9d1c8f7d334df/c.html
+  recorded_on: '2026-11-10'
+
+- id: e029
+  language: zh
+  category: local_gov
+  difficulty: hard
+  hop: single
+  locality: county
+  prompt: 2026年4月新疆新设立的县级市叫什么名字？
+  expected: 草湖市（经党中央、国务院批准设立县级草湖市，市政府驻草湖镇，由新疆维吾尔自治区直辖；自治区人民政府2026年4月17日公告）[Caohu City, a county-level city created in April
+    2026]
+  accept:
+  - 草湖
+  source: https://www.xinjiang.gov.cn/xinjiang/tzgg/202604/3691350b13064945947d8f78933ccb3e.shtml
+  recorded_on: '2026-11-10'
+
+- id: e030
+  language: zh
+  category: society
+  difficulty: hard
+  hop: single
+  locality: city
+  prompt: 东莞2025年末常住人口有多少？
+  expected: 1080.04万人，比上年末增加22.96万人（东莞市统计局《2025年东莞市国民经济和社会发展统计公报》，2026年5月12日发布）[Dongguan had 10.8 million residents at end-2025,
+    up 229,600]
+  accept:
+  - '1080.04'
+  - 1080万
+  source: https://tjj.dg.gov.cn/tjzl/tjgb/content/post_4537415.html
+  recorded_on: '2026-11-10'
+
+- id: e031
+  language: zh
+  category: society
+  difficulty: medium
+  hop: single
+  locality: province
+  prompt: 陕西现在一类区的月最低工资标准是多少钱？
+  expected: 2376元/月（陕西省人社厅《关于调整最低工资标准的通知》，自2026年1月1日起执行；二类区2250元、三类区2140元）[Shaanxi's class-1 monthly minimum wage is 2,376
+    yuan from 2026-01-01]
+  accept:
+  - '2376'
+  source: https://finance.sina.com.cn/jjxw/2026-01-16/doc-inhhmnzp4467511.shtml
+  recorded_on: '2026-11-10'
+
+- id: e032
+  language: zh
+  category: society
+  difficulty: easy
+  hop: single
+  locality: province
+  prompt: 广西现在结婚能休几天婚假？
+  expected: '18天（国家规定3天＋增加15天；广西壮族自治区十四届人大常委会第二十七次会议2026年9月24日通过修改自治区人口和计划生育条例的决定，自公布之日起施行）[Guangxi marriage leave is now
+    18 days: 3 national + 15 added in Sept 2026]'
+  accept:
+  - 18天
+  - 十八天
+  review: An answer that says only 'adds 15 days' without the 18-day total is partial.
+  source: https://m.21jingji.com/article/20260924/herald/e1066cea10775f9d2e6adb9851afab7d.html
+  recorded_on: '2026-11-10'
+
+- id: e033
+  language: zh
+  category: sports
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 2026斯诺克世锦赛谁夺冠了？
+  expected: 吴宜泽（决赛18比17击败肖恩·墨菲，2026年5月在克鲁斯堡剧院，首夺世界冠军；腾讯新闻）[Wu Yize beat Shaun Murphy 18-17]
+  accept:
+  - 吴宜泽
+  - 吳宜澤
+  - Wu Yize
+  review: 赵心童 (Zhao Xintong) won in 2025 and is wrong.
+  source: https://news.qq.com/rain/a/20260505A06JG600
+  recorded_on: '2026-11-10'
+
+- id: e034
+  language: zh
+  category: sports
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 2026年F1中国大奖赛的正赛冠军是谁？
+  expected: 安东内利（梅赛德斯，2026年3月15日上海国际赛车场，个人首个分站冠军；拉塞尔第二、汉密尔顿第三；F1官网）[Kimi Antonelli, Mercedes]
+  accept:
+  - 安东内利
+  - 安東內利
+  - Antonelli
+  review: Russell (second) and Hamilton (third) are wrong.
+  source: https://www.formula1.com/en/latest/article/antonelli-beats-russell-for-maiden-f1-victory-in-china-as-hamilton-takes.5aJsWCPiRhp2euZctEwEYA
+  recorded_on: '2026-11-10'
+
+- id: e035
+  language: zh
+  category: sports
+  difficulty: medium
+  hop: multi
+  locality: national
+  prompt: 今年中超金靴是哪个队的？
+  expected: 云南玉昆（金靴奥斯卡·马里图Oscar Maritu打进23球，比武汉三镇卡迪斯多1球；中超2026年11月8日收官；维基百科）[Yunnan Yukun, whose Oscar Maritu was 2026 CSL
+    top scorer]
+  accept:
+  - 玉昆
+  - Yukun
+  review: 武汉三镇 (卡迪斯, 22 goals, runner-up) and 北京国安 (张玉宁, top domestic scorer with 15) are wrong.
+  source: https://zh.wikipedia.org/zh-hans/2026%E5%B9%B4%E4%B8%AD%E5%9B%BD%E8%B6%B3%E7%90%83%E8%B6%85%E7%BA%A7%E8%81%94%E8%B5%9B
+  recorded_on: '2026-11-10'
+
+- id: e036
+  language: zh
+  category: sports
+  difficulty: hard
+  hop: single
+  locality: city
+  prompt: 2026北马男子冠军成绩是多少？
+  expected: 2小时03分10秒（埃塞俄比亚选手塔米拉特·托拉，2026年10月18日，刷新赛会纪录2:07:06；光明网）[2:03:10 by Tamirat Tola, a course record]
+  accept:
+  - '2:03:10'
+  - 2小时03分10秒
+  - 2小时3分10秒
+  - 2:03'10
+  review: 2:08:30 is 李大林 (top Chinese man) and 2:09:09 is the national championship winner 陈天宇.
+  source: https://m.gmw.cn/2026-10/20/content_1304577203.htm
+  recorded_on: '2026-11-10'
+
+- id: e037
+  language: zh
+  category: sports
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: 2025—2026赛季WCBA总决赛MVP是谁？
+  expected: 李缘（四川队后卫；四川蜀道远达3比2战胜山西竹叶青酒夺冠，2026年4月25日；人民日报）[Li Yuan of Sichuan]
+  accept:
+  - 李缘
+  - 李緣
+  source: https://www.peopleapp.com/column/30051994200-500007462458
+  recorded_on: '2026-11-10'
+
+- id: e038
+  language: zh
+  category: tech
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: HDC 2026上华为公布的HarmonyOS 6终端设备数是多少？
+  expected: 突破6600万台（余承东2026年6月12日在HDC 2026主题演讲上宣布；IT之家）[More than 66 million HarmonyOS 6 devices]
+  accept:
+  - 6600万
+  - 6600 万
+  - 6,600万
+  - 66 million
+  review: The 13亿+ figure is the open-source HarmonyOS ecosystem; 4000万 was the early-2026 figure; 7000万 is a later single-source
+    report.
+  source: https://www.ithome.com/0/963/464.htm
+  recorded_on: '2026-11-10'
+
+- id: e039
+  language: zh
+  category: tech
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: 火山引擎2026年6月的原动力大会上，豆包大模型日均tokens调用量公布的是多少？
+  expected: 180万亿（截至2026年6月；火山引擎总裁谭待6月23日在FORCE原动力大会上披露；界面新闻）[180 trillion tokens a day]
+  accept:
+  - 180万亿
+  - 180 万亿
+  - 180萬億
+  - 180 trillion
+  review: 120万亿 is the March 2026 figure.
+  source: https://www.jiemian.com/article/14629207.html
+  recorded_on: '2026-11-10'
+
+- id: e040
+  language: zh
+  category: tech
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: 小米2026年8月发布的自研旗舰手机芯片叫什么名字？
+  expected: 玄戒O3（2026年8月24日玄戒芯片技术沟通会发布，3nm工艺；安兔兔）[Xiaomi XRING O3]
+  accept:
+  - 玄戒O3
+  - 玄戒 O3
+  - XRING O3
+  review: 玄戒O1 (2025) is wrong; 玄戒O100 (AI accelerator) and D100 (driving chip), announced the same day, are not the phone
+    SoC.
+  source: https://www.antutu.com/doc/137585.htm
+  recorded_on: '2026-11-10'
+
+- id: e041
+  language: ko
+  category: consumer
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: 갤럭시 Z 트라이폴드 국내 출고가 얼마였어?
+  expected: 359만 400원 (16GB·512GB 크래프티드 블랙 단일 모델, 2025-12-12 국내 출시, 자급제 전용; ZDNet Korea 2025-12-02) [KRW 3,590,400 for the
+    Galaxy Z TriFold]
+  accept:
+  - 359만400
+  - 359만4백
+  - 3,590,400
+  - '3590400'
+  review: Rounded answers ('약 359만 원', '360만 원') don't match; grade them partial on review.
+  source: https://zdnet.co.kr/view/?no=20251202090412
+  recorded_on: '2026-11-10'
+
+- id: e042
+  language: ko
+  category: consumer
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 쿠팡이 개인정보 유출 보상안으로 발표한 구매이용권 총 규모는 얼마입니까?
+  expected: 1조 6,850억 원 (3,370만 계정에 1인당 5만 원 상당 이용권 4종, 2025-12-29 발표, 2026-01-15부터 지급; MBC 뉴스) [KRW 1.685 trillion in vouchers]
+  accept:
+  - 1조6850억
+  - 1조6,850억
+  - 1.685조
+  - 1조6천850억
+  review: An answer giving only the per-person 5만 원 or the 3,370만 accounts is incomplete.
+  source: https://imnews.imbc.com/news/2025/econo/article/6789377_36737.html
+  recorded_on: '2026-11-10'
+
+- id: e043
+  language: ko
+  category: consumer
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: 현대차 스타리아 일렉트릭 국내 판매가격, 제일 싼 트림 기준으로 얼마부터야?
+  expected: 5,792만 원 (카고 3인승, 개소세 3.5% 기준; 2026-04-23 출시, 투어러 11인승 6,029만 원; 현대자동차그룹 뉴스룸) [KRW 57.92 million for the cheapest
+    Staria Electric trim]
+  accept:
+  - 5792만
+  - 5,792만
+  - 57,920,000
+  - '57920000'
+  review: Post-subsidy '4천만 원대' estimates are not the list price.
+  source: https://www.hyundaimotorgroup.com/ko/news/CONT0000000000209579
+  recorded_on: '2026-11-10'
+
+- id: e044
+  language: ko
+  category: culture
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: BTS 정규 5집 '아리랑' 초동 몇 장이었어?
+  expected: 416만 9,464장 (한터차트 기준 2026-03-20~25 집계, 팀 자체 최고; 기사들은 '417만 장'으로 반올림; 스포티비뉴스 2026-03-27) [4,169,464 first-week
+    copies of BTS's ARIRANG]
+  accept:
+  - 416만
+  - 417만
+  - 4,169,464
+  - '4169464'
+  source: https://www.spotvnews.co.kr/news/articleView.html?idxno=805947
+  recorded_on: '2026-11-10'
+
+- id: e045
+  language: ko
+  category: culture
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: 2026년 제49회 이상문학상 대상 수상작은 무엇인가요?
+  expected: 위수정의 단편 「눈과 돌멩이」 (2026-01-27 발표; 경향신문) [Wi Su-jeong's short story Snow and Pebbles]
+  accept:
+  - 눈과 돌멩이
+  - 위수정
+  review: Either the title or the author matches; check that the answer doesn't pair 위수정 with a wrong title or name one of
+    the 우수상 works (관종들, 대부호, 겨울의 윤리, 실패담 크루).
+  source: https://www.khan.co.kr/article/202601271452001
+  recorded_on: '2026-11-10'
+
+- id: e046
+  language: ko
+  category: culture
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 제46회 청룡영화상 최우수작품상 받은 영화가 뭐야?
+  expected: '''어쩔수가없다'' (박찬욱 감독; 2025-11-19 여의도 KBS홀, 감독상·여우주연상 포함 6관왕; 마리끌레르 코리아) [No Other Choice won Best Film at the 46th
+    Blue Dragon Film Awards]'
+  accept:
+  - 어쩔수가없다
+  - No Other Choice
+  source: https://www.marieclairekorea.com/culture/film/2025/11/movie-6/
+  recorded_on: '2026-11-10'
+
+- id: e047
+  language: ko
+  category: economy
+  difficulty: easy
+  hop: single
+  locality: province
+  prompt: 서울시 내년(2027년) 예산안 몇 조야?
+  expected: '55조 7,445억 원. 서울시가 2026-10-29 발표한 2027년도 예산안, 2026년보다 4조 2,667억 원(8.3%) 증가, 역대 최대. 출처: 이투데이 [KRW 55.7445 trillion
+    proposed 2027 Seoul city budget, up 8.3%]'
+  accept:
+  - 7,445억
+  - 7445억
+  - 55.7조
+  - 55조 7천
+  review: Proposal figure, submitted to the council on 2026-10-30; the final budget passes in December.
+  source: https://www.etoday.co.kr/news/view/2641538
+  recorded_on: '2026-11-10'
+
+- id: e048
+  language: ko
+  category: economy
+  difficulty: hard
+  hop: single
+  locality: city
+  prompt: 충북 보은군이 올해 군민들한테 준 민생안정지원금은 1인당 총 얼마였어?
+  expected: '1인당 60만 원 (1차·2차 각 30만 원, 무기명 선불카드). 1차 2026-01-26 지급 시작, 2차 4~5월, 9월 30일까지 사용. 총사업비 192억 원. 출처: 뉴스1 [KRW 600,000
+    per resident, paid in two KRW 300,000 rounds]'
+  accept:
+  - 60만
+  - 600,000
+  - '600000'
+  review: An answer of only '30만원' (one round) is incomplete; '30만원씩 두 번' without the total needs a manual check.
+  source: https://www.news1.kr/local/sejong-chungbuk/6047086
+  recorded_on: '2026-11-10'
+
+- id: e049
+  language: ko
+  category: economy
+  difficulty: hard
+  hop: single
+  locality: city
+  prompt: 남원시 설 명절 앞두고 지급한 민생지원금 1인당 얼마였나요?
+  expected: '1인당 20만 원. 2026-02-02~02-27 지급, 6월 30일까지 사용, 약 7만 6천 명 대상 152억 원. 출처: 디지털타임스(2026-01-17) [KRW 200,000 per resident
+    in Namwon, paid Feb 2026]'
+  accept:
+  - 20만
+  - 200,000
+  - '200000'
+  source: https://v.daum.net/v/20260117075615852
+  recorded_on: '2026-11-10'
+
+- id: e050
+  language: ko
+  category: education
+  difficulty: easy
+  hop: single
+  locality: province
+  prompt: 경기도교육감 이번 선거에서 누가 됐어?
+  expected: '안민석. 2026-06-03 지방선거에서 355만 7,171표(52.81%)로 현직 임태희(47.18%)를 꺾고 당선. 출처: 평택시민신문, 금강일보 [Ahn Min-suk unseated incumbent
+    Gyeonggi superintendent Lim Tae-hee]'
+  accept:
+  - 안민석
+  source: https://www.pttimes.com/news/articleView.html?idxno=79175
+  recorded_on: '2026-11-10'
+
+- id: e051
+  language: ko
+  category: education
+  difficulty: medium
+  hop: single
+  locality: province
+  prompt: 세종시교육감 선거 결과 누가 당선됐나요?
+  expected: '강미애. 2026-06-03 지방선거에서 약 36%로 진보 성향 임전수(약 30%)를 꺾고 당선, 세종 첫 여성 교육감(초선). 출처: 뉴스1, 여성신문 [Kang Mi-ae, Sejong''s
+    first female education superintendent]'
+  accept:
+  - 강미애
+  source: https://www.news1.kr/local/sejong-chungbuk/6186989
+  recorded_on: '2026-11-10'
+
+- id: e052
+  language: ko
+  category: education
+  difficulty: medium
+  hop: single
+  locality: province
+  prompt: 강원도교육감은 이번에 누가 뽑혔어?
+  expected: '강삼영. 2026-06-03 지방선거에서 41.5%로 현직 신경호를 꺾고 강원특별자치도교육감 당선 (18개 시군 중 16곳 1위). 출처: 금강일보 당선인 명단, 선관위 집계 기반 시군구별 결과
+    [Kang Sam-young beat incumbent Shin Kyung-ho for Gangwon education superintendent]'
+  accept:
+  - 강삼영
+  review: 신경호 (the losing incumbent) is wrong.
+  source: https://www.ggilbo.com/news/articleView.html?idxno=1161869
+  recorded_on: '2026-11-10'
+
+- id: e053
+  language: ko
+  category: education
+  difficulty: hard
+  hop: single
+  locality: province
+  prompt: 서울시교육청이 시의회에 낸 2027년도 예산안 규모가 얼마야?
+  expected: '11조 8,014억 원. 2026-11-02 개회한 서울시의회 정례회에서 서울시 예산안(55조 7,445억 원)과 함께 심의. 출처: 데일리안 [KRW 11.8014 trillion proposed
+    2027 budget of the Seoul Metropolitan Office of Education]'
+  accept:
+  - 8,014억
+  - 8014억
+  - 11조 8천
+  - 11.8조
+  review: This is the proposal (예산안) figure; the council may amend it in December. 55조 7,445억 (the city budget) is wrong.
+  source: https://www.dailian.co.kr/news/view/1709639/%EC%84%9C%EC%9A%B8%EC%8B%9C%EC%9D%98%ED%9A%8C-%EC%A0%95%EB%A1%80%ED%9A%8C-%EA%B0%9C%ED%9A%8C557%EC%A1%B0%EC%9B%90-%EA%B7%9C%EB%AA%A8-2026
+  recorded_on: '2026-11-10'
+
+- id: e054
+  language: ko
+  category: entertainment
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 미스트롯4 최종 진 누구였어?
+  expected: 이소나 (2026-03-05 TV조선 '미스트롯4' 최종회, 선 허찬미·미 홍성윤; 머니투데이) [Lee So-na won Miss Trot 4]
+  accept:
+  - 이소나
+  - Lee So-na
+  - Lee Sona
+  review: 허찬미 was 선 (2nd) and led on master scores; an answer naming her as the winner is wrong even if it mentions 이소나 later.
+  source: https://www.mt.co.kr/entertainment/2026/03/06/2026030606421628144
+  recorded_on: '2026-11-10'
+
+- id: e055
+  language: ko
+  category: entertainment
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: MBC 드라마 '21세기 대군부인' 마지막 회 시청률이 닐슨코리아 전국 기준으로 몇 퍼센트였나요?
+  expected: 전국 13.8% (2026-05-16 최종회 12회, 자체 최고; 수도권은 14.1%, 닐슨코리아; 스포츠한국) [13.8% nationwide for the final episode of Perfect
+    Crown]
+  accept:
+  - '13.8'
+  review: 14.1% is the 수도권 figure and 16.1% the minute-by-minute peak; neither is correct.
+  source: https://www.hankooki.com/news/articleView.html?idxno=333157
+  recorded_on: '2026-11-10'
+
+- id: e056
+  language: ko
+  category: entertainment
+  difficulty: hard
+  hop: multi
+  locality: national
+  prompt: 흑백요리사2 우승한 셰프, 예전에 다른 요리 서바이벌에서도 우승했다던데 그 프로그램이 뭐야?
+  expected: 마스터셰프 코리아 시즌2 (Olive, 2013). '흑백요리사2' 우승자는 최강록 (2026-01-13 공개 최종회, 요리괴물 이하성을 만장일치로 꺾음; 엘르 코리아) [MasterChef Korea
+    Season 2; Choi Kang-rok won Culinary Class Wars 2]
+  accept:
+  - 마스터셰프
+  - MasterChef
+  - Master Chef
+  source: https://www.elle.co.kr/article/1895276
+  recorded_on: '2026-11-10'
+
+- id: e057
+  language: ko
+  category: entertainment
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: 싱어게인4 최종 우승자는 누구입니까?
+  expected: 이오욱 (2026-01-06 JTBC 최종회, 2위 도라도·3위 김재민; 뉴스1) [Lee O-wook won Sing Again 4]
+  accept:
+  - 이오욱
+  review: One outlet misspelled the name as 이오옥; treat that spelling as correct on review. 도라도 (2nd) had the top judges' score.
+  source: https://www.news1.kr/entertain/broadcast-tv/6030706
+  recorded_on: '2026-11-10'
+
+- id: e058
+  language: ko
+  category: entertainment
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 제40회 골든디스크어워즈 음반 부문 대상 누가 받았어?
+  expected: 스트레이 키즈, 정규 4집 'KARMA' (2026-01-10 대만 타이베이돔; 디지털 음원 대상 지드래곤, 아티스트 대상 제니; 한국일보) [Stray Kids won the album Daesang]
+  accept:
+  - 스트레이키즈
+  - Stray Kids
+  - 스키즈
+  source: https://www.hankookilbo.com/news/article/A2026011021590002165
+  recorded_on: '2026-11-10'
+
+- id: e059
+  language: ko
+  category: entertainment
+  difficulty: hard
+  hop: multi
+  locality: national
+  prompt: 올해 청룡시리즈어워즈에서 드라마 부문 최우수작품상 받은 작품, 주인공 역은 누가 맡았어?
+  expected: 박지훈 (이등병 강성재 역). 2026-07-31 제5회 청룡시리즈어워즈 드라마 최우수작품상은 티빙 '취사병 전설이 되다' (네이버 웹툰·웹소설 원작, tvN 동시 방영, 12부작; 다음/스포츠조선,
+    배역은 다음 2026-04-19 기사) [Park Ji-hoon plays the lead in Kitchen Soldier, the 2026 best drama]
+  accept:
+  - 박지훈
+  - Park Ji-hoon
+  - Park Jihoon
+  review: 윤경호 is the second lead; an answer naming only him is wrong.
+  source: https://v.daum.net/v/20260801054232740
+  recorded_on: '2026-11-10'
+
+- id: e060
+  language: ko
+  category: local_gov
+  difficulty: hard
+  hop: multi
+  locality: district
+  prompt: 정원오가 서울시장 선거에 나가면서 비운 구청장 자리, 이번 지방선거에서 누가 당선됐어?
+  expected: '유보화 (더불어민주당). 2026-06-03 지방선거 성동구청장 당선, 8만 6,103표(53.48%)로 국민의힘 고재현(44.30%) 꺾음. 정원오 구청장 시절 성동구 부구청장 출신. 출처: 서울신문
+    [Yu Bo-hwa (Democratic Party) won the Seongdong-gu mayoral race left open by Chong Won-o, who ran for Seoul mayor]'
+  accept:
+  - 유보화
+  source: https://www.seoul.co.kr/news/politics/local-election2026/2026/06/04/20260604500269
+  recorded_on: '2026-11-10'
+
+- id: e061
+  language: ko
+  category: local_gov
+  difficulty: easy
+  hop: single
+  locality: city
+  prompt: 고양시장 이번에 누가 됐어?
+  expected: '민경선 (더불어민주당). 2026-06-03 지방선거에서 60.64%(32만 7,366표)로 현직 이동환(국민의힘, 36.14%) 꺾고 당선, 제12대 고양시장. 출처: 뉴스핌, 고양신문 [Min
+    Kyung-sun (Democratic Party) unseated incumbent Lee Dong-hwan]'
+  accept:
+  - 민경선
+  source: https://www.newspim.com/news/view/20260604000238
+  recorded_on: '2026-11-10'
+
+- id: e062
+  language: ko
+  category: local_gov
+  difficulty: easy
+  hop: single
+  locality: city
+  prompt: 2026년 지방선거에서 포항시장으로 당선된 사람은 누구입니까?
+  expected: '박용선 (국민의힘). 2026-06-03 지방선거에서 49.29%(11만 5,310표)로 민주당 박희정(32.48%), 무소속 박승호(18.22%) 꺾고 당선. 포항제철소 근로자 출신 3선 경북도의원.
+    3선 이강덕 시장의 후임. 출처: 뉴스1 [Park Yong-seon (People Power Party), a former POSCO steelworker and three-term provincial councillor]'
+  accept:
+  - 박용선
+  source: https://www.news1.kr/local/daegu-gyeongbuk/6187489
+  recorded_on: '2026-11-10'
+
+- id: e063
+  language: ko
+  category: local_gov
+  difficulty: medium
+  hop: single
+  locality: city
+  prompt: 강릉에서 처음으로 민주당 시장이 나왔다던데 그 사람 이름이 뭐야?
+  expected: '김중남 (더불어민주당). 2026-06-03 지방선거에서 5만 8,350표(51.19%)로 현직 김홍규(국민의힘, 42.53%) 꺾고 당선, 민선 이후 31년 만의 첫 진보 강릉시장. 전국공무원노조
+    위원장 출신. 출처: 파이낸셜뉴스 [Kim Jung-nam, Gangneung''s first Democratic Party mayor]'
+  accept:
+  - 김중남
+  source: https://www.fnnews.com/news/202606041229100204
+  recorded_on: '2026-11-10'
+
+- id: e064
+  language: ko
+  category: local_gov
+  difficulty: easy
+  hop: single
+  locality: district
+  prompt: 동작구청장 새로 누구 됐어?
+  expected: '류삼영 (더불어민주당). 2026-06-03 지방선거 동작구청장 당선(초선). 경찰대 4기, 35년 경찰 근무 출신. 출처: 한국금융신문 당선자 명단, JJC TV 당선인 리포트 [Ryu Sam-young
+    (Democratic Party), a former police superintendent, new Dongjak-gu mayor]'
+  accept:
+  - 류삼영
+  - 유삼영
+  source: https://www.fntimes.com/html/view.php?ud=202606042218035298b372994c95_18
+  recorded_on: '2026-11-10'
+
+- id: e065
+  language: ko
+  category: local_gov
+  difficulty: hard
+  hop: multi
+  locality: district
+  prompt: 인천공항이 있는 동네가 올해 7월에 새 자치구로 떨어져 나왔잖아. 그 구의 초대 구청장이 누구야?
+  expected: '손화정 (더불어민주당). 인천 중구에서 분리된 영종구가 2026-07-01 출범, 6·3 지방선거에서 초대 영종구청장 당선 후 7월 1일 취임. 출처: 헤럴드경제 [Son Hwa-jeong, first
+    mayor of Yeongjong-gu, the new Incheon district that contains Incheon Airport]'
+  accept:
+  - 손화정
+  source: https://biz.heraldcorp.com/article/10794781
+  recorded_on: '2026-11-10'
+
+- id: e066
+  language: ko
+  category: local_gov
+  difficulty: hard
+  hop: multi
+  locality: city
+  prompt: 섬이 천 개가 넘어서 '천사섬'이라고 불리는 전남 군 있잖아. 거기 이번에 군수 누가 됐어?
+  expected: '김태성 (조국혁신당). 2026-06-03 지방선거 신안군수 당선, 1만 5,546표(51.95%)로 5선에 도전한 민주당 박우량(48.04%)을 1,170표 차로 꺾음. 육군 소장 출신. 출처:
+    뉴스핌 [Kim Tae-seong (Rebuilding Korea Party) won Sinan County, the ''1004 islands'' county, beating Park Woo-ryang]'
+  accept:
+  - 김태성
+  review: 박우량 (Park Woo-ryang), the long-time former governor, is wrong.
+  source: https://www.newspim.com/news/view/20260604000172
+  recorded_on: '2026-11-10'
+
+- id: e067
+  language: ko
+  category: society
+  difficulty: hard
+  hop: single
+  locality: city
+  prompt: 2025년 출생통계 확정치 기준으로 합계출산율이 가장 높은 시군구는 몇 명이었습니까?
+  expected: '1.79명 (전남 영광군). 국가데이터처 ''2025년 출생 통계'' 2026-08-26 발표. 2위 장성군 1.69명, 3위 강진군 1.65명; 전국 0.80명. 출처: 디지털타임스 [1.79,
+    Yeonggwang County, the highest of all 228 municipalities in 2025]'
+  accept:
+  - '1.79'
+  review: Yeonggwang has led in earlier years too, so the county name alone is not enough; check the figure. 1.69 (Jangseong)
+    is wrong.
+  source: https://www.dt.co.kr/article/12080384
+  recorded_on: '2026-11-10'
+
+- id: e068
+  language: ko
+  category: society
+  difficulty: medium
+  hop: single
+  locality: district
+  prompt: 인천 서구가 7월부터 이름이 바뀌었다는데 새 이름이 뭐야?
+  expected: '서해구. 검단구 분리와 함께 2026-07-01 서구에서 명칭 변경 (인천광역시 서구 명칭 변경에 관한 법률 제21734호, 2026-06-02; 새 명칭은 2025-08 서구가 최종 선정). 출처:
+    위키백과, 연합뉴스 [Seo-gu in Incheon was renamed Seohae-gu on 1 July 2026]'
+  accept:
+  - 서해구
+  source: https://ko.wikipedia.org/wiki/서해구
+  recorded_on: '2026-11-10'
+
+- id: e069
+  language: ko
+  category: sports
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 올해 KBO 타격왕 누구야?
+  expected: 구자욱 (삼성 라이온즈, 타율 0.371; 출루율 0.458로 2관왕, 생애 첫 타격왕; 정규시즌 최종일 2026-10-12, 스포츠경향) [Koo Ja-wook, .371, won the 2026
+    KBO batting title]
+  accept:
+  - 구자욱
+  - Koo Ja-wook
+  - Ja-uk
+  review: 레이예스 (.363) and 최원준 (.356) were the runners-up.
+  source: https://sports.khan.co.kr/article/202610122147003/
+  recorded_on: '2026-11-10'
+
+- id: e070
+  language: ko
+  category: sports
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: 2026 KBO 정규시즌 평균자책점 1위 투수 누구예요?
+  expected: 곽빈 (두산 베어스, 평균자책점 2.24; 탈삼진 197개로 2관왕; 2026-10-12 정규시즌 종료, 스포츠경향) [Kwak Bin of Doosan led the KBO in ERA, 2.24]
+  accept:
+  - 곽빈
+  - Kwak Bin
+  - Gwak Bin
+  source: https://sports.khan.co.kr/article/202610122147003/
+  recorded_on: '2026-11-10'
+
+- id: e071
+  language: ko
+  category: sports
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: 2026 LCK컵 결승에서 젠지한테 진 팀 어디야?
+  expected: BNK 피어엑스 (2026-03-01 홍콩 카이탁 아레나, 젠지 3:0 승, 결승 MVP 캐니언; 한국경제) [BNK FearX lost the 2026 LCK Cup final to Gen.G]
+  accept:
+  - 피어엑스
+  - FearX
+  review: Hanwha Life Esports lost the September season final to Gen.G, not the LCK Cup final.
+  source: https://www.hankyung.com/article/202603024107i
+  recorded_on: '2026-11-10'
+
+- id: e072
+  language: ko
+  category: sports
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: 안세영 올해 전영오픈 결승에서 누구한테 졌어?
+  expected: 왕즈이 (중국, 2026년 3월 전영오픈 결승; 이후 55연승; 파이낸셜뉴스 2026-11-08) [Wang Zhiyi of China beat An Se-young in the 2026 All England
+    final]
+  accept:
+  - 왕즈이
+  - Wang Zhiyi
+  - 王祉怡
+  source: https://www.fnnews.com/news/202611081825003317
+  recorded_on: '2026-11-10'
+
+- id: e073
+  language: ko
+  category: sports
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: 2026 시즌 KLPGA 대상 받은 선수 누구야?
+  expected: 김민솔 (대상 포인트 567점, 2위 서교림 563점; 상금왕·신인왕까지 3관왕; 2026-11-08 최종전 대보 하우스디 챔피언십 후 확정, 스포츠경향) [Kim Min-sol won the 2026
+    KLPGA Player of the Year]
+  accept:
+  - 김민솔
+  - Kim Min-sol
+  - Kim Minsol
+  review: 김민선 is a different player; 서교림 won most titles (4) and 유현조 won the final event.
+  source: https://sports.khan.co.kr/article/202611081711003/
+  recorded_on: '2026-11-10'
+
+- id: e074
+  language: ko
+  category: sports
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: 올해 LPGA 메이저인 KPMG 위민스 PGA 챔피언십과 에비앙 챔피언십을 연달아 우승한 한국 선수는 누구입니까?
+  expected: 유해란 (KPMG 위민스 PGA 2026-06-28, 아문디 에비앙 2026-07-12; 골프한국) [Ryu Hae-ran won both majors]
+  accept:
+  - 유해란
+  - Hae Ran Ryu
+  - Ryu Hae
+  source: https://golfhankook.hankooki.com/news/articleView.html?idxno=20022299
+  recorded_on: '2026-11-10'
+
+- id: e075
+  language: ko
+  category: sports
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: 올해 몬트리올 쇼트트랙 세계선수권에서 남자 1000m랑 1500m 둘 다 금메달 딴 한국 선수 누구야?
+  expected: 임종언 (2026-03-13~15 캐나다 몬트리올 ISU 세계쇼트트랙선수권, 남자 1000m 1:25.805·1500m 2:14.974 우승; 여자는 김길리가 같은 2관왕; 올림픽닷컴) [Im Jong-eon
+    won the men's 1000m and 1500m]
+  accept:
+  - 임종언
+  - Jong-eon
+  - Rim Jong-un
+  review: 김길리 won the women's 1000m and 1500m; she is wrong for this men's question.
+  source: https://www.olympics.com/ko/news/team-korea-all-results-2026-isu-short-track-speed-skating-world-championships-montreal
+  recorded_on: '2026-11-10'
+
+- id: e076
+  language: ko
+  category: tech
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: 올해 5월 카카오톡 4차 정기 업데이트에서 말풍선 리액션이 기존 6종에서 몇 종으로 늘었나요?
+  expected: 114종 (v26.4.0, 2026-05-15 카카오 발표; 말풍선 하나에 최대 30개 리액션; 카카오 공식) [Reactions grew from 6 to 114 types]
+  accept:
+  - '114'
+  review: Bare number; check that 114 is the reaction count and not part of another figure.
+  source: https://www.kakaocorp.com/page/detail/12037?lang=ENG
+  recorded_on: '2026-11-10'
+
+- id: e077
+  language: ko
+  category: tech
+  difficulty: medium
+  hop: multi
+  locality: national
+  prompt: 펄어비스가 올해 3월에 낸 오픈월드 신작, 전 세계 판매량 500만 장 넘기는 데 며칠 걸렸어?
+  expected: 26일 ('붉은사막', 2026-04-15 펄어비스 발표, 한국 콘솔 게임 최단 기록; 12일 만에 400만 장, 83일 만에 600만 장; 디지털데일리) [26 days for Crimson Desert
+    to pass 5 million copies]
+  accept:
+  - 26일
+  - 26 days
+  review: Check that 26 is the day count, not a date (e.g. 3월 26일).
+  source: https://m.ddaily.co.kr/page/view/2026041517175287446
+  recorded_on: '2026-11-10'
+
+- id: e078
+  language: ko
+  category: tech
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: 크래프톤 서브노티카 2, 얼리 액세스 나오고 5일 만에 누적 판매량 얼마나 찍었어?
+  expected: 400만 장 (2026년 5월 얼리 액세스 출시, 출시 당일 100만 장·12시간 만에 200만 장; 이넷뉴스 2026-05-21) [4 million copies in 5 days for Subnautica
+    2]
+  accept:
+  - 400만
+  - 4백만
+  - 4,000,000
+  - 4 million
+  review: 100만 (launch day) and 200만 (12 hours) are earlier milestones, not the 5-day figure.
+  source: https://www.enetnews.co.kr/news/articleView.html?idxno=50284
+  recorded_on: '2026-11-10'
+
+- id: e079
+  language: ko
+  category: transport
+  difficulty: medium
+  hop: single
+  locality: district
+  prompt: 칠곡 북삼읍에 대경선 역이 새로 생겼다던데 언제 개통했어?
+  expected: '2026년 2월 28일 (북삼역 첫 영업; 준공식은 2월 27일). 사곡역~왜관역 사이, 사업비 478억 원. 출처: 철도경제신문, 철도산업정보센터 철도통합연표 [Buksam Station on
+    the Daegyeong Line opened on 28 February 2026]'
+  accept:
+  - 2월 28일
+  - '2.28'
+  - 2/28
+  - 02-28
+  review: 27 February was the opening ceremony, not the start of service.
+  source: https://www.redaily.co.kr/news/articleView.html?idxno=15774
+  recorded_on: '2026-11-10'
+
+- id: e080
+  language: ko
+  category: transport
+  difficulty: easy
+  hop: single
+  locality: province
+  prompt: 대전 택시 기본요금 이번에 얼마로 올랐어?
+  expected: '중형 4,800원 (기존 4,300원, 기본거리 1.8km→1.65km). 2026-11-01 시행, 2023년 7월 이후 첫 기본요금 인상. 출처: 노컷뉴스 [KRW 4,800 for a mid-size
+    taxi from 1 November 2026, up from 4,300]'
+  accept:
+  - 4,800
+  - '4800'
+  - 4천800
+  - 4천 800
+  review: Seoul, Incheon and Gwangju taxis are also 4,800 won, so check the answer is about Daejeon's 2026-11-01 change, not
+    a guess from another city.
+  source: https://nocutnews.co.kr/news/6596739
+  recorded_on: '2026-11-10'
+
+- id: e081
+  language: en
+  category: news
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: who's the premier of quebec now after the october election?
+  expected: Paul St-Pierre Plamondon (Parti Québécois). The PQ won the 2026-10-05 Quebec election with a minority (60 of 127
+    seats). Outgoing premier Christine Fréchette (CAQ) lost her own seat and the CAQ was shut out.
+  accept:
+  - Plamondon
+  - PSPP
+  review: Wrong if it names Fréchette or Legault as premier.
+  source: https://en.wikipedia.org/wiki/2026_Quebec_general_election
+  recorded_on: '2026-11-10'
+
+- id: e082
+  language: en
+  category: news
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: wnba finals mvp 2026?
+  expected: Gabby Williams (Golden State Valkyries). The Valkyries beat the Atlanta Dream 4-3, winning Game 7 68-63 on 2026-10-31,
+    their first title.
+  accept:
+  - Gabby Williams
+  - Gabrielle Williams
+  source: https://www.wnba.com/news/category/2026-finals
+  recorded_on: '2026-11-10'
+
+- id: e083
+  language: en
+  category: news
+  difficulty: easy
+  hop: single
+  locality: national
+  prompt: How many jobs did the US economy add in October 2026?
+  expected: 165,000 nonfarm payroll jobs (first estimate), unemployment rate 4.1%. BLS Employment Situation released 2026-11-06.
+    The November report (with revisions) is due in early December, after 2026-11-30.
+  accept:
+  - 165,000
+  - '165000'
+  - 165K
+  - 165 thousand
+  review: Must be the October 2026 payroll gain. The unemployment rate alone (4.1%) or September's revised 29,000 is wrong.
+  source: https://www.bls.gov/news.release/empsit.nr0.htm
+  recorded_on: '2026-11-10'
+
+- id: e084
+  language: en
+  category: news
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: Who did Lula beat in Brazil's presidential runoff last month?
+  expected: 'Flávio Bolsonaro (PL), son of Jair Bolsonaro. Runoff on 2026-10-25: Lula 51.79%, Flávio Bolsonaro 48.21%. Flávio
+    had won the first round; he questioned the result and called for annulment.'
+  accept:
+  - Flávio
+  - Flavio
+  review: Jair Bolsonaro (his father, who did not run) is wrong; check any answer that says only 'Bolsonaro'.
+  source: https://en.wikipedia.org/wiki/2026_Brazilian_general_election
+  recorded_on: '2026-11-10'
+
+- id: e085
+  language: en
+  category: news
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: which horse won the 2026 breeders' cup classic?
+  expected: Sovereignty (jockey Junior Alvarado, trainer Bill Mott, Godolphin), at Keeneland on 2026-10-31, ahead of The Puma
+    and Knightsbridge. Forever Young, the 2025 winner, was fifth.
+  accept:
+  - Sovereignty
+  review: Forever Young (2025 winner) is wrong.
+  source: https://sports.yahoo.com/articles/breeders-cup-2026-odds-field-122205027.html
+  recorded_on: '2026-11-10'
+
+- id: e086
+  language: en
+  category: news
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: Who's taking over DC Studios from James Gunn and Peter Safran?
+  expected: Jeremy Latcham, Marvel Studios veteran, named president and chief creative officer of DC Studios on 2026-11-09,
+    starting 2026-12-01 and reporting to Skydance Motion Picture Group co-chairs Dana Goldberg and Josh Greenstein.
+  accept:
+  - Latcham
+  source: https://www.thewrap.com/creative-content/movies/james-gunn-and-peter-safran-out-at-dc-studios-jeremy-latcham-named-new-president-and-chief-creative-officer/
+  recorded_on: '2026-11-10'
+
+- id: e087
+  language: en
+  category: news
+  difficulty: hard
+  hop: single
+  locality: international
+  prompt: How much is GE Vernova paying for Trench Group?
+  expected: $9.0 billion (USD equivalent at a EUR/USD rate of 1.12), funded equally from cash and debt. Bought from Triton
+    Partners; announced 2026-10-28; closing expected late 2027.
+  accept:
+  - 9 billion
+  - 9.0 billion
+  - $9B
+  - $9bn
+  review: The grader ignores whitespace, so check that the figure is exactly $9 billion and not, say, $29 billion or a different
+    deal. A euro figure (about EUR 8 billion) is partial.
+  source: https://www.gevernova.com/news/press-releases/ge-vernova-acquire-trench-group
+  recorded_on: '2026-11-10'
+
+- id: e088
+  language: en
+  category: news
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: Who got the Clive Churchill Medal in the 2026 NRL grand final?
+  expected: James Tedesco, Sydney Roosters captain and fullback. Roosters beat the Newcastle Knights 19-18 at Accor Stadium
+    on 2026-10-04 (Daly Cherry-Evans field goal).
+  accept:
+  - Tedesco
+  source: https://www.abc.net.au/news/2026-10-04/nrl-grand-final-james-tedesco-clive-churchill-medal-roosters/107227582
+  recorded_on: '2026-11-10'
+
+- id: e089
+  language: en
+  category: news
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: Which party came first in Latvia's parliamentary election in October 2026?
+  expected: 'United List (Apvienotais saraksts), led by PM Andris Kulbergs: 41 of 100 seats, 35.76% (election 2026-10-03;
+    Central Election Commission results confirmed mid-October). Latvia First was second. Coalition talks began 2026-10-28.'
+  accept:
+  - United List
+  - Apvienotais
+  review: An answer naming only 'Kulbergs' party' without the party name is partial. New Unity (the 2022 winner) is wrong.
+  source: https://en.wikipedia.org/wiki/2026_Latvian_parliamentary_election
+  recorded_on: '2026-11-10'
+
+- id: e090
+  language: en
+  category: news
+  difficulty: hard
+  hop: multi
+  locality: international
+  prompt: Who bred the horse that won the 2026 Melbourne Cup?
+  expected: King Charles III (a Royal Studs homebred). Point of Law (jockey Ethan Brown, trainer Ciaron Maher) won on 2026-11-03;
+    the King sold him in mid-2026 to an Australian consortium.
+  accept:
+  - King Charles
+  - Charles III
+  - Royal Stud
+  review: Naming the trainer (Ciaron Maher) or the Australian buying consortium as breeder is wrong.
+  source: https://www.abc.net.au/news/2026-11-03/melbourne-cup-2026-live-flemington/107335812
+  recorded_on: '2026-11-10'
+
+- id: e091
+  language: en
+  category: web
+  difficulty: easy
+  hop: single
+  locality: international
+  prompt: what's the codename for ubuntu 26.10
+  expected: Stonking Stingray. Released 2026-10-15; interim release, Linux 7.3 kernel.
+  accept:
+  - Stonking Stingray
+  - Stingray
+  source: https://www.omgubuntu.co.uk/2026/04/ubuntu-26-10-release-date
+  recorded_on: '2026-11-10'
+
+- id: e092
+  language: en
+  category: web
+  difficulty: easy
+  hop: single
+  locality: international
+  prompt: What is macOS 27 called?
+  expected: macOS Golden Gate, announced at WWDC on 2026-06-08.
+  accept:
+  - Golden Gate
+  source: https://www.macrumors.com/2026/06/08/apple-announces-macos-golden-gate/
+  recorded_on: '2026-11-10'
+
+- id: e093
+  language: en
+  category: web
+  difficulty: easy
+  hop: single
+  locality: international
+  prompt: When did Marvel's Wolverine come out on PS5?
+  expected: September 15, 2026 (PS5 exclusive, Insomniac Games; date confirmed in February 2026).
+  accept:
+  - September 15
+  - Sept 15
+  - Sept. 15
+  - 15 Sep
+  review: '''Fall 2026'' without the day is partial.'
+  source: https://www.playstation.com/en-us/games/marvels-wolverine/
+  recorded_on: '2026-11-10'
+
+- id: e094
+  language: en
+  category: web
+  difficulty: easy
+  hop: single
+  locality: international
+  prompt: What's the men's marathon world record right now?
+  expected: 1:59:30, Sabastian Sawe (Kenya), London Marathon, 2026-04-26. First sub-two-hour marathon in a record-eligible
+    race.
+  accept:
+  - '1:59:30'
+  review: Kelvin Kiptum's 2:00:35 (2023) is the old record and is wrong.
+  source: https://en.wikipedia.org/wiki/Marathon_world_record_progression
+  recorded_on: '2026-11-10'
+
+- id: e095
+  language: en
+  category: web
+  difficulty: medium
+  hop: single
+  locality: international
+  prompt: current pole vault world record height?
+  expected: 6.31 m, Armand 'Mondo' Duplantis, Mondo Classic in Uppsala, 2026-03-12 (his 15th world record). He missed 6.32
+    at Lausanne and Zurich; the outdoor season is over, so it stands through November.
+  accept:
+  - '6.31'
+  review: 6.30 m (Tokyo, Sept 2025) is the previous record and is wrong.
+  source: https://worldathletics.org/news/report/duplantis-breaks-world-pole-vault-record-in-uppsala
+  recorded_on: '2026-11-10'
+
+- id: e096
+  language: en
+  category: web
+  difficulty: medium
+  hop: multi
+  locality: national
+  prompt: Northwestern's new president ran which university before taking the job?
+  expected: Purdue University. Mung Chiang, Purdue president since January 2023, was named Northwestern's 18th president on
+    2026-05-18 and took office on 2026-07-01.
+  accept:
+  - Purdue
+  review: Princeton, where Chiang was a professor, is wrong; the question asks which university he led.
+  source: https://dailynorthwestern.com/2026/05/18/top-stories/purdue-president-mung-chiang-named-18th-president-of-northwestern/
+  recorded_on: '2026-11-10'
+
+- id: e097
+  language: en
+  category: web
+  difficulty: medium
+  hop: single
+  locality: national
+  prompt: Who is the director of the Louvre?
+  expected: Christophe Leribault, appointed by President Macron on 2026-02-25 after Laurence des Cars resigned. He previously
+    headed the Palace of Versailles (since 2024) and the Musée d'Orsay.
+  accept:
+  - Leribault
+  review: Laurence des Cars (resigned Feb 2026) is wrong.
+  source: https://www.france24.com/en/culture/20260225-new-louvre-director-christophe-leribault-appointed-to-lead-the-museum-out-of-decades-of-crisis
+  recorded_on: '2026-11-10'
+
+- id: e098
+  language: en
+  category: web
+  difficulty: hard
+  hop: single
+  locality: international
+  prompt: What's the release name of Kubernetes v1.36?
+  expected: ハル (Haru), released 2026-04-22. The name means spring / clear skies / far-off horizons; the logo reworks Hokusai's
+    Red Fuji.
+  accept:
+  - Haru
+  - ハル
+  source: https://kubernetes.io/blog/2026/04/22/kubernetes-v1-36-release/
+  recorded_on: '2026-11-10'
+
+- id: e099
+  language: en
+  category: web
+  difficulty: hard
+  hop: multi
+  locality: international
+  prompt: On what date was the Linux kernel version that ships with Ubuntu 26.04 LTS released?
+  expected: April 12, 2026. Ubuntu 26.04 LTS (Resolute Raccoon, released 2026-04-23) ships Linux 7.0, which Linus Torvalds
+    released on 2026-04-12.
+  accept:
+  - April 12
+  - Apr 12
+  - Apr. 12
+  - 12 Apr
+  review: April 23 (Ubuntu 26.04's own release date) is wrong; the date must be Linux 7.0's release.
+  source: https://en.wikipedia.org/wiki/Ubuntu_version_history
+  recorded_on: '2026-11-10'
+
+- id: e100
+  language: en
+  category: web
+  difficulty: hard
+  hop: single
+  locality: national
+  prompt: On what date was the final piece of the Sagrada Família's Tower of Jesus Christ installed?
+  expected: February 20, 2026. The tower reached structural completion at 172.5 m, making the Sagrada Família the world's
+    tallest church (passing Ulm Minster, 161.5 m). Pope Leo XIV blessed it on 2026-06-10.
+  accept:
+  - February 20
+  - Feb 20
+  - Feb. 20
+  - 20 Feb
+  review: June 10, 2026 (the blessing) is wrong.
+  source: https://en.wikipedia.org/wiki/Sagrada_Fam%C3%ADlia
+  recorded_on: '2026-11-10'
+

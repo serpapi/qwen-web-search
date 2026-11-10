@@ -8,6 +8,7 @@ RUNS = 1
 # Each test asks the questions in questions/<test>.yaml with these setups, each on the first N models (None: all).
 TESTS = {
     "models": [("serpapi", None)],  # model vs model
+    "engines": [("serpapi-google", 1), ("serpapi", 1)],  # Google only vs multiple engines, on the biggest model
 }
 
 test, *names = sys.argv[1:]  # python bench.py models [qwen3.5:9b qwen3.5:4b]
