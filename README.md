@@ -118,17 +118,25 @@ Type a question after `You:`. A `[search]` line appears for each search Qwen mak
 
 ## Run the benchmark
 
-The benchmark asks every question in [`questions.yaml`](app/questions.yaml) with each setup and saves the answers to `results.jsonl`. From `app/`:
+Each benchmark test asks its own questions from [`app/questions/`](app/questions/) and saves the answers to `results.jsonl`. So far there's one test:
+
+- **Model vs model** (`models`): 100 questions that need a web search (60 English, 20 Chinese, 20 Korean), asked with SerpApi · Multiple engines on each Qwen model you've pulled. Every answer is from 2026, so the models can't know it from training. The questions mix topics, easy to hard questions, multi-hop questions that combine two facts, and false-premise questions that a good answer should push back on.
+
+From `app/`:
 
 ```bash
-python bench.py                         # all setups: none, serpapi-google and serpapi
-python bench.py serpapi-google serpapi  # only the setups you name
-python report.py                        # summary tables
+python bench.py models                        # every installed Qwen model, biggest first
+python bench.py models qwen3.5:9b qwen3.5:4b  # only the models you name
+python report.py models                       # summary, and results by language, topic, difficulty and question
 ```
 
-- The answers to the 15 questions were verified on 2026-10-19. Some change quickly, so check them before you run.
-- An answer counts as correct when it contains an accepted answer, so review the results by hand.
-- A full run uses about 45 SerpApi searches.
+- Each model is loaded before its first question, so answer times don't include loading, and unloaded after its last one.
+- If a run stops, run the same command again. It skips the answers already in `results.jsonl`.
+- A full run takes hours, so keep the computer awake. A sleeping Mac makes searches fail and inflates answer times. On a Mac, plug it in, keep the lid open and run `caffeinate -s python bench.py models`.
+- The biggest model needs most of your memory. If the computer starts swapping, quit other apps or run that model on its own.
+- The answers were verified on 2026-11-09 against the source in each question. Some change quickly, such as the latest Next.js version, so check them before you run.
+- An answer counts as correct when it contains an accepted answer. "Answer in results" counts the answers whose search results contained an accepted answer. Review the results by hand; the `review` notes say what to look out for.
+- A full run on three models uses about 450 SerpApi searches.
 
 ## Project structure
 
@@ -145,7 +153,7 @@ qwen-web-search/
 │   ├── serpapi_search.py             # SerpApi search
 │   ├── setups.py                     # The setups shared by the UI and the benchmark
 │   ├── bench.py, report.py           # Benchmark and summary tables
-│   ├── questions.yaml                # Benchmark questions
+│   ├── questions/                    # Benchmark questions, one file per test
 │   └── web/                          # React chat UI
 ├── assets/                           # Images
 ├── .env.example

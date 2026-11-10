@@ -23,5 +23,9 @@ def load(model):
     """Loads a model into memory, so the next answer's time doesn't include loading it."""
     ollama("/api/generate", {"model": model, "stream": False})  # without a prompt, Ollama only loads the model
 
+def unload(model):
+    """Frees the model's memory now, instead of after Ollama's 5-minute keep-alive."""
+    ollama("/api/generate", {"model": model, "keep_alive": 0})
+
 # LOCAL_MODEL from .env if set, otherwise the biggest Qwen model; None until one is pulled.
 MODEL = os.environ.get("LOCAL_MODEL") or next((m["name"] for m in qwen_models()), None)

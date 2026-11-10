@@ -1,0 +1,1542 @@
+# Model vs model: 100 questions that need a web search, asked with the serpapi setup on every model.
+# Every answer is from 2026 (or late 2025), so the models can't know it from training, and was verified on
+# recorded_on against `source`. Re-check fast-changing ones (m-ids with "Fragile" in review) before each run.
+# accept: case-insensitive substrings that count as correct. Review every answer by hand before publishing;
+# `review` says what makes an answer wrong when a false match is possible.
+# false_premise questions assume something false; the answer is correct only if it rejects the premise.
+
+- id: m001
+  language: en
+  category: sports
+  difficulty: easy
+  hop: single
+  prompt: Who won the latest NBA championship?
+  expected: New York Knicks (2026 NBA Finals, beat the Spurs 4-1, 2026-06-13)
+  accept:
+  - Knicks
+  source: https://www.nba.com/news/knicks-rally-win-nba-title
+  recorded_on: '2026-11-09'
+
+- id: m002
+  language: en
+  category: sports
+  difficulty: easy
+  hop: single
+  prompt: Who won the 2026 FIFA World Cup?
+  expected: Spain (beat Argentina 1-0 after extra time, 2026-07-19)
+  accept:
+  - Spain
+  - España
+  source: https://inside.fifa.com/news/spain-crowned-world-cup-2026-champions-new-york-new-jersey
+  recorded_on: '2026-11-09'
+
+- id: m003
+  language: en
+  category: sports
+  difficulty: easy
+  hop: single
+  prompt: who was the MVP of Super Bowl LX?
+  expected: Kenneth Walker III, Seattle Seahawks running back (135 rushing yards on 27 carries). Seahawks beat the Patriots
+    29-13 on 2026-02-08.
+  accept:
+  - Kenneth Walker
+  source: https://en.wikipedia.org/wiki/Super_Bowl_LX
+  recorded_on: '2026-11-09'
+
+- id: m004
+  language: en
+  category: sports
+  difficulty: easy
+  hop: single
+  prompt: Who won the men's singles title at the 2026 US Open?
+  expected: Alexander Zverev (Germany). Beat Ben Shelton 6-3, 7-6(2), 5-7, 6-2 in the final on 2026-09-13.
+  accept:
+  - Zverev
+  review: Wrong if Zverev appears only as a runner-up (he lost the 2026 Wimbledon final to Sinner) or the winner named is
+    someone else.
+  source: https://en.wikipedia.org/wiki/2026_US_Open_%E2%80%93_Men's_singles
+  recorded_on: '2026-11-09'
+
+- id: m005
+  language: en
+  category: sports
+  difficulty: easy
+  hop: single
+  prompt: who won the open championship at royal birkdale this year (2026)
+  expected: Ryan Fox (New Zealand), 270 (-10), one stroke ahead of Cameron Young. 154th Open, 16-19 July 2026, his first major.
+  accept:
+  - Ryan Fox
+  source: https://en.wikipedia.org/wiki/2026_Open_Championship
+  recorded_on: '2026-11-09'
+
+- id: m006
+  language: en
+  category: sports
+  difficulty: easy
+  hop: single
+  prompt: Which driver won the 2026 British Grand Prix?
+  expected: Charles Leclerc (Ferrari), 2026-07-05 at Silverstone, ahead of George Russell and Lewis Hamilton. His first win
+    at Silverstone.
+  accept:
+  - Leclerc
+  review: Wrong if Leclerc is named only as a podium finisher or for a different race.
+  source: https://en.wikipedia.org/wiki/2026_British_Grand_Prix
+  recorded_on: '2026-11-09'
+
+- id: m007
+  language: en
+  category: sports
+  difficulty: medium
+  hop: single
+  prompt: who scored the OT winner in the men's hockey gold medal game at milan cortina?
+  expected: Jack Hughes (USA), 1:41 into overtime. USA beat Canada 2-1 on 2026-02-22, its first men's Olympic hockey gold
+    since 1980.
+  accept:
+  - Jack Hughes
+  review: Quinn Hughes (his brother, also on Team USA) is wrong; check any answer that says only 'Hughes'.
+  source: https://www.olympics.com/en/milano-cortina-2026/news/winter-olympics-2026-united-states-defeat-canada-overtime
+  recorded_on: '2026-11-09'
+
+- id: m008
+  language: en
+  category: sports
+  difficulty: medium
+  hop: single
+  prompt: Who was player of the match in the 2026 Men's T20 World Cup final?
+  expected: Jasprit Bumrah (India), 4/15. India (255/5) beat New Zealand (159) by 96 runs in Ahmedabad on 2026-03-08.
+  accept:
+  - Bumrah
+  source: https://en.wikipedia.org/wiki/2026_Men's_T20_World_Cup_final
+  recorded_on: '2026-11-09'
+
+- id: m009
+  language: en
+  category: sports
+  difficulty: medium
+  hop: single
+  prompt: who was world series mvp in 2026
+  expected: William Contreras, Milwaukee Brewers catcher. Brewers beat the Tampa Bay Rays 4-1 (Oct 23-28, 2026), their first
+    title.
+  accept:
+  - William Contreras
+  review: Willson Contreras (his brother, also a catcher) is wrong.
+  source: https://en.wikipedia.org/wiki/2026_World_Series
+  recorded_on: '2026-11-09'
+
+- id: m010
+  language: en
+  category: sports
+  difficulty: medium
+  hop: single
+  prompt: Who won the men's race at the 2026 New York City Marathon?
+  expected: Andreas Almgren (Sweden), 2:06:01 in his marathon debut, on 2026-11-01. First Swede to win; Yemaneberhan Crippa
+    second.
+  accept:
+  - Almgren
+  source: https://en.wikipedia.org/wiki/2026_New_York_City_Marathon
+  recorded_on: '2026-11-09'
+
+- id: m011
+  language: en
+  category: sports
+  difficulty: medium
+  hop: multi
+  prompt: Which club was the 2026 Ballon d'Or winner playing for when he got the award?
+  expected: Bayern Munich. Harry Kane won the men's Ballon d'Or on 2026-10-26 at the London Palladium, ahead of Mbappe and
+    Lamine Yamal.
+  accept:
+  - Bayern
+  review: The winner must be Harry Kane; wrong if it names another winner, even if Bayern appears elsewhere in the answer.
+  source: https://en.wikipedia.org/wiki/2026_Ballon_d%27Or
+  recorded_on: '2026-11-09'
+
+- id: m012
+  language: en
+  category: sports
+  difficulty: hard
+  hop: single
+  prompt: Who was named MVP of the 2026 Japan Series?
+  expected: Tomoya Masaki (正木智也), Fukuoka SoftBank Hawks. Hawks swept the Yokohama DeNA BayStars 4-0, clinching on 2026-10-28;
+    he hit a walk-off homer in the 10th inning of Game 3.
+  accept:
+  - Masaki
+  - 正木
+  source: https://en.wikipedia.org/wiki/2026_Japan_Series
+  recorded_on: '2026-11-09'
+
+- id: m013
+  language: en
+  category: sports
+  difficulty: medium
+  hop: single
+  prompt: who won the men's 100m at the asian games in nagoya?
+  expected: Puripol Boonson (Thailand, ภูริพล บุญสอน), 9.90 Games record, final on 2026-09-25. Oman's Ali Al-Balushi second
+    (10.04).
+  accept:
+  - Puripol
+  - Boonson
+  - ภูริพล
+  source: https://worldathletics.org/news/report/boonson-chen-asian-games-2026-nagoya
+  recorded_on: '2026-11-09'
+
+- id: m014
+  language: en
+  category: culture
+  difficulty: easy
+  hop: single
+  prompt: Which comedy series won the most recent Primetime Emmy Award for Outstanding Comedy Series?
+  expected: Widow's Bay (78th Primetime Emmys, 2026-09-14)
+  accept:
+  - Widow's Bay
+  - Widows Bay
+  - Widow’s Bay
+  source: https://www.televisionacademy.com/awards/nominees-winners/2026/outstanding-comedy-series
+  recorded_on: '2026-11-09'
+
+- id: m015
+  language: en
+  category: culture
+  difficulty: easy
+  hop: single
+  prompt: What album won Album of the Year at the 2026 Grammys?
+  expected: Debí Tirar Más Fotos by Bad Bunny (68th Grammys, 2026-02-01), the first Spanish-language album to win.
+  accept:
+  - Bad Bunny
+  - Tirar M
+  - Fotos
+  source: https://www.npr.org/2026/02/02/nx-s1-5693043/grammys-2026-bad-bunny-album-of-the-year
+  recorded_on: '2026-11-09'
+
+- id: m016
+  language: en
+  category: culture
+  difficulty: medium
+  hop: single
+  prompt: Which book won the 2026 Pulitzer Prize for Fiction?
+  expected: 'Angel Down by Daniel Kraus (Atria), announced 2026-05-04. Finalists: Audition (Katie Kitamura), Stag Dance (Torrey
+    Peters).'
+  accept:
+  - Angel Down
+  - Kraus
+  source: https://www.pulitzer.org/winners/daniel-kraus
+  recorded_on: '2026-11-09'
+
+- id: m017
+  language: en
+  category: culture
+  difficulty: hard
+  hop: single
+  prompt: Who took the TV Grand Prize (Daesang) at the 2026 Baeksang Arts Awards?
+  expected: Ryu Seung-ryong (류승룡) for JTBC's The Dream Life of Mr. Kim (서울 자가에 대기업 다니는 김 부장 이야기). 62nd Baeksang, 2026-05-08.
+    The film Daesang went to Yoo Hae-jin.
+  accept:
+  - Seung-ryong
+  - Seungryong
+  - 류승룡
+  review: Yoo Hae-jin (film Daesang) is wrong.
+  source: https://en.wikipedia.org/wiki/62nd_Baeksang_Arts_Awards
+  recorded_on: '2026-11-09'
+
+- id: m018
+  language: en
+  category: culture
+  difficulty: hard
+  hop: multi
+  prompt: How old was the 2026 Nobel literature laureate when the prize was announced?
+  expected: 76. Anne Carson (Canada), born 1950-06-21; the prize was announced 2026-10-08.
+  accept:
+  - '76'
+  - seventy-six
+  review: 76 must be given as her age; wrong if it names another laureate or says 75 or 77.
+  source: https://en.wikipedia.org/wiki/Anne_Carson
+  recorded_on: '2026-11-09'
+
+- id: m019
+  language: en
+  category: culture
+  difficulty: hard
+  hop: multi
+  prompt: the director who won the 2026 palme d'or had won it once before. with what film?
+  expected: 4 Months, 3 Weeks and 2 Days (2007). Cristian Mungiu won the 2026 Palme d'Or for Fjord (79th Cannes, awards 2026-05-23).
+  accept:
+  - 4 Months, 3 Weeks
+  - Four Months, Three Weeks
+  - 3 Weeks and 2 Days
+  - 4 luni
+  review: An answer naming only Fjord (the 2026 winner) is wrong.
+  source: https://en.wikipedia.org/wiki/Cristian_Mungiu
+  recorded_on: '2026-11-09'
+
+- id: m020
+  language: en
+  category: culture
+  difficulty: hard
+  hop: multi
+  prompt: The film that won Best Picture at the 2026 Oscars was inspired by a novel. Which one?
+  expected: Vineland (Thomas Pynchon, 1990). One Battle After Another won Best Picture at the 98th Academy Awards on 2026-03-15.
+  accept:
+  - Vineland
+  source: https://en.wikipedia.org/wiki/One_Battle_After_Another
+  recorded_on: '2026-11-09'
+
+- id: m021
+  language: en
+  category: culture
+  difficulty: hard
+  hop: multi
+  prompt: At which university is the 2026 Nobel Prize in Physics laureate a professor?
+  expected: University of Wisconsin-Madison. Francis Halzen, sole laureate (announced 2026-10-06), for the IceCube Neutrino
+    Observatory and the discovery of astrophysical high-energy neutrinos.
+  accept:
+  - Wisconsin
+  review: Naming only IceCube or the South Pole, without the university, is wrong.
+  source: https://www.nobelprize.org/prizes/physics/2026/press-release/
+  recorded_on: '2026-11-09'
+
+- id: m022
+  language: en
+  category: world
+  difficulty: easy
+  hop: single
+  prompt: Who won the 2026 Nobel Peace Prize?
+  expected: Navi (Navanethem) Pillay, unshared (announced 2026-10-09)
+  accept:
+  - Pillay
+  - Navanethem
+  source: https://www.nobelpeaceprize.org/press/press-releases/nobel-peace-prize-for-2026
+  recorded_on: '2026-11-09'
+
+- id: m023
+  language: en
+  category: world
+  difficulty: easy
+  hop: single
+  prompt: who won portugal's presidential election this year?
+  expected: António José Seguro (Socialist). He beat André Ventura (Chega) in the 8 Feb 2026 runoff, 66.84% to 33.16%, and
+    was sworn in on 9 Mar 2026.
+  accept:
+  - Seguro
+  source: https://en.wikipedia.org/wiki/2026_Portuguese_presidential_election
+  recorded_on: '2026-11-09'
+
+- id: m024
+  language: en
+  category: world
+  difficulty: easy
+  hop: single
+  prompt: Who succeeded Jerome Powell as chair of the Federal Reserve?
+  expected: Kevin Warsh. The Senate confirmed him on 13 May 2026 and he was sworn in on 22 May 2026.
+  accept:
+  - Warsh
+  review: Wrong if it names Kevin Hassett or another rumored candidate as chair.
+  source: https://www.npr.org/2026/05/13/nx-s1-5816235/kevin-warsh-federal-reserve-chair-jerome-powell
+  recorded_on: '2026-11-09'
+
+- id: m025
+  language: en
+  category: world
+  difficulty: easy
+  hop: single
+  prompt: Who won Hungary's parliamentary election in April 2026?
+  expected: Péter Magyar's Tisza party, on 12 Apr 2026, with a two-thirds majority (about 138 of 199 seats). Orbán conceded,
+    and parliament elected Magyar prime minister on 9 May 2026.
+  accept:
+  - Magyar
+  - Tisza
+  review: Wrong if it says Orbán/Fidesz won, even if Magyar or Tisza is mentioned as the runner-up.
+  source: https://www.aljazeera.com/news/2026/4/12/hungary-election-early-results-show-magyars-tisza-ahead-of-orbans-fidesz
+  recorded_on: '2026-11-09'
+
+- id: m026
+  language: en
+  category: world
+  difficulty: medium
+  hop: multi
+  prompt: The new UN High Commissioner for Refugees who took office in January 2026 used to be president of which country?
+  expected: Iraq. Barham Salih, President of Iraq from 2018 to 2022, was elected by the UN General Assembly on 18 Dec 2025
+    and took office on 1 Jan 2026, succeeding Filippo Grandi.
+  accept:
+  - Iraq
+  source: https://www.unhcr.org/news/speeches-and-statements/statement-dr-barham-salih-upon-his-election-united-nations-high-commissioner-for-refugees
+  recorded_on: '2026-11-09'
+
+- id: m027
+  language: en
+  category: world
+  difficulty: medium
+  hop: single
+  prompt: In which city was the EU-Mercosur trade agreement finally signed?
+  expected: Asunción, Paraguay, on 17 Jan 2026, at the Gran Teatro José Asunción Flores.
+  accept:
+  - Asunción
+  - Asuncion
+  review: Wrong if it says Montevideo, where negotiations concluded in Dec 2024, or Brasília, where a Dec 2025 signing was
+    called off.
+  source: https://www.euronews.com/2026/01/17/eu-and-mercosur-sign-major-trade-deal-in-asuncion
+  recorded_on: '2026-11-09'
+
+- id: m028
+  language: en
+  category: world
+  difficulty: hard
+  hop: single
+  prompt: who replaced rhee chang-yong as bank of korea governor
+  expected: Shin Hyun-song (신현송; Hyun Song Shin), formerly the BIS economic adviser. He was nominated by President Lee Jae-myung
+    on 22 Mar 2026 and took office on 21 Apr 2026.
+  accept:
+  - hyun song
+  - hyun-song
+  - hyunsong
+  - 신현송
+  source: https://en.wikipedia.org/wiki/Hyun-Song_Shin
+  recorded_on: '2026-11-09'
+
+- id: m029
+  language: en
+  category: world
+  difficulty: hard
+  hop: multi
+  prompt: Nepal's prime minister who took office in March 2026 beat which former prime minister in his own constituency?
+  expected: K. P. Sharma Oli. Balen (Balendra) Shah of the Rastriya Swatantra Party beat him in Jhapa-5 in the 5 Mar 2026
+    election, 68,348 votes to 18,734. Shah was appointed PM on 27 Mar 2026.
+  accept:
+  - Sharma Oli
+  - KP Oli
+  - K.P. Oli
+  - K. P. Oli
+  source: https://thehimalayantimes.com/nepal/balen-shah-defeats-oli-by-nearly-50000-votes-in-jhapa-5-in-elections-most-stunning-result
+  recorded_on: '2026-11-09'
+
+- id: m030
+  language: en
+  category: world
+  difficulty: hard
+  hop: multi
+  prompt: Who is the vice president under the winner of Colombia's 2026 presidential runoff?
+  expected: José Manuel Restrepo (Abondano), a former finance and trade minister. He was Abelardo de la Espriella's running
+    mate. They won the 21 Jun 2026 runoff over Iván Cepeda (49.7% to 48.7%), the CNE declared them elected on 24 Jun, and
+    both were sworn in on 7 Aug 2026 in Cali.
+  accept:
+  - Restrepo
+  review: Wrong if it names Francia Márquez, the outgoing VP, or Cepeda's running mate.
+  source: https://en.mercopress.com/2026/08/08/de-la-espriella-sworn-in-before-congress-in-cali-delivers-first-speech-to-the-military
+  recorded_on: '2026-11-09'
+
+- id: m031
+  language: en
+  category: economy
+  difficulty: medium
+  hop: single
+  prompt: What is South Korea's minimum hourly wage for 2027?
+  expected: 10,700 won per hour (10,700원, 고용노동부 고시 2026-08-05)
+  accept:
+  - 10,700
+  - '10700'
+  - 1만700
+  - 1만 700
+  source: https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=19744
+  recorded_on: '2026-11-09'
+
+- id: m032
+  language: en
+  category: economy
+  difficulty: easy
+  hop: single
+  prompt: What was the US CPI inflation rate, year over year, for September 2026?
+  expected: 3.7% (all items, 12 months ending September 2026, not seasonally adjusted; BLS release of October 14, 2026). Up
+    from 3.4% in August; core was 2.6%; monthly SA change was +0.6%.
+  accept:
+  - 3.7%
+  - 3.7 percent
+  - 3.7 per cent
+  review: 3.7% must be the headline all-items annual rate for September 2026. Core (2.6%), August (3.4%) or September 2025
+    (3.0%) figures are wrong.
+  source: https://www.bls.gov/news.release/cpi.nr0.htm
+  recorded_on: '2026-11-09'
+
+- id: m033
+  language: en
+  category: economy
+  difficulty: easy
+  hop: single
+  prompt: how fast did us gdp grow in q3 2026 according to the advance estimate?
+  expected: 3.4% annual rate (BEA advance estimate for Q3 2026, released October 29, 2026). Q2 2026 was 2.2%. The second estimate
+    is due November 25, 2026, so the question names the advance estimate.
+  accept:
+  - 3.4%
+  - 3.4 percent
+  - 3.4 per cent
+  review: Must be the Q3 2026 advance estimate. The Q2 2026 rate (2.2%) or any 2025 figure is wrong.
+  source: https://www.bea.gov/news/2026/gdp-advance-estimate-3rd-quarter-2026
+  recorded_on: '2026-11-09'
+
+- id: m034
+  language: en
+  category: economy
+  difficulty: medium
+  hop: single
+  prompt: When did the Federal Reserve last raise interest rates?
+  expected: 'September 16, 2026: the FOMC raised the federal funds target range by 1/4 point to 3-3/4 to 4 percent (12-0 vote),
+    its first hike since 2023. It held at the October 28, 2026 meeting; the next meeting is December 8-9, 2026, so the answer
+    holds through November 30.'
+  accept:
+  - September 16
+  - Sept. 16
+  - Sept 16
+  - September 2026
+  review: An answer citing July 2023 (the previous hike) is wrong. 'September 2026' without the day is acceptable.
+  source: https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm
+  recorded_on: '2026-11-09'
+
+- id: m035
+  language: en
+  category: economy
+  difficulty: medium
+  hop: single
+  prompt: How did the Bank of England's Monetary Policy Committee vote at its November 2026 meeting?
+  expected: 8–1 to raise Bank Rate by 0.25 points to 4% (meeting ended November 4, 2026; published November 5). The one dissenter,
+    Catherine Mann, voted for a 0.5-point rise to 4.25%.
+  accept:
+  - 8-1
+  - 8–1
+  - 8 to 1
+  - eight to one
+  review: Earlier splits such as 5–4 (2025 meetings) are wrong. The vote must be for the November 2026 decision.
+  source: https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/november-2026
+  recorded_on: '2026-11-09'
+
+- id: m036
+  language: en
+  category: economy
+  difficulty: hard
+  hop: multi
+  prompt: After their most recent 2026 rate decisions, how many percentage points higher is the Bank of England's Bank Rate
+    than the ECB's deposit facility rate?
+  expected: '1.5 percentage points: BoE Bank Rate 4% (raised November 5, 2026) minus ECB deposit facility rate 2.50% (held
+    October 29, 2026). Neither bank meets again before December 17, 2026.'
+  accept:
+  - 1.5 percentage
+  - 1.50 percentage
+  - 150 basis
+  - 1.5%
+  review: 'Stale combinations give other gaps (for example 4% - 2.00% = 2 points, or 3.75% - 2.00% = 1.75). Both inputs must
+    be the late-2026 rates: 4% and 2.50%.'
+  source: https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp261029~9a493adf17.en.html
+  recorded_on: '2026-11-09'
+
+- id: m037
+  language: en
+  category: business
+  difficulty: easy
+  hop: single
+  prompt: Who succeeded Bob Iger as CEO of Disney?
+  expected: Josh D'Amaro, former Chairman of Disney Experiences, elected February 3, 2026, effective March 18, 2026. Iger
+    became Senior Advisor.
+  accept:
+  - D'Amaro
+  - D’Amaro
+  - DAmaro
+  - Damaro
+  source: https://www.sec.gov/Archives/edgar/data/1744489/000174448926000022/dis-20260202.htm
+  recorded_on: '2026-11-09'
+
+- id: m038
+  language: en
+  category: business
+  difficulty: medium
+  hop: single
+  prompt: what price per share did spacex's ipo price at?
+  expected: $135 per share (priced June 11, 2026; began trading on Nasdaq as SPCX on June 12, 2026; raised about $75 billion).
+    Opened at $150, closed day one at $160.95.
+  accept:
+  - $135
+  - 135 a share
+  - 135 per share
+  - 135 dollars
+  review: $150 (opening trade) and $160.95 (first-day close) are not the IPO price.
+  source: https://www.cnbc.com/2026/06/12/spacex-ipo-spcx-live-updates.html
+  recorded_on: '2026-11-09'
+
+- id: m039
+  language: en
+  category: business
+  difficulty: medium
+  hop: single
+  prompt: How much revenue did Nvidia report for the second quarter of fiscal 2027?
+  expected: $96.2 billion ($96,221 million) for the quarter ended July 26, 2026, reported August 26, 2026; up 106% year over
+    year. Data Center was $89.0 billion; Q3 guidance $108.0 billion.
+  accept:
+  - '96.2'
+  - 96,221
+  review: $89.0B is Data Center only; $108B is next-quarter guidance; $46.7B is Q2 fiscal 2026.
+  source: https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027
+  recorded_on: '2026-11-09'
+
+- id: m040
+  language: en
+  category: business
+  difficulty: hard
+  hop: multi
+  prompt: Who is the CEO of the company that agreed in November 2026 to buy Lumentum?
+  expected: Matt Murphy, Chairman and CEO of Marvell Technology. Marvell agreed on November 2, 2026 to acquire Lumentum in
+    an all-stock deal (4.5 Marvell shares per Lumentum share, implied enterprise value $115 billion); Murphy will lead the
+    combined company.
+  accept:
+  - Matt Murphy
+  - Matthew Murphy
+  - Murphy
+  review: Michael Hurlston is Lumentum's CEO (the target), which is wrong.
+  source: https://investor.marvell.com/news-events/press-releases/detail/1040/marvell-and-lumentum-to-combine-creating-a-category-leader-in-ai-connectivity
+  recorded_on: '2026-11-09'
+
+- id: m041
+  language: en
+  category: tech
+  difficulty: easy
+  hop: single
+  prompt: What is the latest stable version of python?
+  expected: Python 3.15 (3.15.2, released 2026-10-25; 3.15.0 on 2026-10-09)
+  accept:
+  - '3.15'
+  review: Wrong if it calls 3.14 the latest and only mentions 3.15 as upcoming.
+  source: https://www.python.org/downloads/
+  recorded_on: '2026-11-09'
+
+- id: m042
+  language: en
+  category: tech
+  difficulty: easy
+  hop: single
+  prompt: what is the latest version of nextjs?
+  expected: Next.js 16.4 (16.4.5 on npm, 2026-11-03)
+  accept:
+  - '16.4'
+  review: 'Fragile: a new minor ships every 2-4 months and 16.5 is in canary. Check npm''s latest tag before each run.'
+  source: https://registry.npmjs.org/next
+  recorded_on: '2026-11-09'
+
+- id: m043
+  language: en
+  category: tech
+  difficulty: medium
+  hop: single
+  prompt: How much does the newest iPhone Pro (not the Pro Max) cost in the US? Give the starting price.
+  expected: $1,199 (iPhone 18 Pro, 256GB; announced 2026-09-09)
+  accept:
+  - 1,199
+  - '1199'
+  review: Wrong if the $1,199 is for an older model (the iPhone 17 Pro Max was also $1,199).
+  source: https://www.apple.com/shop/buy-iphone/iphone-18-pro
+  recorded_on: '2026-11-09'
+
+- id: m044
+  language: en
+  category: tech
+  difficulty: easy
+  hop: single
+  prompt: When did OpenAI launch GPT-5.5 in ChatGPT?
+  expected: April 23, 2026 (rolled out to Plus, Pro, Business and Enterprise in ChatGPT and Codex). API access followed on
+    April 24, 2026.
+  accept:
+  - April 23
+  - Apr 23
+  - Apr. 23
+  - 23 April
+  review: April 24 is the API date, not the ChatGPT launch.
+  source: https://community.openai.com/t/gpt-5-5-is-here-available-in-the-api-codex-and-chatgpt-today/1379630
+  recorded_on: '2026-11-09'
+
+- id: m045
+  language: en
+  category: tech
+  difficulty: medium
+  hop: single
+  prompt: how many total parameters does deepseek-v4-pro have
+  expected: 1.6 trillion total parameters (49B active), per DeepSeek's April 24, 2026 announcement. V4-Flash is 284B total
+    / 13B active. Both have a 1M-token context.
+  accept:
+  - 1.6T
+  - 1.6 trillion
+  - 1.6 T
+  - 1,600B
+  review: 49B (active) or 284B (V4-Flash) alone is wrong.
+  source: https://api-docs.deepseek.com/news/news260424
+  recorded_on: '2026-11-09'
+
+- id: m046
+  language: en
+  category: tech
+  difficulty: easy
+  hop: single
+  prompt: How much does Valve's Steam Machine cost in the US for the base 512GB model without a controller?
+  expected: $1,049 (announced June 22, 2026). The 512GB bundle with Steam Controller is $1,128; the 2TB model is $1,349 ($1,428
+    with controller).
+  accept:
+  - 1,049
+  - '1049'
+  review: $1,128 is the controller bundle. EU/UK prices (EUR 1,039, GBP 879) are not the US price.
+  source: https://www.engadget.com/2199144/valve--starts-at-1049-with-512gb-storage-and-no-controller/
+  recorded_on: '2026-11-09'
+
+- id: m047
+  language: en
+  category: tech
+  difficulty: hard
+  hop: multi
+  prompt: How much more does Apple's foldable iPhone cost than the Pixel 11 Pro XL, comparing US starting prices?
+  expected: '$700: iPhone Duo starts at $1,999 (256GB; announced September 9, 2026, on sale October 23) and Pixel 11 Pro XL
+    starts at $1,299 (announced August 12, 2026).'
+  accept:
+  - $700
+  - 700 dollars
+  - 700 USD
+  review: Rumored foldable prices ($2,000-$2,500) give other gaps. Inputs must be $1,999 and $1,299.
+  source: https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/
+  recorded_on: '2026-11-09'
+
+- id: m048
+  language: en
+  category: science
+  difficulty: hard
+  hop: multi
+  prompt: Which university is the Japanese winner of the 2026 chemistry Nobel affiliated with?
+  expected: Tokyo University of Science (Kenso Soai, Professor Emeritus). He shared the prize with Henri B. Kagan (Université
+    Paris-Sud), announced October 7, 2026, for non-linear effects and autocatalysis in asymmetric synthesis.
+  accept:
+  - Tokyo University of Science
+  - Tokyo Univ. of Science
+  - 東京理科大学
+  review: '''University of Tokyo'' is a different university and is wrong.'
+  source: https://www.kva.se/en/news/the-nobel-prize-in-chemistry-2026/
+  recorded_on: '2026-11-09'
+
+- id: m049
+  language: en
+  category: science
+  difficulty: hard
+  hop: single
+  prompt: Who became the first astronaut from Hong Kong to fly in space?
+  expected: 'Lai Ka-ying (Mandarin: Li Jiaying), payload specialist on Shenzhou-23, launched May 24, 2026 from Jiuquan with
+    commander Zhu Yangzhu and Zhang Zhiyuan.'
+  accept:
+  - Lai Ka-ying
+  - Lai Ka Ying
+  - Li Jiaying
+  - Li Jia Ying
+  source: https://www.cbsnews.com/news/china-launches-shenzhou-spacecraft-astronauts/
+  recorded_on: '2026-11-09'
+
+- id: m050
+  language: en
+  category: science
+  difficulty: easy
+  hop: single
+  prompt: what day did the artemis ii astronauts splash down
+  expected: 'April 10, 2026 (off San Diego). Launched April 1, 2026; mission lasted 9 days, 1 hour, 32 minutes. Crew: Wiseman,
+    Glover, Koch, Hansen.'
+  accept:
+  - April 10
+  - Apr 10
+  - Apr. 10
+  - 10 April
+  source: https://www.nasa.gov/mission/artemis-ii/
+  recorded_on: '2026-11-09'
+
+- id: m051
+  language: en
+  category: false_premise
+  difficulty: easy
+  hop: single
+  prompt: how many points did the chiefs score in super bowl LX
+  expected: 'False premise: the Chiefs weren''t in Super Bowl LX. The Seattle Seahawks beat the New England Patriots 29-13
+    on 8 Feb 2026 at Levi''s Stadium.'
+  accept:
+  - Seahawks
+  - Seattle
+  review: Correct only if it rejects the premise (the Chiefs didn't play) and names Seattle as the winner.
+  source: https://www.pro-football-reference.com/boxscores/202602080nwe.htm
+  recorded_on: '2026-11-09'
+
+- id: m052
+  language: en
+  category: false_premise
+  difficulty: hard
+  hop: single
+  prompt: How many gold medals did Team USA win on its way to topping the Milan Cortina 2026 medal table?
+  expected: 'False premise: Norway topped the table with 18 gold (41 medals in total). The USA was second with 12 gold (33
+    medals). The Games ended 22 Feb 2026.'
+  accept:
+  - Norway
+  - Norwegian
+  review: Correct only if it rejects the premise and says Norway topped the table. Wrong if it says the USA topped the table
+    but mentions Norway as second, or gives the USA's 12 golds while accepting that the USA finished first.
+  source: https://en.wikipedia.org/wiki/2026_Winter_Olympics_medal_table
+  recorded_on: '2026-11-09'
+
+- id: m053
+  language: en
+  category: false_premise
+  difficulty: medium
+  hop: single
+  prompt: how many years has tim cook been apple's ceo now?
+  expected: 'False premise: Tim Cook is no longer CEO. John Ternus became Apple''s CEO on 1 Sep 2026 (announced 20 Apr 2026),
+    and Cook became executive chairman.'
+  accept:
+  - Ternus
+  - executive chairman
+  review: Correct only if it rejects the premise that Cook is still CEO. Wrong if it just counts the years since 2011.
+  source: https://techcrunch.com/2026/04/20/tim-cook-stepping-down-as-apple-ceo-john-ternus-taking-over/
+  recorded_on: '2026-11-09'
+
+- id: m054
+  language: en
+  category: false_premise
+  difficulty: medium
+  hop: single
+  prompt: Is GTA 6 still selling well six months after its May launch?
+  expected: 'False premise: GTA VI didn''t launch in May 2026. Rockstar delayed it from 26 May 2026 to 19 Nov 2026 (announced
+    6 Nov 2025), and stores list it for 19 Nov 2026.'
+  accept:
+  - November 19
+  - Nov 19
+  - Nov. 19
+  - 19 November
+  - 19 Nov
+  review: Correct only if it rejects the premise of a May release and gives the 19 Nov 2026 date (after that date, 'released
+    19 Nov' is also correct). Wrong if it reports May-launch sales figures.
+  source: https://www.xbox.com/en-US/games/grand-theft-auto-vi
+  recorded_on: '2026-11-09'
+
+- id: m055
+  language: en
+  category: false_premise
+  difficulty: easy
+  hop: single
+  prompt: What was the first decree Jeannette Jara signed after she was sworn in as Chile's president in March?
+  expected: 'False premise: Jara lost the Dec 2025 runoff. José Antonio Kast won and was sworn in as Chile''s president on
+    11 Mar 2026, succeeding Gabriel Boric.'
+  accept:
+  - Kast
+  review: Correct only if it rejects the premise and says Kast is president. Wrong if it describes Jara's decrees, even if
+    Kast is mentioned as her rival.
+  source: https://en.mercopress.com/2026/03/11/chile-jose-antonio-kast-sworn-in-as-president-in-conservative-shift-after-boric
+  recorded_on: '2026-11-09'
+
+- id: m056
+  language: en
+  category: false_premise
+  difficulty: hard
+  hop: single
+  prompt: On what date did M.K. Stalin take the oath for his second term as Tamil Nadu chief minister in May 2026?
+  expected: 'False premise: Stalin''s DMK lost the April 2026 assembly election (a hung assembly), and Stalin resigned on
+    5 May 2026. C. Joseph Vijay of the Tamilaga Vettri Kazhagam (TVK) was sworn in as chief minister on 10 May 2026 and won
+    a trust vote 144-22 on 13 May.'
+  accept:
+  - Vijay
+  - TVK
+  - Tamilaga Vettri
+  - விஜய்
+  review: Correct only if it rejects the premise and says Vijay became chief minister. Wrong if it gives a Stalin swearing-in
+    date, even if Vijay or TVK is mentioned as the opposition.
+  source: https://en.wikipedia.org/wiki/C._Joseph_Vijay_ministry
+  recorded_on: '2026-11-09'
+
+- id: m057
+  language: en
+  category: false_premise
+  difficulty: medium
+  hop: single
+  prompt: Which Artemis II astronaut was the first to step onto the Moon in April?
+  expected: 'False premise: Artemis II was a crewed lunar flyby with no landing. Wiseman, Glover, Koch and Hansen launched
+    on 1 Apr 2026, flew around the Moon on 6 Apr, and splashed down off San Diego on 10 Apr 2026.'
+  accept:
+  - flyby
+  - fly-by
+  - did not land
+  - didn't land
+  review: Correct only if it rejects the premise and says nobody landed on the Moon. Wrong if it names an astronaut as first
+    on the surface.
+  source: https://www.pbs.org/newshour/science/watch-live-artemis-ii-crew-splashes-down-on-earth-after-historic-trip-around-the-moon
+  recorded_on: '2026-11-09'
+
+- id: m058
+  language: en
+  category: false_premise
+  difficulty: hard
+  hop: single
+  prompt: Why did the James Webb Space Telescope team win the 2026 Nobel Prize in Physics?
+  expected: 'False premise: the 2026 Physics prize went to a single laureate, Francis Halzen (University of Wisconsin-Madison),
+    for the IceCube Neutrino Observatory and the discovery of high-energy astrophysical neutrinos. It was announced on 6 Oct
+    2026.'
+  accept:
+  - Halzen
+  - IceCube
+  review: Correct only if it rejects the premise that the JWST team won and names Halzen/IceCube.
+  source: https://www.cnn.com/2026/10/06/science/nobel-prize-physics-francis-halzen-winner-intl
+  recorded_on: '2026-11-09'
+
+- id: m059
+  language: en
+  category: false_premise
+  difficulty: easy
+  hop: single
+  prompt: how many oscars did sinners win this year, counting its best picture win?
+  expected: 'False premise: ''Sinners'' didn''t win Best Picture. ''One Battle After Another'' won Best Picture (and six awards
+    in total) at the 98th Academy Awards on 15 Mar 2026. ''Sinners'' won four, including Best Actor for Michael B. Jordan.'
+  accept:
+  - One Battle After Another
+  review: Correct only if it rejects the premise and says One Battle After Another won Best Picture. Wrong if it says Sinners
+    won Best Picture but names One Battle After Another as a rival nominee.
+  source: https://abc13.com/post/oscars-2026-battle-another-wins-best-picture-98th-academy-awards/18719481/
+  recorded_on: '2026-11-09'
+
+- id: m060
+  language: en
+  category: false_premise
+  difficulty: medium
+  hop: single
+  prompt: What was the name of Sweden's winning song at Eurovision 2026 in Vienna?
+  expected: 'False premise: Sweden didn''t win. Bulgaria won its first title with DARA''s ''Bangaranga'' (516 points) at the
+    16 May 2026 final in Vienna. Israel was second.'
+  accept:
+  - Bangaranga
+  - Bulgaria
+  - DARA
+  review: Correct only if it rejects the premise and says Bulgaria/DARA won. Wrong if it names a Swedish song as the winner.
+  source: https://eurovisionworld.com/esc/bulgaria-wins-the-eurovision-song-contest-2026
+  recorded_on: '2026-11-09'
+
+- id: m061
+  language: zh
+  category: chinese
+  difficulty: medium
+  hop: single
+  prompt: 2026年全国高考报名人数是多少？
+  expected: 1290万人 (教育部, 2026-06-03)
+  accept:
+  - 1290万
+  - 1,290万
+  - 12.9 million
+  - 12,900,000
+  source: http://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2026/2026_zt08/mtbd/202606/t20260604_1438763.html
+  recorded_on: '2026-11-09'
+
+- id: m062
+  language: zh
+  category: chinese
+  difficulty: medium
+  hop: single
+  prompt: 2025年中国国内生产总值（GDP）总量是多少？
+  expected: 1401879亿元（约140.2万亿元，国家统计局初步核算）
+  accept:
+  - 140万亿
+  - 140.2万亿
+  - 140.19万亿
+  - '1401879'
+  - 1,401,879
+  review: The final revision is due in late December 2026 and may change the figure.
+  source: https://www.stats.gov.cn/sj/zxfb/202601/t20260120_1962349.html
+  recorded_on: '2026-11-09'
+
+- id: m063
+  language: zh
+  category: chinese
+  difficulty: medium
+  hop: single
+  prompt: 2026年国庆假期全国国内出游人次是多少？
+  expected: 8.26亿人次 (10月1日-7日，文化和旅游部 2026-10-09)
+  accept:
+  - 8.26亿
+  - 8.26 亿
+  - 8.26億
+  - 826 million
+  source: https://www.news.cn/travel/20261009/823e861310aa46b9bcc9edf1041f092b/c.html
+  recorded_on: '2026-11-09'
+
+- id: m064
+  language: zh
+  category: chinese
+  difficulty: medium
+  hop: single
+  prompt: 深圳市现行最低工资标准是多少？
+  expected: 2700元/月 (2026-09-01起，此前为2520元)
+  accept:
+  - '2700'
+  - 2,700
+  source: https://m.21jingji.com/article/20260827/herald/90e16bf5fda7943524e24b592b8dc40d.html
+  recorded_on: '2026-11-09'
+
+- id: m065
+  language: zh
+  category: chinese
+  difficulty: easy
+  hop: single
+  prompt: 2026年前三季度我国GDP同比增长多少？
+  expected: 同比增长4.6%（初步核算，前三季度国内生产总值1071071亿元；国家统计局2026年10月19日发布）[Q1-Q3 2026 GDP grew 4.6% y/y, preliminary, NBS]
+  accept:
+  - 4.6%
+  - 4.6％
+  - 百分之四点六
+  - 4.6 percent
+  review: 4.6% is the Q1-Q3 cumulative rate; Q3 alone was 4.5%, Q1 5.0%, Q2 4.3%. A figure such as 14.6% would falsely match.
+  source: https://www.stats.gov.cn/sj/zxfb/202610/t20261019_1965618.html
+  recorded_on: '2026-11-09'
+
+- id: m066
+  language: zh
+  category: chinese
+  difficulty: easy
+  hop: single
+  prompt: 2026年政府工作报告提出的经济增长预期目标是多少？
+  expected: 4.5%—5%（区间目标；2026年3月5日政府工作报告，新华社）[2026 growth target is a 4.5%-5% range]
+  accept:
+  - 4.5%
+  - 4.5％
+  - 4.5-5
+  - 4.5至5
+  review: The target is the range 4.5%-5%. An answer of only '4.5%左右' or '5%左右' (the 2024 and 2025 wording) is wrong even
+    though '4.5%' may match.
+  source: https://www.news.cn/politics/20260305/e5c6a09cba0f445b9ee6cc6f8973132a/c.html
+  recorded_on: '2026-11-09'
+
+- id: m067
+  language: zh
+  category: chinese
+  difficulty: medium
+  hop: single
+  prompt: 国家统计局公布的2026年9月份CPI同比涨了多少？
+  expected: 同比上涨0.9%（环比上涨0.2%；国家统计局2026年10月14日发布）[Sept 2026 CPI up 0.9% y/y]
+  accept:
+  - 0.9%
+  - 0.9％
+  - 百分之零点九
+  - 0.9 percent
+  review: Year-on-year is 0.9%; month-on-month is 0.2%. An answer saying CPI fell 0.9% (-0.9%) would falsely match.
+  source: https://www.stats.gov.cn/sj/zxfb/202610/t20261014_1965477.html
+  recorded_on: '2026-11-09'
+
+- id: m068
+  language: zh
+  category: chinese
+  difficulty: hard
+  hop: single
+  prompt: 2026年全国夏粮总产量是多少？
+  expected: 15074.6万吨（3014.9亿斤），比2025年增长0.7%，首次突破3000亿斤（国家统计局2026年7月10日公告）[2026 summer grain output 150.746 million tonnes]
+  accept:
+  - '15074.6'
+  - 15,074.6
+  - '3014.9'
+  - 3,014.9
+  review: Rounded answers such as '超过3000亿斤' or '约1.5亿吨' are on the right track but lack the exact figure; grade as partial.
+  source: https://www.stats.gov.cn/sj/zxfbhjd/202607/t20260710_1964090.html
+  recorded_on: '2026-11-09'
+
+- id: m069
+  language: zh
+  category: chinese
+  difficulty: hard
+  hop: single
+  prompt: 据海关总署数据，2026年前三季度我国货物贸易进出口总值是多少？
+  expected: 39.94万亿元，同比增长18.8%（出口23.2万亿元，进口16.74万亿元；海关总署2026年10月14日发布）[Q1-Q3 2026 goods trade 39.94 trillion yuan]
+  accept:
+  - 39.94万亿
+  - 39.94 万亿
+  - 39.94萬億
+  - 39.94 trillion
+  source: https://www.news.cn/fortune/20261014/b60eeb5140f5448fb9e368831dbc2eb4/c.html
+  recorded_on: '2026-11-09'
+
+- id: m070
+  language: zh
+  category: chinese
+  difficulty: easy
+  hop: single
+  prompt: 2027年春节放假从哪天开始？
+  expected: 2027年2月5日（农历除夕）开始，至2月13日，共9天（国务院办公厅国办发明电〔2026〕10号，2026年11月5日发布）[2027 Spring Festival holiday starts Feb 5, 2027]
+  accept:
+  - 2月5日
+  - 2月5号
+  - February 5
+  - Feb 5
+  review: The holiday runs 2月5日-13日. An answer that mentions 2月5日 only as 除夕 but gives a different start date is wrong.
+  source: https://www.news.cn/politics/20261105/f90cd6ad4df94ab4833b141e52ccfc13/c.html
+  recorded_on: '2026-11-09'
+
+- id: m071
+  language: zh
+  category: chinese
+  difficulty: medium
+  hop: single
+  prompt: 武汉地铁12号线是哪天全线开通的？
+  expected: 2026年10月29日全线开通运营，全长59.9公里，国内最长地铁环线（新华社2026年10月29日）[Wuhan Metro Line 12 fully opened on 2026-10-29]
+  accept:
+  - 10月29日
+  - 10月29号
+  - October 29
+  - Oct 29
+  review: Phase 1 opened on 2026-05-01; that date is wrong for the full loop.
+  source: https://www.news.cn/20261029/2ab82eb0458b4c5c96d51516b845c209/c.html
+  recorded_on: '2026-11-09'
+
+- id: m072
+  language: zh
+  category: chinese
+  difficulty: hard
+  hop: multi
+  prompt: 神舟二十三号的指令长之前执行过哪次飞行任务？
+  expected: 神舟十六号（指令长为朱杨柱，新华社2026年5月23日公布乘组；他此前执行神舟十六号任务）[The Shenzhou-23 commander, Zhu Yangzhu, previously flew Shenzhou-16]
+  accept:
+  - 神舟十六
+  - 神舟16
+  - Shenzhou-16
+  - Shenzhou 16
+  review: The commander is 朱杨柱. An answer that names another crew member as commander is wrong even if it mentions Shenzhou-16;
+    张志远 and 黎家盈 are on their first flight.
+  source: https://www.news.cn/tech/20260523/3e1c5a2dc2db47dcbaa516e5948ea998/c.html
+  recorded_on: '2026-11-09'
+
+- id: m073
+  language: zh
+  category: chinese
+  difficulty: medium
+  hop: single
+  prompt: 华为Pura 90 Pro起售价多少钱？
+  expected: 5499元起（华为2026年4月20日发布Pura 90系列，新华社）[Huawei Pura 90 Pro starts at 5,499 yuan]
+  accept:
+  - '5499'
+  - 5,499
+  review: The standard Pura 90 starts at 4699 and the Pro Max at 6499; the 2025 Pura 80 Pro started at 6499. Only 5499 as
+    the Pro's starting price is correct.
+  source: http://www.news.cn/tech/20260420/b3284825c9444b81b5ccaa05a0a7c088/c.html
+  recorded_on: '2026-11-09'
+
+- id: m074
+  language: zh
+  category: chinese
+  difficulty: hard
+  hop: single
+  prompt: 米兰冬奥会上中国队唯一一枚冰上项目的金牌是谁拿的？
+  expected: 宁忠岩，速度滑冰男子1500米（2026年2月19日，破奥运纪录；中国队5金中其余4金均为雪上项目，新华社）[Ning Zhongyan, men's 1500m speed skating]
+  accept:
+  - 宁忠岩
+  - 寧忠岩
+  - Ning Zhongyan
+  source: https://www.news.cn/20260220/d121d5f9081f47849d3172e3c5f63a81/c.html
+  recorded_on: '2026-11-09'
+
+- id: m075
+  language: zh
+  category: chinese
+  difficulty: easy
+  hop: single
+  prompt: 名古屋亚运会中国代表团一共拿了多少枚金牌？
+  expected: 169枚金牌（169金89银83铜，共341枚奖牌，连续第12届金牌榜第一；新华社2026年10月3日）[China won 169 golds at the 2026 Aichi-Nagoya Asian Games]
+  accept:
+  - '169'
+  review: 169 must be the gold count; 341 is the total medal count.
+  source: https://www.news.cn/sports/20261003/268a578b74fa45ac9e21b80d5b59db43/c.html
+  recorded_on: '2026-11-09'
+
+- id: m076
+  language: zh
+  category: chinese
+  difficulty: easy
+  hop: single
+  prompt: 2026赛季中超冠军是哪支球队？
+  expected: 大连英博（2026年11月8日末轮3比1胜天津津门虎，与成都蓉城同积52分，凭相互战绩夺冠；中新社）[Dalian Yingbo won the 2026 Chinese Super League]
+  accept:
+  - 大连英博
+  - Dalian Yingbo
+  review: Chengdu Rongcheng finished second on equal points; an answer that names Dalian Yingbo only as runner-up is wrong.
+  source: https://www.chinanews.com.cn/ty/2026/11-08/10728519.shtml
+  recorded_on: '2026-11-09'
+
+- id: m077
+  language: zh
+  category: chinese
+  difficulty: hard
+  hop: multi
+  prompt: 2026赛季中超冠军球队的主教练是谁？
+  expected: 李国旭（大连英博主教练；新华社2026年11月8日夺冠图片报道）[Li Guoxu, head coach of champions Dalian Yingbo]
+  accept:
+  - 李国旭
+  - Li Guoxu
+  source: https://www.news.cn/sports/20261109/3718f37a94174e5794c92e7a73c7b0b1/c.html
+  recorded_on: '2026-11-09'
+
+- id: m078
+  language: zh
+  category: chinese
+  difficulty: medium
+  hop: single
+  prompt: 2026年春节档电影总票房最后是多少？
+  expected: 57.52亿元（大年初一到初七，国家电影局2026年2月24日发布，新华社）[2026 Spring Festival box office 5.752 billion yuan]
+  accept:
+  - 57.52亿
+  - 57.52 亿
+  - 57.52億
+  - 5.752 billion
+  review: 57.52亿 is the National Film Administration figure. Ticketing platforms such as Maoyan may show slightly different
+    totals; on review, accept 57.5亿 as a rounded correct answer.
+  source: https://www.news.cn/fortune/20260224/0b322f8b23244154bdbff16f37eded7f/c.html
+  recorded_on: '2026-11-09'
+
+- id: m079
+  language: zh
+  category: chinese
+  difficulty: hard
+  hop: multi
+  prompt: 2026年春节档票房排第二的那部电影是谁导演的？
+  expected: 张艺谋（档期第二为《惊蛰无声》，8.68亿元，国家电影局数据；冠军《飞驰人生3》29.27亿元）[Zhang Yimou, director of the runner-up Jing Zhe Wu Sheng]
+  accept:
+  - 张艺谋
+  - 張藝謀
+  - Zhang Yimou
+  review: Second place is 《惊蛰无声》; 《镖人：风起大漠》 was third with 8.06亿. The director is confirmed by CCTV (news.cctv.com/2026/02/19/ARTIVHqjB2G64zp4Dk39AXwT260219.shtml).
+  source: http://www.news.cn/ent/20260227/3a3897209824443a83cf77f2641b0fc6/c.html
+  recorded_on: '2026-11-09'
+
+- id: m080
+  language: zh
+  category: chinese
+  difficulty: medium
+  hop: single
+  prompt: 2026年央视春晚四川分会场设在哪个城市？
+  expected: 宜宾（另三个分会场为哈尔滨、义乌、合肥；央视网2026年2月4日春晚发布会）[Yibin hosted the Sichuan sub-venue of the 2026 CCTV Gala]
+  accept:
+  - 宜宾
+  - 宜賓
+  - Yibin
+  source: https://news.cctv.cn/2026/02/04/ARTIh61otLWVdwFbCdhGJMZJ260204.shtml
+  recorded_on: '2026-11-09'
+
+- id: m081
+  language: ko
+  category: korean
+  difficulty: easy
+  hop: single
+  prompt: 2026 한국시리즈 우승팀은?
+  expected: 삼성 라이온즈 (KT 위즈에 4승 1패, 2026-11-08)
+  accept:
+  - 삼성
+  - Samsung
+  review: Wrong if it names Samsung as the runner-up.
+  source: https://www.mt.co.kr/sports/2026/11/08/2026110817592781571
+  recorded_on: '2026-11-09'
+
+- id: m082
+  language: ko
+  category: korean
+  difficulty: easy
+  hop: single
+  prompt: 전라북도지사가 누구지
+  expected: 이원택 (전북특별자치도지사, 2026-07-01 취임)
+  accept:
+  - 이원택
+  - Lee Won-taek
+  - Lee Won-taeg
+  source: https://m.seoul.co.kr/news/society/2026/07/01/20260701500205
+  recorded_on: '2026-11-09'
+
+- id: m083
+  language: ko
+  category: korean
+  difficulty: easy
+  hop: single
+  prompt: 부산시장 누구야?
+  expected: 전재수 (2026-06-03 지방선거 당선, 2026-07-01 취임; 전임 박형준)
+  accept:
+  - 전재수
+  - Jeon Jae-soo
+  - Jeon Jae-su
+  source: https://www.seoul.co.kr/news/politics/local-election2026/2026/06/04/20260604500028
+  recorded_on: '2026-11-09'
+
+- id: m084
+  language: ko
+  category: korean
+  difficulty: easy
+  hop: single
+  prompt: 이번 6월 지방선거에서 경기도지사 누가 당선됐어?
+  expected: '추미애 (더불어민주당). 2026-06-03 제9회 지방선거에서 득표율 약 55%로 양향자 후보를 꺾고 당선, 헌정 첫 여성 광역단체장. 출처: 경인일보, 중앙선관위 집계 [Choo Mi-ae (Democratic
+    Party) won the Gyeonggi governor race on 2026-06-03, the first woman elected to lead a province or metropolitan city]'
+  accept:
+  - 추미애
+  - Choo Mi-ae
+  - Chu Mi-ae
+  - Choo Miae
+  source: https://www.kyeongin.com/article/1764981
+  recorded_on: '2026-11-09'
+
+- id: m085
+  language: ko
+  category: korean
+  difficulty: easy
+  hop: single
+  prompt: 초대 전남광주특별시장으로 당선된 사람은 누구입니까?
+  expected: '민형배 (더불어민주당). 2026-06-03 지방선거에서 초대 전남광주특별시장에 당선 (개표 완료 기준 득표율 약 79%, 2위 이정현). 출처: 파이낸셜뉴스 [Min Hyung-bae (Democratic
+    Party) became the first mayor of the merged Jeonnam-Gwangju Special City]'
+  accept:
+  - 민형배
+  - Min Hyung-bae
+  - Min Hyeong-bae
+  - Min Hyungbae
+  source: https://www.fnnews.com/news/202606040550100449
+  recorded_on: '2026-11-09'
+
+- id: m086
+  language: ko
+  category: korean
+  difficulty: hard
+  hop: single
+  prompt: 2026년 대구시장 선거에서 당선된 후보의 최종 득표율은 몇 퍼센트였나요?
+  expected: '53.92%. 국민의힘 추경호 후보가 53.92%로 더불어민주당 김부겸 후보(45.05%)를 8.87%p 차로 꺾음 (2026-06-04 개표 완료, 중앙선관위 기준). 출처: 대구MBC [53.92%
+    — Choo Kyung-ho (People Power Party) beat Kim Boo-kyum in the Daegu mayoral race]'
+  accept:
+  - '53.92'
+  - 53.9%
+  - 53.9 %
+  - 53.9퍼센트
+  review: Mid-count figures (e.g. 52.80% at 71% counted) and the 49.9% exit-poll figure are wrong; 45.05% is the runner-up's
+    share.
+  source: https://dgmbc.com/NewsArticle/843995
+  recorded_on: '2026-11-09'
+
+- id: m087
+  language: ko
+  category: korean
+  difficulty: medium
+  hop: single
+  prompt: 충북도지사 이번 선거에서 누가 됐어?
+  expected: '신용한 (더불어민주당). 2026-06-03 지방선거에서 현직 김영환(국민의힘) 지사를 꺾고 충청북도지사에 당선. 출처: 폴리뉴스 [Shin Yong-han (Democratic Party) defeated
+    incumbent Kim Young-hwan for North Chungcheong governor]'
+  accept:
+  - 신용한
+  - Shin Yong-han
+  - Shin Yonghan
+  - Sin Yong-han
+  source: https://www.polinews.co.kr/news/articleView.html?idxno=733026
+  recorded_on: '2026-11-09'
+
+- id: m088
+  language: ko
+  category: korean
+  difficulty: medium
+  hop: single
+  prompt: 한국은행이 발표한 2026년 3분기 실질 GDP 성장률 속보치(전기 대비)는 몇 %입니까?
+  expected: 전기 대비 1.0% (전년동기 대비 3.4%). 한국은행 '2026년 3/4분기 실질 국내총생산(속보)', 2026-10-27 발표. 잠정치는 12월 발표 예정 [1.0% quarter-on-quarter,
+    Bank of Korea advance estimate released 2026-10-27]
+  accept:
+  - 1.0%
+  - 1.0 %
+  - 1.0퍼센트
+  - 1.0 퍼센트
+  review: 3.4% is the year-on-year rate (and also real GDI q/q), not the answer. Values such as 11.0% or 1.05% would falsely
+    match; a bare '1%' is correct but not matched.
+  source: https://www.bok.or.kr/portal/bbs/B0000501/view.do?nttId=11065944&menuNo=200690
+  recorded_on: '2026-11-09'
+
+- id: m089
+  language: ko
+  category: korean
+  difficulty: easy
+  hop: single
+  prompt: 2027년도 정부 예산안 총지출 규모 얼마야?
+  expected: '820조 9천억 원. 2026-09-01 국무회의 의결, 올해 본예산(727조 9천억 원)보다 93조 원(12.8%) 증가, 정부안 첫 800조 원 돌파. 출처: 헤럴드경제 [KRW 820.9 trillion,
+    the government''s 2027 budget proposal approved by the cabinet on 2026-09-01]'
+  accept:
+  - 820조 9
+  - 820조9
+  - '820.9'
+  - 821조
+  review: This is the government proposal; the National Assembly's final figure (due by 2026-12-02) may differ. 727.9조 is
+    the 2026 budget, not the answer.
+  source: https://biz.heraldcorp.com/article/10858697
+  recorded_on: '2026-11-09'
+
+- id: m090
+  language: ko
+  category: korean
+  difficulty: hard
+  hop: single
+  prompt: 2027학년도 수능 지원자 수는 총 몇 명입니까?
+  expected: '55만 1,864명. 전년보다 2,310명 감소, N수생(졸업생+검정고시)은 19만 6,473명으로 23년 만에 최대. 한국교육과정평가원 2026-09-08 발표. 출처: 뉴스핌 [551,864
+    applicants for the 2027 CSAT, announced by KICE on 2026-09-08]'
+  accept:
+  - 551,864
+  - 1,864
+  - '1864'
+  - 1천864
+  review: The short substrings are the last digits of 551,864; check the full number. 554,174 (last year) and 196,473 (repeat
+    test-takers) are wrong.
+  source: https://www.newspim.com/news/view/20260908000096
+  recorded_on: '2026-11-09'
+
+- id: m091
+  language: ko
+  category: korean
+  difficulty: medium
+  hop: single
+  prompt: 2027학년도 의대 정원 몇 명 늘었어?
+  expected: '490명 증원 (정원 3,548명). 보건복지부 보건의료정책심의위원회 2026-02-10 의결. 출처: 한국경제 [490 more places, for a total of 3,548 medical
+    school places in the 2027 academic year]'
+  accept:
+  - '490'
+  - 3,548
+  - '3548'
+  review: 613 (2028-29) and 813 (2030 onward) are later increases, not the 2027 answer.
+  source: https://www.hankyung.com/article/2026021072561
+  recorded_on: '2026-11-09'
+
+- id: m092
+  language: ko
+  category: korean
+  difficulty: hard
+  hop: single
+  prompt: 9월부터 KTX 요금이 내렸다던데, 서울~부산 KTX 운임은 이제 얼마야?
+  expected: '5만 4,400원 (기존 5만 9,800원). 코레일·SR 통합에 따라 2026-09-01부터 KTX 운임 평균 10% 인하. 출처: 한국경제 [KRW 54,400, down from 59,800,
+    after the average 10% KTX fare cut on 2026-09-01]'
+  accept:
+  - 4,400
+  - '4400'
+  - 4천400
+  - 4천4백
+  review: The substrings are the end of 54,400; check the full figure is 54,400 won. 59,800 is the old fare; 42,000 is Yongsan-Gwangju
+    Songjeong.
+  source: https://www.hankyung.com/article/2026083145861
+  recorded_on: '2026-11-09'
+
+- id: m093
+  language: ko
+  category: korean
+  difficulty: medium
+  hop: single
+  prompt: 갤럭시 Z 플립8 출시 때 출고가 얼마였어? 256GB 기본 모델 기준으로.
+  expected: '168만 3,000원 (256GB). 2026-07-31 공개, 8월 7일 국내 출시, 전작 대비 19만 8,000원 인상. 512GB는 193만 6,000원. 출처: 아이뉴스24 [KRW 1,683,000
+    for the 256GB Galaxy Z Flip8 at launch]'
+  accept:
+  - 168만 3
+  - 168만3
+  - 1,683,000
+  - '1683000'
+  review: 193만6천원 is the 512GB model; 148만5천원 was the Flip7.
+  source: https://m.news.nate.com/view/20260731n29943
+  recorded_on: '2026-11-09'
+
+- id: m094
+  language: ko
+  category: korean
+  difficulty: easy
+  hop: single
+  prompt: 밀라노 코르티나 동계올림픽에서 우리나라 첫 설상 종목 금메달 딴 선수 누구야?
+  expected: '최가온. 2026-02-12(현지) 스노보드 여자 하프파이프 우승, 한국 설상 종목 사상 첫 올림픽 금메달. 출처: 위키백과(South Korea at the 2026 Winter Olympics),
+    뉴시스 [Choi Ga-on, women''s snowboard halfpipe, Korea''s first Olympic gold in a snow sport]'
+  accept:
+  - 최가온
+  - Choi Ga-on
+  - Choi Gaon
+  - Gaon Choi
+  source: https://en.wikipedia.org/wiki/South_Korea_at_the_2026_Winter_Olympics
+  recorded_on: '2026-11-09'
+
+- id: m095
+  language: ko
+  category: korean
+  difficulty: hard
+  hop: multi
+  prompt: 2026년 동계올림픽과 아시안게임에서 한국이 딴 금메달을 합치면 모두 몇 개입니까?
+  expected: '42개. 밀라노·코르티나 동계올림픽 금 3개(종합 13위) + 아이치·나고야 아시안게임 금 39개(종합 3위, 2026-10-04 폐막). 출처: 헤럴드경제, 위키백과 [42 golds: 3 at
+    the Milano Cortina Winter Olympics plus 39 at the Aichi-Nagoya Asian Games]'
+  accept:
+  - 42개
+  - 42 개
+  - 42 gold
+  - 마흔두
+  review: Needs both facts; 3 or 39 alone, or the Asian Games medal total of 150, is wrong.
+  source: https://www.heraldk.com/article/2026100409593187732
+  recorded_on: '2026-11-09'
+
+- id: m096
+  language: ko
+  category: korean
+  difficulty: easy
+  hop: single
+  prompt: 2026 K리그1 우승팀 어디야?
+  expected: 'FC서울. 2026-10-24 강원FC와 1-1로 비기며 조기 우승 확정, 2016년 이후 10년 만의 통산 7번째 우승. 출처: 경향신문 [FC Seoul clinched the 2026 K League
+    1 title early on 2026-10-24]'
+  accept:
+  - FC서울
+  - FC 서울
+  - FC Seoul
+  source: https://khan.co.kr/article/202610241654001
+  recorded_on: '2026-11-09'
+
+- id: m097
+  language: ko
+  category: korean
+  difficulty: medium
+  hop: single
+  prompt: 올해 KBO 홈런왕은 홈런 몇 개 쳤어?
+  expected: '45개. KIA 김도영이 2026-10-12 정규시즌 최종전에서 45호 홈런을 쳐 KT 샘 힐리어드(44개)를 1개 차로 제치고 생애 첫 홈런왕. 출처: 시대일보 [45 home runs, by
+    Kim Do-yeong of the KIA Tigers]'
+  accept:
+  - 45개
+  - 45홈런
+  - 45 홈런
+  - 45호
+  review: 44 is runner-up Sam Hilliard's total. An English answer ('45 home runs') is correct but not matched.
+  source: https://www.sidae.com/article/2026101309342824376
+  recorded_on: '2026-11-09'
+
+- id: m098
+  language: ko
+  category: korean
+  difficulty: medium
+  hop: multi
+  prompt: 북중미 월드컵에서 우리나라가 유일하게 이긴 경기 있잖아, 그 경기 결승골 누가 넣었어?
+  expected: '오현규. 유일한 승리는 2026-06-12 A조 1차전 체코전 2-1 역전승(후반 35분 오현규 결승골, 동점골 황인범). 한국은 이후 멕시코·남아공에 져 1승 2패(승점 3)로 조별리그 탈락,
+    최종 34위(YTN). 출처: 미디어워치, Olympics.com [Oh Hyeon-gyu scored the winner in the 2-1 win over Czechia, Korea''s only win of
+    the tournament]'
+  accept:
+  - 오현규
+  - Oh Hyeon-gyu
+  - Oh Hyun-gyu
+  - Oh Hyeongyu
+  review: Hwang In-beom scored the equaliser, not the winner; the Czech goal was Ladislav Krejci's.
+  source: https://www.mediawatch.kr/news/article.html?no=260000
+  recorded_on: '2026-11-09'
+
+- id: m099
+  language: ko
+  category: korean
+  difficulty: easy
+  hop: single
+  prompt: 올해 백상예술대상 영화 부문 대상은 누가 받았어?
+  expected: '유해진 (''왕과 사는 남자''). 2026-05-08 제62회 백상예술대상 영화 부문 대상 (방송 부문 대상은 류승룡). 출처: 엘르, 스포츠경향 [Yoo Hae-jin won the film
+    Grand Prize at the 62nd Baeksang Arts Awards for ''The King''s Warden'']'
+  accept:
+  - 유해진
+  - Yoo Hae-jin
+  - Yu Hae-jin
+  - Yoo Haejin
+  review: Ryu Seung-ryong won the TV Grand Prize, not the film one.
+  source: https://www.elle.co.kr/article/1902273
+  recorded_on: '2026-11-09'
+
+- id: m100
+  language: ko
+  category: korean
+  difficulty: hard
+  hop: multi
+  prompt: 2026년 국내 극장가 관객 수 1위 영화의 감독은 누구입니까?
+  expected: '장항준. 올해 흥행 1위 ''왕과 사는 남자''(2월 개봉, 2026-10-12 기준 누적 1,693만 명, 역대 한국영화 2위)의 감독. 출처: 한국경제 [Jang Hang-jun, director
+    of ''The King''s Warden'', 2026''s top film with 16.93 million admissions]'
+  accept:
+  - 장항준
+  - Jang Hang-jun
+  - Jang Hang-joon
+  - Jang Hangjun
+  review: '''오디세이'' (Christopher Nolan) is second with 12.18 million as of 2026-10-12, so Nolan is wrong.'
+  source: https://www.hankyung.com/article/202610138792i
+  recorded_on: '2026-11-09'
+
