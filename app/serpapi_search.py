@@ -1,8 +1,10 @@
-import os, time
+import os, sys, time
 import serpapi
 from dotenv import load_dotenv
 
 load_dotenv()  # chat.py imports this module before it loads .env itself
+if not os.environ.get("SERPAPI_API_KEY"):
+    sys.exit("SERPAPI_API_KEY isn't set. Copy .env.example to .env in the repository root and add your SerpApi key.")
 serpapi_client = serpapi.Client(api_key=os.environ["SERPAPI_API_KEY"], timeout=60)
 
 # Top 5 results per engine, trimmed to the fields Qwen needs.

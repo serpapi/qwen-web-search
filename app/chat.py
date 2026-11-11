@@ -2,12 +2,12 @@ import json, os
 from dotenv import load_dotenv
 from openai import OpenAI
 from tokenizers import Tokenizer
-from models import MODEL
+from models import MODEL, OLLAMA_BASE_URL
 from tools import LAST_ROUND, SERPAPI_TOOLS, SYSTEM
-from serpapi_search import serpapi_search
+from serpapi_search import RESTRICTORS, serpapi_search
 
 load_dotenv()
-client = OpenAI(base_url=os.environ["OLLAMA_BASE_URL"], api_key="ollama")
+client = OpenAI(base_url=OLLAMA_BASE_URL, api_key="ollama")
 tokenizer = Tokenizer.from_pretrained("Qwen/Qwen3.8-27B")  # count tokens the way Qwen sees them
 MAX_ROUNDS = 4
 
@@ -36,6 +36,17 @@ def stream_reply(model, messages, tools, run):
                 reply["tool_calls"][-1]["function"]["arguments"] += call.function.arguments or ""
     return reply
 
+def search(engine, query, recency):
+    """Runs one search, or tells Qwen why it failed so it can carry on."""
+    if engine not in RESTRICTORS:  # Ollama doesn't enforce the tool's enum, and Qwen sometimes invents engines
+        reason = f"unknown engine {engine!r}; use one of {', '.join(RESTRICTORS)}"
+    else:
+        try:
+            return serpapi_search(engine, query, recency)
+        except Exception as e:  # SerpApi's own message, such as "Invalid API key"; never str(e), which has the URL with the api_key
+            reason = getattr(e, "error", None) or type(e).__name__
+    return {"engine": engine, "format": "error", "text": f"Search failed: {reason}", "seconds": 0}
+
 def ask(question, tools=SERPAPI_TOOLS, history=(), model=MODEL):
     """Yields Qwen's thinking and text as they stream and each search as it happens, then the answer.
     Pass tools=None for no search."""
@@ -53,10 +64,7 @@ def ask(question, tools=SERPAPI_TOOLS, history=(), model=MODEL):
         for call in reply["tool_calls"]:
             args = json.loads(call["function"]["arguments"])
             engine, query = args.get("engine", "google"), args["query"]  # google_search has no engine argument
-            try:
-                result = serpapi_search(engine, query, args.get("recency"))
-            except Exception as e:  # tell Qwen the search failed and let it carry on
-                result = {"engine": engine, "format": "error", "text": f"Search failed: {type(e).__name__}", "seconds": 0}
+            result = search(engine, query, args.get("recency"))
             step = {"tool": engine, "query": query, "recency": args.get("recency"), "engine": result["engine"], "format": result["format"],
                     "tokens": len(tokenizer.encode(result["text"]).ids), "seconds": result["seconds"]}
             run["searches"].append(step)

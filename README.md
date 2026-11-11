@@ -75,6 +75,8 @@ Pick a model and switch between the two modes at the top of the page. Switching 
 
 The **Turn stats** panel adds up the searches, tokens and time for each answer.
 
+![Dedicated mode: Qwen searches with SerpApi and streams its answer](assets/chat-demo.gif)
+
 **Battleground:** send one question to up to four columns and read their answers side by side. Each column is a model and a setup, so you can compare search with no search, Google with multiple engines, or one model with another. The presets fill the columns in one click:
 
 | Preset | Columns |
@@ -85,6 +87,8 @@ The **Turn stats** panel adds up the searches, tokens and time for each answer.
 | Small + search vs big alone | Your smallest model with SerpApi, and your biggest without search |
 
 A table compares the engines used, searches, tokens and total time, and highlights the lowest search tokens and the fastest column. Columns run one after another, so they don't compete for your computer's memory. When a column needs a different model, Ollama loads it first; the time shown doesn't include loading.
+
+![Battleground mode: three Qwen models answer the same question, one after another (sped up 5x)](assets/battleground-demo.gif)
 
 ### Setups
 
@@ -173,11 +177,12 @@ To work on the UI, run `python server.py` in `app/` and `npm run dev` in `app/we
 | Problem | Fix |
 |---|---|
 | `address already in use` when you start Ollama | Ollama is already running. Quit the Ollama app, then start Ollama again. |
-| `openai.APIConnectionError: Connection error` or `URLError: Connection refused` | Ollama isn't running. Start it as in [Setup](#setup), then start the app. |
-| `model "..." not found` | Pull the model with `ollama pull`, or set `LOCAL_MODEL` (app) or `MODEL` (examples) to a name from `ollama list`. |
+| `Can't reach Ollama` | Ollama isn't running. Start it as in [Setup](#setup), then start the app. |
+| `Ollama doesn't have ...` or `model "..." not found` | Pull the model with `ollama pull`, or set `LOCAL_MODEL` (app) or `MODEL` (examples) to a name from `ollama list`. |
 | The app says no Qwen model was found | Pull one, for example `ollama pull qwen3.5:9b`, then reload the page. Only Qwen models with tool support are listed. |
-| `KeyError: 'SERPAPI_API_KEY'` | Create `.env` in the repository root, as in [Setup](#setup). |
-| `401 Unauthorized` from SerpApi | The key in `.env` is wrong. Copy it again from your [SerpApi dashboard](https://serpapi.com/dashboard). |
+| `SERPAPI_API_KEY isn't set` | Create `.env` in the repository root, as in [Setup](#setup). |
+| A search says `Search failed: Invalid API key` | The key in `.env` is wrong. Copy it again from your [SerpApi dashboard](https://serpapi.com/dashboard). |
+| A search says `Search failed: Your account has run out of searches` | You've used this month's searches. Check your usage on the [SerpApi dashboard](https://serpapi.com/dashboard). |
 | Your computer slows down while Qwen answers | Close other apps or pick a smaller model. Run `ollama stop <model>` to free the memory. |
 
 ## Learn more
