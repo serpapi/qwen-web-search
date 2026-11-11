@@ -4,68 +4,57 @@ A chat app and two short Python examples that give a local Qwen model real-time 
 
 ![How a local Qwen model searches the web with SerpApi](assets/qwen-serpapi-flow.png)
 
-- **[Chat app](#run-the-chat-app)** (`app/`): ask questions in your browser, see every search Qwen makes, and compare Qwen with and without search.
+- **[Chat app](#use-the-app)** (`app/`): ask questions in your browser, see every search Qwen makes, and compare models and setups side by side.
 - **[Examples](#run-the-examples)** (`examples/`): two standalone Python scripts with the minimum code to connect Qwen to SerpApi.
+- **[Benchmark](#benchmark)** (`app/questions/`): three tests with 100 questions each, and our results.
 
-## Requirements
+## Quick start
 
-- [Ollama](https://ollama.com/download)
-- Python 3.10 or newer
-- Node.js 20 or newer, to build the chat app
-- A [SerpApi API key](https://serpapi.com/dashboard). The free plan includes 250 searches a month.
+You need [Ollama](https://ollama.com/download), Python 3.10 or newer, Node.js 20 or newer (to build the chat app), and a [SerpApi API key](https://serpapi.com/dashboard). The free plan includes 250 searches a month.
 
-## Setup
-
-**1. Clone the repository and install the Python packages:**
+**1. Install.** Then open `.env` and set `SERPAPI_API_KEY` to your key.
 
 ```bash
 git clone https://github.com/serpapi/qwen-web-search.git
 cd qwen-web-search
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-**2. Add your SerpApi key.** Copy the example file, then set `SERPAPI_API_KEY` in `.env`:
-
-```bash
 cp .env.example .env
 ```
 
-**3. Download a Qwen model** that fits your computer's memory:
-
-| Model | Download size | Memory needed |
-|---|---|---|
-| qwen3.5:4b | 3.4 GB | 6 GB |
-| qwen3.5:9b | 6.6 GB | 8 GB |
-| qwen3.8:27b | 18 GB | 24 GB |
-| qwen3-coder:30b | 19 GB | 24 GB |
+**2. Get a Qwen model and start Ollama** in its own terminal. If the Ollama app is open, quit it first.
 
 ```bash
 ollama pull qwen3.5:9b
-```
-
-Any Qwen model with the [tools tag on Ollama](https://ollama.com/search?c=tools&q=qwen) works. The app lists every Qwen model you've pulled and starts with the biggest. To start with a different one, set `LOCAL_MODEL` in `.env`.
-
-**4. Start Ollama** in its own terminal and leave it running. If the Ollama app is open, quit it first.
-
-```bash
 OLLAMA_CONTEXT_LENGTH=32768 OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 ollama serve
 ```
 
-## Run the chat app
+The settings give Qwen room for search results (a 32k-token context) while keeping memory use down.
 
-Build the UI once, then start the server from `app/`:
+**3. Build the UI and start the app** in another terminal:
 
 ```bash
 cd app/web && npm install && npm run build && cd ..
 python server.py
 ```
 
-Open http://localhost:8000.
+Open http://localhost:8000. The first start downloads Qwen's tokenizer from Hugging Face, which the app uses to count search tokens.
 
-### Use the app
+### Pick a model
 
-Pick a model and switch between the two modes at the top of the page. Switching to a model that isn't loaded yet makes the next answer slower while Ollama loads it.
+Pull the one that fits your computer's memory:
+
+| Model | Download size | Memory needed |
+|---|---|---|
+| qwen3.5:4b | 3.4 GB | 6 GB |
+| qwen3.5:9b | 6.6 GB | 8 GB |
+| qwen3.8:27b | 18 GB | 24 GB |
+
+Any Qwen model with the [tools tag on Ollama](https://ollama.com/search?c=tools&q=qwen) works. The app lists every Qwen model you've pulled and starts with the biggest. To start with a different one, set `LOCAL_MODEL` in `.env`.
+
+## Use the app
+
+Pick a model and a mode at the top of the page. Switching to a model that isn't loaded yet makes the next answer slower while Ollama loads it.
 
 **Dedicated:** chat with one setup. Pick a setup, then type a question or click an example prompt. Each search appears as a card while Qwen works, with:
 
@@ -86,7 +75,7 @@ The **Turn stats** panel adds up the searches, tokens and time for each answer.
 | Model vs model | Every Qwen model you've pulled (up to four), each with SerpApi |
 | Small + search vs big alone | Your smallest model with SerpApi, and your biggest without search |
 
-A table compares the engines used, searches, tokens and total time, and highlights the lowest search tokens and the fastest column. Columns run one after another, so they don't compete for your computer's memory. When a column needs a different model, Ollama loads it first; the time shown doesn't include loading.
+A table compares the engines used, searches, tokens and total time, and highlights the lowest search tokens and the fastest column. Columns run one after another, so they don't compete for your computer's memory. The time shown doesn't include loading a model.
 
 ![Battleground mode: three Qwen models answer the same question, one after another (sped up 5x)](assets/battleground-demo.gif)
 
@@ -120,31 +109,11 @@ python examples/qwen_search_multi_engines.py
 
 Type a question after `You:`. A `[search]` line appears for each search Qwen makes before it answers. Press Ctrl+C to quit.
 
-## Run the benchmark
+## Benchmark
 
-Each benchmark test asks its own questions from [`app/questions/`](app/questions/) and saves the answers to `results.jsonl`:
+Three tests with 100 questions each, in English, Chinese and Korean: which model searches best, Google alone vs multiple engines, and a small model with search vs a big model without it. In our runs, a 4B model with search beat a 27B model answering from memory.
 
-- **Model vs model** (`models`): 100 questions that need a web search (60 English, 20 Chinese, 20 Korean), asked with SerpApi · Multiple engines on each Qwen model you've pulled. Every answer is from 2026, so the models can't know it from training. The questions mix topics, easy to hard questions, multi-hop questions that combine two facts, and false-premise questions that a good answer should push back on.
-- **Google vs multiple engines** (`engines`): 100 questions asked with SerpApi · Google and with SerpApi · Multiple engines on the biggest model. 40 Chinese and 40 Korean questions ask about local and long-tail facts, such as a county's new mayor or a city's metro line, where Baidu and Naver may know more than Google. 20 English questions (recent news and general web) are the control.
-- **Small model with search vs big model without** (`known_facts`): 100 old, stable facts (60 English, 20 Chinese, 20 Korean), from common knowledge to specialist trivia, asked without search and with SerpApi · Multiple engines on each model. It shows where each model's memory runs out, and whether search lets a small model catch up with a big one.
-
-From `app/`:
-
-```bash
-python bench.py models                        # every installed Qwen model, biggest first
-python bench.py models qwen3.5:9b qwen3.5:4b  # only the models you name
-python bench.py engines                       # both setups on the biggest model
-python bench.py known_facts                   # no search and SerpApi, on every installed Qwen model
-python report.py models                       # summary, and results by language, topic, difficulty and question
-```
-
-- Each model is loaded before its first question, so answer times don't include loading, and unloaded after its last one.
-- If a run stops, run the same command again. It skips the answers already in `results.jsonl`.
-- A full run takes hours, so keep the computer awake. A sleeping Mac makes searches fail and inflates answer times. On a Mac, plug it in, keep the lid open and run `caffeinate -s python bench.py models`.
-- The biggest model needs most of your memory. If the computer starts swapping, quit other apps or run that model on its own.
-- The answers were verified on 2026-11-09 against the source in each question. Some change quickly, such as the latest Next.js version, so check them before you run.
-- An answer counts as correct when it contains an accepted answer. "Answer in results" counts the answers whose search results contained an accepted answer. Review the results by hand; the `review` notes say what to look out for.
-- A full run on three models uses about 450 SerpApi searches.
+See the [results and how to run the tests](app/questions/README.md).
 
 ## Project structure
 
@@ -160,8 +129,8 @@ qwen-web-search/
 │   ├── tools.py                      # The prompt and search tools Qwen sees
 │   ├── serpapi_search.py             # SerpApi search
 │   ├── setups.py                     # The setups shared by the UI and the benchmark
-│   ├── bench.py, report.py           # Benchmark and summary tables
-│   ├── questions/                    # Benchmark questions, one file per test
+│   ├── bench.py, report.py           # Benchmark and result tables
+│   ├── questions/                    # Benchmark questions and results
 │   └── web/                          # React chat UI
 ├── assets/                           # Images
 ├── .env.example
@@ -177,10 +146,10 @@ To work on the UI, run `python server.py` in `app/` and `npm run dev` in `app/we
 | Problem | Fix |
 |---|---|
 | `address already in use` when you start Ollama | Ollama is already running. Quit the Ollama app, then start Ollama again. |
-| `Can't reach Ollama` | Ollama isn't running. Start it as in [Setup](#setup), then start the app. |
+| `Can't reach Ollama` | Ollama isn't running. Start it as in [Quick start](#quick-start), then start the app. |
 | `Ollama doesn't have ...` or `model "..." not found` | Pull the model with `ollama pull`, or set `LOCAL_MODEL` (app) or `MODEL` (examples) to a name from `ollama list`. |
 | The app says no Qwen model was found | Pull one, for example `ollama pull qwen3.5:9b`, then reload the page. Only Qwen models with tool support are listed. |
-| `SERPAPI_API_KEY isn't set` | Create `.env` in the repository root, as in [Setup](#setup). |
+| `SERPAPI_API_KEY isn't set` | Create `.env` in the repository root, as in [Quick start](#quick-start). |
 | A search says `Search failed: Invalid API key` | The key in `.env` is wrong. Copy it again from your [SerpApi dashboard](https://serpapi.com/dashboard). |
 | A search says `Search failed: Your account has run out of searches` | You've used this month's searches. Check your usage on the [SerpApi dashboard](https://serpapi.com/dashboard). |
 | Your computer slows down while Qwen answers | Close other apps or pick a smaller model. Run `ollama stop <model>` to free the memory. |
