@@ -1,0 +1,1381 @@
+# Small model with search vs big model without: 100 old, stable facts, asked with no search and with serpapi on every model.
+# Every answer has been true since before 2020, so a model could know it from training; the questions run from common
+# knowledge (easy) to specialist long-tail facts (hard), to show where each model's memory runs out and whether search
+# closes the gap. Verified on recorded_on against `source` and a second source; disputed facts were left out.
+# accept: case-insensitive substrings (whitespace ignored) that count as correct. Review every answer by hand;
+# `review` says what makes an answer wrong when a false match is possible.
+
+- id: k001
+  language: en
+  category: art
+  difficulty: easy
+  hop: single
+  prompt: who painted the starry night
+  expected: Vincent van Gogh (Saint-Rémy, June 1889; MoMA, New York)
+  accept:
+  - gogh
+  source: https://www.moma.org/collection/works/79802
+  recorded_on: '2026-11-10'
+
+- id: k002
+  language: en
+  category: art
+  difficulty: easy
+  hop: single
+  prompt: Who painted The Persistence of Memory, the one with the melting clocks?
+  expected: Salvador Dalí (1931; MoMA, New York)
+  accept:
+  - dalí
+  - dali
+  source: https://www.moma.org/collection/works/79018
+  recorded_on: '2026-11-10'
+
+- id: k003
+  language: en
+  category: art
+  difficulty: medium
+  hop: single
+  prompt: Which artist made the woodblock print The Great Wave off Kanagawa?
+  expected: Katsushika Hokusai (ca. 1830-32, from Thirty-six Views of Mount Fuji)
+  accept:
+  - hokusai
+  source: https://www.metmuseum.org/art/collection/search/45434
+  recorded_on: '2026-11-10'
+
+- id: k004
+  language: en
+  category: art
+  difficulty: hard
+  hop: single
+  prompt: Which architect designed the Berlin Philharmonie concert hall that opened in 1963?
+  expected: Hans Scharoun (opened 15 October 1963)
+  accept:
+  - scharoun
+  source: https://www.archdaily.com/108538/ad-classics-berlin-philharmonic-hans-scharoun
+  recorded_on: '2026-11-10'
+
+- id: k005
+  language: en
+  category: film
+  difficulty: easy
+  hop: single
+  prompt: Who directed Seven Samurai?
+  expected: Akira Kurosawa (1954)
+  accept:
+  - kurosawa
+  source: https://en.wikipedia.org/wiki/Seven_Samurai
+  recorded_on: '2026-11-10'
+
+- id: k006
+  language: en
+  category: film
+  difficulty: medium
+  hop: single
+  prompt: who directed pather panchali
+  expected: Satyajit Ray (1955, his debut and the first film of the Apu Trilogy)
+  accept:
+  - satyajit
+  source: https://www.britannica.com/topic/Pather-Panchali
+  recorded_on: '2026-11-10'
+
+- id: k007
+  language: en
+  category: film
+  difficulty: hard
+  hop: single
+  prompt: Who directed the 1957 Soviet film The Cranes Are Flying?
+  expected: Mikhail Kalatozov
+  accept:
+  - Kalatozov
+  source: https://en.wikipedia.org/wiki/The_Cranes_Are_Flying
+  recorded_on: '2026-11-10'
+
+- id: k008
+  language: en
+  category: film
+  difficulty: hard
+  hop: single
+  prompt: Who directed the 1966 Senegalese film La Noire de... (Black Girl)?
+  expected: Ousmane Sembène (his directorial debut)
+  accept:
+  - sembène
+  - sembene
+  source: https://www.festival-cannes.com/en/2015/cannes-classics-la-noire-deblack-girl-a-look-back-at-the-origins-of-african-film/
+  recorded_on: '2026-11-10'
+
+- id: k009
+  language: en
+  category: geography
+  difficulty: easy
+  hop: single
+  prompt: What's the capital of France?
+  expected: Paris
+  accept:
+  - Paris
+  - 巴黎
+  - 파리
+  source: https://en.wikipedia.org/wiki/Paris
+  recorded_on: '2026-11-10'
+
+- id: k010
+  language: en
+  category: geography
+  difficulty: easy
+  hop: single
+  prompt: which river runs through baghdad
+  expected: The Tigris
+  accept:
+  - Tigris
+  - Dijla
+  review: Baghdad is on the Tigris only; an answer saying the city lies on both the Tigris and the Euphrates is wrong even
+    though it contains 'Tigris'.
+  source: https://www.britannica.com/place/Baghdad
+  recorded_on: '2026-11-10'
+
+- id: k011
+  language: en
+  category: geography
+  difficulty: easy
+  hop: single
+  prompt: What's the highest mountain in Africa?
+  expected: 'Mount Kilimanjaro, Tanzania (summit: Uhuru Peak on Kibo)'
+  accept:
+  - Kilimanjaro
+  - Uhuru
+  source: https://whc.unesco.org/en/list/403
+  recorded_on: '2026-11-10'
+
+- id: k012
+  language: en
+  category: geography
+  difficulty: medium
+  hop: multi
+  prompt: The river that joins the White Nile at Khartoum flows out of which lake?
+  expected: Lake Tana, Ethiopia (the Blue Nile leaves its southern end near Bahir Dar)
+  accept:
+  - Tana
+  - Tsana
+  review: Lake Victoria (the White Nile's lake) is the likely wrong answer.
+  source: https://www.britannica.com/place/Lake-Tana
+  recorded_on: '2026-11-10'
+
+- id: k013
+  language: en
+  category: geography
+  difficulty: medium
+  hop: single
+  prompt: Which strait links the Persian Gulf to the Gulf of Oman?
+  expected: The Strait of Hormuz
+  accept:
+  - Hormuz
+  - Ormuz
+  source: https://www.britannica.com/place/Strait-of-Hormuz
+  recorded_on: '2026-11-10'
+
+- id: k014
+  language: en
+  category: geography
+  difficulty: hard
+  hop: single
+  prompt: What is the deepest lake in Japan?
+  expected: Lake Tazawa (田沢湖), 423 m
+  accept:
+  - Tazawa
+  - 田沢
+  source: https://en.wikipedia.org/wiki/Lake_Tazawa
+  recorded_on: '2026-11-10'
+
+- id: k015
+  language: en
+  category: geography
+  difficulty: hard
+  hop: single
+  prompt: What's the capital of the Indian state of Mizoram?
+  expected: Aizawl (formerly spelled Aijal)
+  accept:
+  - Aizawl
+  - Aijal
+  source: https://www.britannica.com/place/Aizawl
+  recorded_on: '2026-11-10'
+
+- id: k016
+  language: en
+  category: geography
+  difficulty: hard
+  hop: single
+  prompt: What is the highest mountain in Mexico?
+  expected: Pico de Orizaba, also called Citlaltépetl (on the Puebla-Veracruz border)
+  accept:
+  - Orizaba
+  - Citlalt
+  review: Popocatépetl is the likely wrong answer. Ignore the elevation; sources give 5,610-5,636 m.
+  source: https://en.wikipedia.org/wiki/Pico_de_Orizaba
+  recorded_on: '2026-11-10'
+
+- id: k017
+  language: en
+  category: history
+  difficulty: easy
+  hop: single
+  prompt: Which civilization built Machu Picchu?
+  expected: The Inca (built in the 15th century, usually attributed to the emperor Pachacuti)
+  accept:
+  - Inca
+  - Inka
+  source: https://www.britannica.com/place/Machu-Picchu
+  recorded_on: '2026-11-10'
+
+- id: k018
+  language: en
+  category: history
+  difficulty: medium
+  hop: single
+  prompt: In what year did Brunei gain independence from the United Kingdom?
+  expected: 1984 (1 January 1984)
+  accept:
+  - '1984'
+  source: https://history.state.gov/countries/brunei
+  recorded_on: '2026-11-10'
+
+- id: k019
+  language: en
+  category: history
+  difficulty: medium
+  hop: single
+  prompt: Which 1757 battle gave the British East India Company control of Bengal?
+  expected: The Battle of Plassey (Palashi), 23 June 1757, Robert Clive vs. Siraj ud-Daulah
+  accept:
+  - Plassey
+  - Palashi
+  - Polashi
+  review: Buxar (1764) is the common wrong answer.
+  source: https://www.britannica.com/event/Battle-of-Plassey
+  recorded_on: '2026-11-10'
+
+- id: k020
+  language: en
+  category: history
+  difficulty: medium
+  hop: single
+  prompt: Who proclaimed Haiti's independence on 1 January 1804?
+  expected: Jean-Jacques Dessalines (at Gonaïves; later Emperor Jacques I)
+  accept:
+  - Dessalines
+  review: Toussaint Louverture is the common wrong answer; he died in a French prison in 1803.
+  source: https://www.britannica.com/biography/Jean-Jacques-Dessalines
+  recorded_on: '2026-11-10'
+
+- id: k021
+  language: en
+  category: history
+  difficulty: medium
+  hop: single
+  prompt: Which Mauryan emperor fought the Kalinga War and later wrote of his remorse over it in his rock edicts?
+  expected: Ashoka (Asoka), in Major Rock Edict XIII
+  accept:
+  - Ashoka
+  - Asoka
+  - Aśoka
+  review: Chandragupta Maurya and Bindusara are the likely wrong answers.
+  source: https://en.wikipedia.org/wiki/Major_Rock_Edicts
+  recorded_on: '2026-11-10'
+
+- id: k022
+  language: en
+  category: history
+  difficulty: hard
+  hop: single
+  prompt: After Napata, which city became the capital of the ancient Kingdom of Kush?
+  expected: Meroë (on the Nile in present-day Sudan)
+  accept:
+  - Meroe
+  - Meroë
+  review: Sources disagree on when the capital moved (c. 590 BCE vs. 4th century BCE), so don't grade any date. Merowe, a
+    modern town near Napata, is not Meroë.
+  source: https://www.worldhistory.org/meroe/
+  recorded_on: '2026-11-10'
+
+- id: k023
+  language: en
+  category: history
+  difficulty: hard
+  hop: single
+  prompt: In what year did the Burmese sack Ayutthaya and end the Siamese kingdom?
+  expected: 1767 (city fell in April 1767 after a siege that began in 1766)
+  accept:
+  - '1767'
+  review: An answer that gives only 1766 (the start of the siege) is wrong.
+  source: https://www.britannica.com/place/Ayutthaya-Thailand
+  recorded_on: '2026-11-10'
+
+- id: k024
+  language: en
+  category: history
+  difficulty: hard
+  hop: multi
+  prompt: When did the Ethiopian emperor who beat the Italians at Adwa die?
+  expected: 1913 (Menelik II died 12 December 1913 in Addis Ababa)
+  accept:
+  - '1913'
+  review: He was incapacitated by strokes from about 1906-1909; an answer giving one of those years as his death is wrong.
+    Haile Selassie (d. 1975) is a likely wrong first hop.
+  source: https://www.britannica.com/biography/Menilek-II
+  recorded_on: '2026-11-10'
+
+- id: k025
+  language: en
+  category: literature
+  difficulty: easy
+  hop: single
+  prompt: Who wrote Don Quixote?
+  expected: Miguel de Cervantes (Part 1 1605, Part 2 1615)
+  accept:
+  - cervantes
+  source: https://www.britannica.com/topic/Don-Quixote-novel
+  recorded_on: '2026-11-10'
+
+- id: k026
+  language: en
+  category: literature
+  difficulty: medium
+  hop: single
+  prompt: Who's the author of the Mexican novel Pedro Páramo?
+  expected: Juan Rulfo (1955, his only novel)
+  accept:
+  - rulfo
+  source: https://en.wikipedia.org/wiki/Pedro_P%C3%A1ramo
+  recorded_on: '2026-11-10'
+
+- id: k027
+  language: en
+  category: literature
+  difficulty: hard
+  hop: single
+  prompt: Who won the very first Akutagawa Prize in 1935?
+  expected: Tatsuzō Ishikawa, for the novel Sōbō (蒼氓), first half of 1935
+  accept:
+  - tatsuzō
+  - tatsuzo
+  - sōbō
+  - sobo
+  review: Jun Ishikawa won the prize in 1936, so bare 'Ishikawa' is not accepted.
+  source: https://en.wikipedia.org/wiki/Tatsuz%C5%8D_Ishikawa
+  recorded_on: '2026-11-10'
+
+- id: k028
+  language: en
+  category: math
+  difficulty: easy
+  hop: single
+  prompt: What is the theorem called that says a² + b² = c² for a right triangle?
+  expected: The Pythagorean theorem.
+  accept:
+  - Pythagor
+  source: https://www.britannica.com/summary/Pythagorean-theorem
+  recorded_on: '2026-11-10'
+
+- id: k029
+  language: en
+  category: math
+  difficulty: medium
+  hop: single
+  prompt: The word 'algorithm' comes from the name of which mathematician?
+  expected: Muhammad ibn Musa al-Khwarizmi, the 9th-century Persian mathematician (Latinized as Algoritmi).
+  accept:
+  - Khwarizmi
+  - Khwārizmī
+  - Khowarizmi
+  - Khwarazmi
+  source: https://mathshistory.st-andrews.ac.uk/Biographies/Al-Khwarizmi/
+  recorded_on: '2026-11-10'
+
+- id: k030
+  language: en
+  category: math
+  difficulty: hard
+  hop: single
+  prompt: Who first proved that pi is transcendental?
+  expected: Ferdinand von Lindemann, in 1882.
+  accept:
+  - Lindemann
+  review: Hermite proved e transcendental (1873) and Lambert proved pi irrational (1768); both are wrong here.
+  source: https://en.wikipedia.org/wiki/Ferdinand_von_Lindemann
+  recorded_on: '2026-11-10'
+
+- id: k031
+  language: en
+  category: math
+  difficulty: hard
+  hop: multi
+  prompt: Who was the PhD supervisor of the mathematician who proved Fermat's Last Theorem?
+  expected: John Coates (Wiles's doctoral advisor at Cambridge).
+  accept:
+  - Coates
+  review: Richard Taylor co-authored the 1995 fix with Wiles but was not his supervisor.
+  source: https://mathshistory.st-andrews.ac.uk/Biographies/Wiles/
+  recorded_on: '2026-11-10'
+
+- id: k032
+  language: en
+  category: medicine
+  difficulty: easy
+  hop: single
+  prompt: Edward Jenner's first vaccine in 1796 protected against which disease?
+  expected: Smallpox (he inoculated James Phipps with cowpox material).
+  accept:
+  - smallpox
+  - small pox
+  - variola
+  review: An answer of cowpox alone is wrong; Jenner used cowpox to protect against smallpox.
+  source: https://www.britannica.com/biography/Edward-Jenner
+  recorded_on: '2026-11-10'
+
+- id: k033
+  language: en
+  category: medicine
+  difficulty: easy
+  hop: single
+  prompt: Scurvy is caused by a lack of which vitamin?
+  expected: Vitamin C (ascorbic acid).
+  accept:
+  - vitamin C
+  - ascorbic
+  review: With whitespace removed, 'vitaminc' could match phrases like 'vitamin complex'; check that the answer names vitamin
+    C.
+  source: https://meshb.nlm.nih.gov/record/ui?ui=D012614
+  recorded_on: '2026-11-10'
+
+- id: k034
+  language: en
+  category: medicine
+  difficulty: medium
+  hop: single
+  prompt: who invented the stethoscope
+  expected: René Laennec (Laënnec), a French physician, in 1816 at the Necker Hospital in Paris.
+  accept:
+  - Laennec
+  - Laënnec
+  source: https://en.wikipedia.org/wiki/Ren%C3%A9_Laennec
+  recorded_on: '2026-11-10'
+
+- id: k035
+  language: en
+  category: medicine
+  difficulty: medium
+  hop: single
+  prompt: Who discovered artemisinin?
+  expected: Tu Youyou (Youyou Tu), Chinese pharmaceutical chemist; shared the 2015 Nobel Prize in Physiology or Medicine.
+  accept:
+  - Youyou
+  source: https://www.nobelprize.org/prizes/medicine/2015/tu/facts/
+  recorded_on: '2026-11-10'
+
+- id: k036
+  language: en
+  category: medicine
+  difficulty: hard
+  hop: single
+  prompt: Who first saw the malaria parasite in a patient's blood?
+  expected: Alphonse Laveran, in 1880 at the military hospital in Constantine, Algeria (Nobel Prize 1907).
+  accept:
+  - Laveran
+  review: Ronald Ross showed mosquito transmission (1897); an answer of Ross is wrong.
+  source: https://www.cdc.gov/malaria/about/history/laveran.html
+  recorded_on: '2026-11-10'
+
+- id: k037
+  language: en
+  category: music
+  difficulty: easy
+  hop: single
+  prompt: The Four Seasons violin concertos - who composed them?
+  expected: Antonio Vivaldi (Op. 8 nos. 1-4, published 1725)
+  accept:
+  - vivaldi
+  source: https://www.britannica.com/biography/Antonio-Vivaldi/Instrumental-music
+  recorded_on: '2026-11-10'
+
+- id: k038
+  language: en
+  category: music
+  difficulty: medium
+  hop: single
+  prompt: Who composed the opera Rusalka that premiered in Prague in 1901?
+  expected: Antonín Dvořák
+  accept:
+  - Dvořák
+  - Dvorak
+  - Dvorák
+  source: https://en.wikipedia.org/wiki/Rusalka_(opera)
+  recorded_on: '2026-11-10'
+
+- id: k039
+  language: en
+  category: music
+  difficulty: medium
+  hop: single
+  prompt: Who sang the Japanese song that topped the US charts in 1963 under the name 'Sukiyaki'?
+  expected: Kyu Sakamoto (original title 'Ue o Muite Arukō', released in Japan in 1961)
+  accept:
+  - kyu sakamoto
+  - kyū sakamoto
+  - kyuu sakamoto
+  - sakamoto kyu
+  review: Ryuichi Sakamoto is a different musician, so bare 'Sakamoto' is not accepted. Also accept a correct answer written
+    another way, such as 'Sakamoto Kyū' with a macron.
+  source: https://en.wikipedia.org/wiki/Sukiyaki_(song)
+  recorded_on: '2026-11-10'
+
+- id: k040
+  language: en
+  category: music
+  difficulty: medium
+  hop: multi
+  prompt: The ballet whose 1913 Paris premiere famously caused a riot - which theatre did it open in?
+  expected: Théâtre des Champs-Élysées, Paris (Stravinsky's The Rite of Spring, 29 May 1913)
+  accept:
+  - champs
+  review: A common wrong answer is the Théâtre du Châtelet, where the Ballets Russes premiered Petrushka.
+  source: https://en.wikipedia.org/wiki/The_Rite_of_Spring
+  recorded_on: '2026-11-10'
+
+- id: k041
+  language: en
+  category: music
+  difficulty: hard
+  hop: single
+  prompt: who composed the waltz Sobre las olas (Over the Waves)?
+  expected: Juventino Rosas, Mexican composer (published 1888 in Mexico City)
+  accept:
+  - juventino
+  - rosas
+  review: It is often misattributed to Johann Strauss; that answer is wrong.
+  source: https://en.wikipedia.org/wiki/Sobre_las_olas
+  recorded_on: '2026-11-10'
+
+- id: k042
+  language: en
+  category: politics
+  difficulty: easy
+  hop: single
+  prompt: Who was India's first prime minister after independence?
+  expected: Jawaharlal Nehru (1947-1964)
+  accept:
+  - Nehru
+  source: https://en.wikipedia.org/wiki/Jawaharlal_Nehru
+  recorded_on: '2026-11-10'
+
+- id: k043
+  language: en
+  category: politics
+  difficulty: easy
+  hop: single
+  prompt: Who became president of South Africa after the country's first all-race election?
+  expected: Nelson Mandela (inaugurated 10 May 1994)
+  accept:
+  - Mandela
+  source: https://www.sahistory.org.za/dated-event/nelson-mandela-inaugurated-south-africas-first-democratic-president
+  recorded_on: '2026-11-10'
+
+- id: k044
+  language: en
+  category: politics
+  difficulty: medium
+  hop: single
+  prompt: who was ghana's first president
+  expected: Kwame Nkrumah (prime minister from 1957, president 1960-1966)
+  accept:
+  - Nkrumah
+  source: https://www.britannica.com/biography/Kwame-Nkrumah
+  recorded_on: '2026-11-10'
+
+- id: k045
+  language: en
+  category: politics
+  difficulty: medium
+  hop: single
+  prompt: Who was the first Secretary-General of the United Nations?
+  expected: Trygve Lie of Norway (1946-1952)
+  accept:
+  - Trygve
+  review: Gladwyn Jebb was only acting Secretary-General before Lie took office; an answer naming him is wrong.
+  source: https://www.un.org/sg/en/node/212535
+  recorded_on: '2026-11-10'
+
+- id: k046
+  language: en
+  category: politics
+  difficulty: medium
+  hop: single
+  prompt: Which Mexican president expropriated the foreign oil companies in 1938?
+  expected: Lázaro Cárdenas (decree of 18 March 1938)
+  accept:
+  - Cárdenas
+  - Cardenas
+  source: https://www.encyclopedia.com/humanities/encyclopedias-almanacs-transcripts-and-maps/petroleum-expropriation-1938-mexico
+  recorded_on: '2026-11-10'
+
+- id: k047
+  language: en
+  category: politics
+  difficulty: hard
+  hop: single
+  prompt: Who was Papua New Guinea's first prime minister at independence in 1975?
+  expected: Michael Somare (Sir Michael Somare)
+  accept:
+  - Somare
+  source: https://www.uow.edu.au/media/2021/vale-sir-michael-somare-papua-new-guineas-first-prime-minister.php
+  recorded_on: '2026-11-10'
+
+- id: k048
+  language: en
+  category: politics
+  difficulty: hard
+  hop: multi
+  prompt: Who was the first president of the country whose capital is Ouagadougou?
+  expected: Maurice Yaméogo, first president of Upper Volta (now Burkina Faso), 1959/1960-1966
+  accept:
+  - Yaméogo
+  - Yameogo
+  review: Thomas Sankara and Sangoulé Lamizana are likely wrong answers.
+  source: https://en.wikipedia.org/wiki/Maurice_Yam%C3%A9ogo
+  recorded_on: '2026-11-10'
+
+- id: k049
+  language: en
+  category: science
+  difficulty: easy
+  hop: single
+  prompt: Which organelle is known as the powerhouse of the cell?
+  expected: The mitochondrion (plural mitochondria).
+  accept:
+  - mitochondri
+  source: https://www.britannica.com/science/mitochondrion
+  recorded_on: '2026-11-10'
+
+- id: k050
+  language: en
+  category: science
+  difficulty: medium
+  hop: single
+  prompt: Who discovered the neutron?
+  expected: James Chadwick, in 1932 (Nobel Prize in Physics 1935).
+  accept:
+  - Chadwick
+  source: https://www.nobelprize.org/prizes/physics/1935/chadwick/biographical/
+  recorded_on: '2026-11-10'
+
+- id: k051
+  language: en
+  category: science
+  difficulty: medium
+  hop: single
+  prompt: Which Indian physicist won the 1930 Nobel Prize in Physics?
+  expected: Sir C. V. Raman (Chandrasekhara Venkata Raman), for his work on light scattering and the Raman effect.
+  accept:
+  - Raman
+  review: '''Ramanujan'' (a mathematician, never a Nobel laureate) also contains ''Raman''; mark it wrong.'
+  source: https://www.nobelprize.org/prizes/physics/1930/summary/
+  recorded_on: '2026-11-10'
+
+- id: k052
+  language: en
+  category: science
+  difficulty: medium
+  hop: multi
+  prompt: Which chemical element is named after the man who created the periodic table?
+  expected: Mendelevium (Md, element 101), named after Dmitri Mendeleev.
+  accept:
+  - mendelevium
+  review: A misspelling such as 'mendeleevium' won't match; accept it by hand if it clearly means element 101.
+  source: https://en.wikipedia.org/wiki/Mendelevium
+  recorded_on: '2026-11-10'
+
+- id: k053
+  language: en
+  category: science
+  difficulty: hard
+  hop: single
+  prompt: Who first synthesized urea from inorganic starting materials, in 1828?
+  expected: Friedrich Wöhler.
+  accept:
+  - Wöhler
+  - Wohler
+  - Woehler
+  source: https://www.britannica.com/biography/Friedrich-Wohler
+  recorded_on: '2026-11-10'
+
+- id: k054
+  language: en
+  category: science
+  difficulty: hard
+  hop: single
+  prompt: who discovered ceres
+  expected: Giuseppe Piazzi, at the Palermo Observatory, on 1 January 1801.
+  accept:
+  - Piazzi
+  source: https://www.britannica.com/biography/Giuseppe-Piazzi
+  recorded_on: '2026-11-10'
+
+- id: k055
+  language: en
+  category: sports
+  difficulty: easy
+  hop: single
+  prompt: Which country won the very first football World Cup back in 1930?
+  expected: Uruguay (beat Argentina 4-2 in the final in Montevideo, 30 July 1930)
+  accept:
+  - uruguay
+  review: Uruguay was also the host, so a wrong answer such as 'Argentina, at the World Cup in Uruguay' would match. Check
+    that Uruguay is named as the winner.
+  source: https://en.wikipedia.org/wiki/1930_FIFA_World_Cup
+  recorded_on: '2026-11-10'
+
+- id: k056
+  language: en
+  category: sports
+  difficulty: medium
+  hop: single
+  prompt: Which country won the first ever Africa Cup of Nations in 1957?
+  expected: Egypt (beat Ethiopia 4-0 in the final in Khartoum, 16 February 1957)
+  accept:
+  - egypt
+  review: Check that Egypt is the winner, not the beaten finalist in a wrong answer such as 'Ethiopia beat Egypt'.
+  source: https://en.wikipedia.org/wiki/1957_African_Cup_of_Nations_final
+  recorded_on: '2026-11-10'
+
+- id: k057
+  language: en
+  category: sports
+  difficulty: medium
+  hop: single
+  prompt: Who won the first Cricket World Cup in 1975?
+  expected: West Indies (beat Australia by 17 runs at Lord's, 21 June 1975)
+  accept:
+  - west indies
+  - windies
+  review: Check that West Indies is the winner, not the opponent in a wrong answer such as 'Australia beat the West Indies'.
+  source: https://en.wikipedia.org/wiki/1975_Cricket_World_Cup_final
+  recorded_on: '2026-11-10'
+
+- id: k058
+  language: en
+  category: sports
+  difficulty: hard
+  hop: single
+  prompt: Who won the men's singles at the first Wimbledon in 1877?
+  expected: Spencer Gore (Spencer William Gore; beat William Marshall 6-1, 6-2, 6-4)
+  accept:
+  - spencer
+  review: Arthur Gore (champion in 1901, 1908 and 1909) is a different player, so bare 'Gore' is not accepted.
+  source: https://www.wimbledon.com/en_GB/news/articles/2015-01-08/20150108_throwback_thursday_the_champion_that_started_it_all.html
+  recorded_on: '2026-11-10'
+
+- id: k059
+  language: en
+  category: technology
+  difficulty: medium
+  hop: single
+  prompt: Who created the Ruby programming language?
+  expected: Yukihiro "Matz" Matsumoto; first public release in December 1995.
+  accept:
+  - Matsumoto
+  - Matz
+  source: https://en.wikipedia.org/wiki/Yukihiro_Matsumoto
+  recorded_on: '2026-11-10'
+
+- id: k060
+  language: en
+  category: technology
+  difficulty: hard
+  hop: single
+  prompt: Who invented the QR code?
+  expected: Masahiro Hara, who led the Denso Wave team that released it in 1994.
+  accept:
+  - Masahiro Hara
+  - Hara Masahiro
+  review: An answer naming only Denso Wave (the company) is partial.
+  source: https://www.epo.org/learning-events/european-inventor/finalists/2014/hara.html
+  recorded_on: '2026-11-10'
+
+- id: k061
+  language: zh
+  category: culture
+  difficulty: medium
+  hop: single
+  prompt: 赵州桥是谁设计建造的？
+  expected: 隋代工匠李春（Li Chun, Sui-dynasty craftsman）
+  accept:
+  - 李春
+  source: https://www.sjz.gov.cn/columns/9cf32b4d-b986-4968-8462-28d565737ceb/202010/09/3f1a0cc9-7589-470e-88da-1530ef9aa1b1.html
+  recorded_on: '2026-11-10'
+
+- id: k062
+  language: zh
+  category: culture
+  difficulty: hard
+  hop: single
+  prompt: 中国现存年代最早的木结构建筑是哪一座？
+  expected: 山西五台县南禅寺大殿，唐建中三年（782年）重建（Main Hall of Nanchan Temple, Wutai, 782 AD）
+  accept:
+  - 南禅寺
+  - 南禪寺
+  review: The common wrong answer is 佛光寺东大殿 (857), which won't match. An answer that names 佛光寺 but mentions 南禅寺 in passing
+    could match; check by hand.
+  source: http://jccq.gov.cn/cqzx/sjdt_5/szfyw_1/202412/t20241213_2074093.shtml
+  recorded_on: '2026-11-10'
+
+- id: k063
+  language: zh
+  category: culture
+  difficulty: hard
+  hop: multi
+  prompt: 设计南京中山陵的那位建筑师，在广州还设计了哪座著名建筑？
+  expected: 广州中山纪念堂（Sun Yat-sen Memorial Hall, Guangzhou; architect 吕彦直 Lü Yanzhi）
+  accept:
+  - 中山纪念堂
+  - 中山紀念堂
+  - 中山纪念碑
+  - 中山紀念碑
+  review: 'Two steps: 吕彦直, then his Guangzhou work. He also designed the 中山纪念碑 on Yuexiu Hill, which counts as correct. A
+    model could name 中山纪念堂 with the wrong architect; check that too.'
+  source: https://www.tsinghua.edu.cn/info/1182/114832.htm
+  recorded_on: '2026-11-10'
+
+- id: k064
+  language: zh
+  category: geography
+  difficulty: easy
+  hop: single
+  prompt: 世界上面积最大的国家是：
+  expected: 俄罗斯
+  accept:
+  - 俄罗斯
+  - 俄羅斯
+  - Russia
+  source: https://zh.wikipedia.org/wiki/俄罗斯
+  recorded_on: '2026-11-10'
+
+- id: k065
+  language: zh
+  category: geography
+  difficulty: easy
+  hop: single
+  prompt: 中国面积最大的沙漠叫什么？
+  expected: 塔克拉玛干沙漠（Taklamakan Desert, Xinjiang）
+  accept:
+  - 塔克拉玛干
+  - 塔克拉瑪干
+  - Taklamakan
+  - Taklimakan
+  source: https://igsnrr.cas.cn/cbkx/kpyd/zgdl/cndm/202009/t20200910_5692338.html
+  recorded_on: '2026-11-10'
+
+- id: k066
+  language: zh
+  category: geography
+  difficulty: medium
+  hop: single
+  prompt: 中国最长的内陆河是哪条河？
+  expected: 塔里木河
+  accept:
+  - 塔里木
+  source: https://id.china-embassy.gov.cn/zggk/zgjk/zrdl/200404/t20040421_2344628.htm
+  recorded_on: '2026-11-10'
+
+- id: k067
+  language: zh
+  category: geography
+  difficulty: medium
+  hop: single
+  prompt: 黄河发源于哪座山脉？
+  expected: 青海省巴颜喀拉山（北麓）（Bayan Har Mountains, Qinghai）
+  accept:
+  - 巴颜喀拉
+  - 巴顏喀拉
+  - Bayan Har
+  review: The exact source stream (卡日曲 vs 约古宗列/玛曲) is debated, but both lie on the northern slopes of the Bayan Har range.
+    An answer naming only 约古宗列盆地 or 各姿各雅山 is right but won't match; grade it by hand.
+  source: https://slt.nx.gov.cn/xxgk_281/fdzdgknr/slkp/jhzl/202112/t20211201_3176821.html
+  recorded_on: '2026-11-10'
+
+- id: k068
+  language: zh
+  category: geography
+  difficulty: medium
+  hop: multi
+  prompt: “先天下之忧而忧，后天下之乐而乐”出自一篇写楼的名篇，那座楼在今天的哪个省？
+  expected: 湖南省（Hunan; the text is 范仲淹《岳阳楼记》, about Yueyang Tower in Yueyang）
+  accept:
+  - 湖南
+  review: 'Two steps: identify 《岳阳楼记》, then the province of 岳阳楼. A wrong answer such as 黄鹤楼/湖北 won''t match.'
+  source: http://www.hunan.gov.cn/hnszf/c101480/202108/t20210830_20411802.html
+  recorded_on: '2026-11-10'
+
+- id: k069
+  language: zh
+  category: geography
+  difficulty: hard
+  hop: single
+  prompt: 怒江流出中国、进入缅甸以后改叫什么名字？
+  expected: 萨尔温江（Salween River, Thanlwin in Myanmar）
+  accept:
+  - 萨尔温
+  - 薩爾溫
+  - Salween
+  - Thanlwin
+  source: https://wcb.yn.gov.cn/html/2024/yewuzhuanlan_1111/3059995.html
+  recorded_on: '2026-11-10'
+
+- id: k070
+  language: zh
+  category: history
+  difficulty: easy
+  hop: single
+  prompt: 中国历史上唯一一位正统的女皇帝是谁？
+  expected: 武则天（Wu Zetian, empress of the Wu Zhou dynasty, r. 690–705）
+  accept:
+  - 武则天
+  - 武則天
+  - 武曌
+  source: https://wwj.shaanxi.gov.cn/ztzl/ndzt/2013n/2013nwhycr/jdtp_2418/201306/t20130604_2144062.html
+  recorded_on: '2026-11-10'
+
+- id: k071
+  language: zh
+  category: history
+  difficulty: medium
+  hop: single
+  prompt: 故宫是哪一年建成的？
+  expected: 1420年（明永乐十八年），1406年开工
+  accept:
+  - '1420'
+  - 永乐十八年
+  - 永樂十八年
+  review: Wrong if it gives 1406, the year construction started.
+  source: https://www.dpm.org.cn/subject_600/buildingdetails/253789.html
+  recorded_on: '2026-11-10'
+
+- id: k072
+  language: zh
+  category: history
+  difficulty: medium
+  hop: single
+  prompt: 玄武门之变发生在公元哪一年？
+  expected: 公元626年，唐武德九年（626 AD）
+  accept:
+  - '626'
+  - 武德九年
+  - 六二六
+  source: https://dfz.shaanxi.gov.cn/zslm/zjyd/fzsy/201204/t20120423_2622336.html
+  recorded_on: '2026-11-10'
+
+- id: k073
+  language: zh
+  category: history
+  difficulty: hard
+  hop: single
+  prompt: 中国科举史上最后一名状元是谁？
+  expected: 刘春霖，光绪三十年（1904年）甲辰恩科状元（Liu Chunlin, 1904）
+  accept:
+  - 刘春霖
+  - 劉春霖
+  source: https://jssdfz.jiangsu.gov.cn/n100/20240612/i34085.html
+  recorded_on: '2026-11-10'
+
+- id: k074
+  language: zh
+  category: literature
+  difficulty: easy
+  hop: single
+  prompt: 《骆驼祥子》是谁写的？
+  expected: 老舍，原名舒庆春（Lao She, born Shu Qingchun）
+  accept:
+  - 老舍
+  - 舒庆春
+  - 舒慶春
+  source: https://www.beijing.gov.cn/renwen/zt/jnls/lszp/201809/t20180921_1860555.html
+  recorded_on: '2026-11-10'
+
+- id: k075
+  language: zh
+  category: literature
+  difficulty: medium
+  hop: single
+  prompt: “春江潮水连海平，海上明月共潮生”是哪位诗人写的？
+  expected: 张若虚，《春江花月夜》（Zhang Ruoxu, Tang poet, 'A Moonlit Night on the Spring River'）
+  accept:
+  - 张若虚
+  - 張若虛
+  - 张若虛
+  source: http://m.ccdi.gov.cn/content/0b/ae/15444.html
+  recorded_on: '2026-11-10'
+
+- id: k076
+  language: zh
+  category: literature
+  difficulty: medium
+  hop: single
+  prompt: 李清照的号是什么？
+  expected: 易安居士（Yi'an Jushi）
+  accept:
+  - 易安
+  source: http://www.jinan.gov.cn/art/2015/9/8/art_247_102530.html
+  recorded_on: '2026-11-10'
+
+- id: k077
+  language: zh
+  category: literature
+  difficulty: hard
+  hop: single
+  prompt: 晚清小说《老残游记》的作者是谁？
+  expected: 刘鹗，字铁云（Liu E, courtesy name Tieyun, 1857–1909）
+  accept:
+  - 刘鹗
+  - 劉鶚
+  - 刘铁云
+  - 劉鐵雲
+  source: http://jds.cssn.cn/newzxdt/202101/t20210128_5301744.shtml
+  recorded_on: '2026-11-10'
+
+- id: k078
+  language: zh
+  category: science
+  difficulty: easy
+  hop: single
+  prompt: 第一个上太空的中国航天员是谁啊
+  expected: 杨利伟（Yang Liwei, Shenzhou 5, 2003）
+  accept:
+  - 杨利伟
+  - 楊利偉
+  source: https://www.cmse.gov.cn/ztbd/xwzt/jnrlzrhthd50znzt/yzzj/201104/t20110407_38842.html
+  recorded_on: '2026-11-10'
+
+- id: k079
+  language: zh
+  category: science
+  difficulty: medium
+  hop: single
+  prompt: 《天工开物》的作者是谁？
+  expected: 宋应星（Song Yingxing, Ming dynasty, published 1637）
+  accept:
+  - 宋应星
+  - 宋應星
+  source: https://www.chnmuseum.cn/zp/zpml/gjwxbt/202203/t20220301_254061.shtml
+  recorded_on: '2026-11-10'
+
+- id: k080
+  language: zh
+  category: science
+  difficulty: hard
+  hop: single
+  prompt: 张衡造出候风地动仪是在公元哪一年？
+  expected: 公元132年，东汉阳嘉元年（132 AD）
+  accept:
+  - '132'
+  - 阳嘉元年
+  - 陽嘉元年
+  - 一三二
+  review: 138 AD is when it reportedly detected the Longxi earthquake, a likely wrong answer. Check that a bare '132' is the
+    year, not part of another number.
+  source: https://dzj.jl.gov.cn/ztzl/512dzzt/dzkp/201503/t20150325_7228733.html
+  recorded_on: '2026-11-10'
+
+- id: k081
+  language: ko
+  category: culture
+  difficulty: easy
+  hop: single
+  prompt: 팔만대장경 보관된 절 어디야?
+  expected: 해인사 (Haeinsa temple, Hapcheon; the woodblocks moved there in 1398)
+  accept:
+  - 해인사
+  - 海印寺
+  - Haeinsa
+  source: https://encykorea.aks.ac.kr/Article/E0062711
+  recorded_on: '2026-11-10'
+
+- id: k082
+  language: ko
+  category: culture
+  difficulty: medium
+  hop: single
+  prompt: 안평대군의 꿈을 그렸다는 「몽유도원도」, 그린 화가가 누구야?
+  expected: 안견 (An Gyeon, 1447; now at Tenri University, Japan)
+  accept:
+  - 안견
+  - 安堅
+  - An Gyeon
+  - An Kyon
+  source: https://encykorea.aks.ac.kr/Article/E0018824
+  recorded_on: '2026-11-10'
+
+- id: k083
+  language: ko
+  category: culture
+  difficulty: hard
+  hop: single
+  prompt: 덕수궁 석조전을 설계한 건축가는 누구입니까?
+  expected: 존 레지널드 하딩 (John Reginald Harding, British; built 1900-1910)
+  accept:
+  - 하딩
+  - Harding
+  source: https://deoksugung.go.kr/c/introduction/3
+  recorded_on: '2026-11-10'
+
+- id: k084
+  language: ko
+  category: culture
+  difficulty: hard
+  hop: single
+  prompt: 88 서울올림픽 때 쓴 잠실 주경기장은 누가 설계했어?
+  expected: 김수근 (Kim Swoo-geun, Space Group; opened 1984)
+  accept:
+  - 김수근
+  - 金壽根
+  - Kim Swoo-geun
+  - Kim Su-geun
+  source: https://ko.wikipedia.org/wiki/%EC%84%9C%EC%9A%B8%EC%98%AC%EB%A6%BC%ED%94%BD%EC%A3%BC%EA%B2%BD%EA%B8%B0%EC%9E%A5
+  recorded_on: '2026-11-10'
+
+- id: k085
+  language: ko
+  category: geography
+  difficulty: medium
+  hop: single
+  prompt: 지리산 최고봉 이름이 뭐야?
+  expected: 천왕봉 (Cheonwangbong, about 1,915 m)
+  accept:
+  - 천왕봉
+  - 天王峰
+  - 天王峯
+  - Cheonwangbong
+  source: https://encykorea.aks.ac.kr/Article/E0054156
+  recorded_on: '2026-11-10'
+
+- id: k086
+  language: ko
+  category: geography
+  difficulty: hard
+  hop: single
+  prompt: 울릉도에서 가장 높은 봉우리 이름이 뭐야?
+  expected: 성인봉 (Seonginbong, about 984-987 m)
+  accept:
+  - 성인봉
+  - 聖人峰
+  - Seonginbong
+  source: https://encykorea.aks.ac.kr/Article/E0029504
+  recorded_on: '2026-11-10'
+
+- id: k087
+  language: ko
+  category: history
+  difficulty: easy
+  hop: single
+  prompt: 고려를 세운 사람이 누구야?
+  expected: 왕건, 고려 태조 (Wang Geon, King Taejo of Goryeo, r. 918-943)
+  accept:
+  - 왕건
+  - 王建
+  - Wang Geon
+  - Wang Kon
+  review: '''태조'' is not accepted because Joseon''s 태조 (이성계) would match. An answer that says only ''고려 태조'' without the name
+    is correct; mark it by hand.'
+  source: https://encykorea.aks.ac.kr/Article/E0059032
+  recorded_on: '2026-11-10'
+
+- id: k088
+  language: ko
+  category: history
+  difficulty: medium
+  hop: single
+  prompt: 경부고속도로는 언제 전 구간 개통했어?
+  expected: 1970년 7월 7일 (완공은 6월 30일)
+  accept:
+  - 7월 7일
+  - July 7
+  - 7 July
+  source: https://theme.archives.go.kr/next/gyeongbu/roadChronological02.do
+  recorded_on: '2026-11-10'
+
+- id: k089
+  language: ko
+  category: history
+  difficulty: medium
+  hop: single
+  prompt: 경복궁은 몇 년에 처음 지어졌어?
+  expected: 1395년 (태조 4년), 1394년 착공
+  accept:
+  - '1395'
+  review: Wrong if it gives 1394, the year construction started.
+  source: https://theme.archives.go.kr/next/koreaOfRecord/royalPalace.do
+  recorded_on: '2026-11-10'
+
+- id: k090
+  language: ko
+  category: history
+  difficulty: medium
+  hop: single
+  prompt: 고려 때 귀주대첩에서 거란군을 크게 무찌른 장군이 누구야?
+  expected: 강감찬 (Gang Gam-chan, 1019)
+  accept:
+  - 강감찬
+  - 姜邯贊
+  - Gang Gam-chan
+  - Kang Kam-chan
+  source: https://encykorea.aks.ac.kr/Article/E0006043
+  recorded_on: '2026-11-10'
+
+- id: k091
+  language: ko
+  category: history
+  difficulty: medium
+  hop: single
+  prompt: 발해를 건국한 인물은 누구입니까?
+  expected: 대조영, 발해 고왕 (Dae Jo-yeong, King Go of Balhae, founded 698)
+  accept:
+  - 대조영
+  - 大祚榮
+  - Dae Jo-yeong
+  - Dae Joyeong
+  review: '''고왕'' (his posthumous title) is not accepted because it is too short to match safely. An answer that names only
+    고왕 is correct; mark it by hand.'
+  source: https://encykorea.aks.ac.kr/Article/E0003841
+  recorded_on: '2026-11-10'
+
+- id: k092
+  language: ko
+  category: literature
+  difficulty: easy
+  hop: single
+  prompt: 「서시」와 「별 헤는 밤」을 쓴 시인은 누구입니까?
+  expected: 윤동주 (Yun Dong-ju, 1917-1945; collected in 하늘과 바람과 별과 시, 1948)
+  accept:
+  - 윤동주
+  - 尹東柱
+  - Yun Dong-ju
+  - Yun Dongju
+  source: https://encykorea.aks.ac.kr/Article/E0027887
+  recorded_on: '2026-11-10'
+
+- id: k093
+  language: ko
+  category: literature
+  difficulty: medium
+  hop: single
+  prompt: 고전 소설 『구운몽』의 작가는 누구입니까?
+  expected: 김만중 (Kim Man-jung, pen name 서포; 1687)
+  accept:
+  - 김만중
+  - 金萬重
+  - Kim Man-jung
+  - Kim Manjung
+  review: An answer that gives only the pen name 서포 is correct; mark it by hand.
+  source: https://encykorea.aks.ac.kr/Article/E0005948
+  recorded_on: '2026-11-10'
+
+- id: k094
+  language: ko
+  category: literature
+  difficulty: medium
+  hop: multi
+  prompt: 대하소설 『토지』를 쓴 작가는 어느 도시에서 태어났습니까?
+  expected: 통영 (Tongyeong, South Gyeongsang; author 박경리, born 1926)
+  accept:
+  - 통영
+  - 統營
+  - Tongyeong
+  - 충무
+  review: 'Two steps: 『토지』 -> 박경리 -> 통영. 충무 (the city''s name 1955-1995) is accepted because the encyclopedia writes ''충무시(지금의
+    통영)''.'
+  source: https://encykorea.aks.ac.kr/Article/E0071046
+  recorded_on: '2026-11-10'
+
+- id: k095
+  language: ko
+  category: literature
+  difficulty: hard
+  hop: multi
+  prompt: 「진달래꽃」을 쓴 시인의 본명은 무엇입니까?
+  expected: 김정식 (Kim Jeong-sik; the poet 김소월)
+  accept:
+  - 김정식
+  - 金廷湜
+  review: 'Two steps: 「진달래꽃」 -> 김소월 -> 본명 김정식.'
+  source: https://encykorea.aks.ac.kr/Article/E0009535
+  recorded_on: '2026-11-10'
+
+- id: k096
+  language: ko
+  category: science
+  difficulty: easy
+  hop: single
+  prompt: 『동의보감』을 쓴 사람은 누구인가요?
+  expected: 허준 (Heo Jun, royal physician; completed 1610, printed 1613)
+  accept:
+  - 허준
+  - 許浚
+  - Heo Jun
+  - Hur Jun
+  source: https://encykorea.aks.ac.kr/Article/E0016731
+  recorded_on: '2026-11-10'
+
+- id: k097
+  language: ko
+  category: science
+  difficulty: medium
+  hop: single
+  prompt: 세종 때 스스로 시각을 알려 주는 물시계 자격루를 만든 사람은 누구야?
+  expected: 장영실 (Jang Yeong-sil, 1434; with 이천 and 김조)
+  accept:
+  - 장영실
+  - 蔣英實
+  - Jang Yeong-sil
+  - Jang Yeongsil
+  review: The encyclopedia credits 장영실, 이천, 김조 and others, with 장영실 as the main maker. An answer naming only 이천 or 김조 fails
+    the match; judge it by hand.
+  source: https://encykorea.aks.ac.kr/Article/E0047854
+  recorded_on: '2026-11-10'
+
+- id: k098
+  language: ko
+  category: science
+  difficulty: medium
+  hop: single
+  prompt: 우리나라 최초의 인공위성 이름이 뭐야?
+  expected: 우리별 1호 (KITSAT-1, launched 11 August 1992)
+  accept:
+  - 우리별
+  - KITSAT
+  review: '''우리별'' also matches 우리별 2호 or 3호. Check that the answer names 우리별 1호.'
+  source: https://encykorea.aks.ac.kr/Article/E0039869
+  recorded_on: '2026-11-10'
+
+- id: k099
+  language: ko
+  category: science
+  difficulty: hard
+  hop: single
+  prompt: 임진왜란 때 쓰인 폭탄 비격진천뢰를 발명한 사람은 누구입니까?
+  expected: 이장손 (Yi Jang-son, weapons maker under King Seonjo)
+  accept:
+  - 이장손
+  - 李長孫
+  source: https://encykorea.aks.ac.kr/Article/E0025078
+  recorded_on: '2026-11-10'
+
+- id: k100
+  language: ko
+  category: science
+  difficulty: hard
+  hop: single
+  prompt: 조선 태종 때 주자소에서 처음 만든 구리 활자 이름이 뭐야?
+  expected: 계미자 (Gyemija, 1403; Joseon's first copper type)
+  accept:
+  - 계미자
+  - 癸未字
+  - Gyemija
+  review: An answer that lists several types (계미자, 경자자, 갑인자) matches. Check that 계미자 is the one named as the first.
+  source: https://encykorea.aks.ac.kr/Article/E0003132
+  recorded_on: '2026-11-10'
+

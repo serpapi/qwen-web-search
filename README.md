@@ -122,6 +122,7 @@ Each benchmark test asks its own questions from [`app/questions/`](app/questions
 
 - **Model vs model** (`models`): 100 questions that need a web search (60 English, 20 Chinese, 20 Korean), asked with SerpApi · Multiple engines on each Qwen model you've pulled. Every answer is from 2026, so the models can't know it from training. The questions mix topics, easy to hard questions, multi-hop questions that combine two facts, and false-premise questions that a good answer should push back on.
 - **Google vs multiple engines** (`engines`): 100 questions asked with SerpApi · Google and with SerpApi · Multiple engines on the biggest model. 40 Chinese and 40 Korean questions ask about local and long-tail facts, such as a county's new mayor or a city's metro line, where Baidu and Naver may know more than Google. 20 English questions (recent news and general web) are the control.
+- **Small model with search vs big model without** (`known_facts`): 100 old, stable facts (60 English, 20 Chinese, 20 Korean), from common knowledge to specialist trivia, asked without search and with SerpApi · Multiple engines on each model. It shows where each model's memory runs out, and whether search lets a small model catch up with a big one.
 
 From `app/`:
 
@@ -129,6 +130,7 @@ From `app/`:
 python bench.py models                        # every installed Qwen model, biggest first
 python bench.py models qwen3.5:9b qwen3.5:4b  # only the models you name
 python bench.py engines                       # both setups on the biggest model
+python bench.py known_facts                   # no search and SerpApi, on every installed Qwen model
 python report.py models                       # summary, and results by language, topic, difficulty and question
 ```
 
