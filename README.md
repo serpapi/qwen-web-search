@@ -158,6 +158,11 @@ To work on the UI, run `python server.py` in `app/` and `npm run dev` in `app/we
 
 ## Learn more
 
+**Qwen**
+
+- [qwen3.5](https://ollama.com/library/qwen3.5) and [qwen3.8](https://ollama.com/library/qwen3.8) on Ollama: Model sizes and tags
+- [Function calling](https://qwen.readthedocs.io/en/latest/framework/function_call.html) in the Qwen docs
+
 **SerpApi**
 
 - [Google Search API](https://serpapi.com/search-api), [Google News API](https://serpapi.com/google-news-api), [Baidu Search API](https://serpapi.com/baidu-search-api) and [Naver Search API](https://serpapi.com/naver-search-api): Search engines provided to Qwen in this app
@@ -170,8 +175,3 @@ To work on the UI, run `python server.py` in `app/` and `npm run dev` in `app/we
 - [Tool calling](https://docs.ollama.com/capabilities/tool-calling): How models downloaded from Ollama request a search
 - [OpenAI compatibility](https://docs.ollama.com/api/openai-compatibility): The API used in the app and examples
 - [FAQ](https://docs.ollama.com/faq): Server settings such as the context window
-
-**Qwen**
-
-- [qwen3.5](https://ollama.com/library/qwen3.5) and [qwen3.8](https://ollama.com/library/qwen3.8) on Ollama: Model sizes and tags
-- [Function calling](https://qwen.readthedocs.io/en/latest/framework/function_call.html) in the Qwen docs

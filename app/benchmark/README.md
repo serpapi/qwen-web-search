@@ -1,24 +1,24 @@
 # Benchmark
 
-Three tests that check how well local Qwen models answer with SerpApi search. Each test has 100 questions in English, Chinese and Korean, and you can run it on the models you have.
+Three tests that check how well local Qwen models answer with web search. Each test has 100 questions in English, Chinese and Korean, and you can run it on the models you have.
 
 | Path | What it holds |
 |---|---|
 | [`questions/`](questions/) | The 100 questions of each test |
 | [`results/`](results/) | Our answers and their grades, one file per test |
 | [`methodology.md`](methodology.md) | How we built the questions, ran the tests and graded the answers |
-| [`insights.md`](insights.md) | What we learned, test by test |
+| [`insights.md`](insights.md) | What we learned |
 | `runs.jsonl` | Your own runs, written by `bench.py` (not in git) |
 
 ## Results
 
 We ran the tests in November 2026 on a MacBook Pro with 36 GB of memory, using qwen3.5:4b, qwen3.5:9b and qwen3.8:27b on Ollama. Each question was asked once. The answers were graded with a text match, then checked by an AI review.
 
-### Which model searches best? (`models`)
+### Which model searches best? (test name: `models`)
 
 All 100 questions are about events in 2026, so the models have to search.
 
-| | qwen3.8:27b | qwen3.5:9b | qwen3.5:4b |
+| Metric | qwen3.8:27b | qwen3.5:9b | qwen3.5:4b |
 |---|---|---|---|
 | Correct answers | **90** | 73 | 67 |
 | Time per answer | 36.9 s | 18.5 s | 21.9 s |
@@ -26,7 +26,7 @@ All 100 questions are about events in 2026, so the models have to search.
 - The 27B model wrote sharper queries and searched again when the first results fell short. The gap was largest on questions that combine two facts: 16 of 18, against 12 and 6.
 - When the 27B model was wrong, it had usually trusted its memory instead of searching.
 
-### Google only vs multiple search engines (`engines`)
+### Google only vs multiple search engines (test name: `engines`)
 
 100 local and recent questions, mostly in Chinese and Korean, on qwen3.8:27b.
 
@@ -37,7 +37,7 @@ All 100 questions are about events in 2026, so the models have to search.
 
 - Google covers regional questions well. The other engines helped on very fresh or very local facts, but made answers slower.
 
-### Small model with search vs big model without (`known_facts`)
+### Small model with search vs big model without (test name: `known_facts`)
 
 100 old, stable facts that the models could know from training.
 

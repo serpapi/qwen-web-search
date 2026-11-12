@@ -28,7 +28,7 @@ Each question records:
 - **Computer:** a MacBook Pro with 36 GB of memory.
 - **Models:** qwen3.5:4b, qwen3.5:9b and qwen3.8:27b on Ollama, with a 32k-token context, flash attention and a q8_0 KV cache, one request at a time.
 - **Dates:** 9–11 November 2026.
-- **Same conditions everywhere:** every setup uses the same system prompt, which gives today's date, the same tool definitions and the top 5 SerpApi results as Markdown. Qwen can make up to 4 model calls per answer.
+- **Same conditions everywhere:** every setup uses the same system prompt, which gives today's date, the same tool definitions and the top 5 SerpApi results as Markdown. Qwen gets up to 4 model calls per answer. In each of the first 3 calls it can ask for several searches at once, so one answer can have many searches (up to 7 in our runs). The 4th call has to answer.
 - **One run per question.** Each model was loaded before its first question and unloaded after its last, so loading time isn't in the answer times.
 
 | Test | Setups | Models |
@@ -42,7 +42,7 @@ Each question records:
 Every answer was graded in two steps:
 
 1. **Text match.** An answer is correct when it contains one of the question's `accept` strings, ignoring case and spaces. It's fast but rough: it passes an answer when the right name appears only in a cited link or in the wrong role, and it fails correct answers written differently.
-2. **AI review.** An AI agent reviewed every answer the text match failed, and the passes most likely to be false matches: 641 of the 1,100 answers. It compared each answer with the `expected` answer and the question's `review` note, set the verdict to correct, partial or wrong, and noted why a failed answer failed. The review changed 23 grades in `models`, 6 in `engines` and 20 in `known_facts`. We spot-checked its verdicts.
+2. **AI review.** Because the text match makes mistakes, an AI agent read the answers it was most likely to get wrong: every answer it failed, plus the passes that might be false matches. That came to 641 of the 1,100 answers. The agent compared each one with the expected answer and the question's `review` note, marked it correct, partly correct or wrong, and wrote down why. It changed 23 grades in `models`, 6 in `engines` and 20 in `known_facts`.
 
 "Answer in results" records whether any of Qwen's search results contained an accepted answer. It tells a search that didn't find the answer apart from a model that misread what it found.
 

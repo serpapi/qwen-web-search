@@ -2,7 +2,7 @@
 
 What we learned from the three tests. How we built the questions, ran the tests and graded the answers is in [methodology](methodology.md).
 
-## Which model searches best? (`models`)
+## Which model searches best? (test name: `models`)
 
 **Setup**
 - **Models:** qwen3.8:27b, qwen3.5:9b and qwen3.5:4b on Ollama, each with SerpApi search (Qwen picks Google, Google News, Baidu or Naver).
@@ -57,7 +57,7 @@ What we learned from the three tests. How we built the questions, ran the tests 
 4. **Why Baidu resists:** on Chinese questions Qwen thinks in Chinese ("让我用google搜索引擎搜索", "let me search with Google") and never weighs Baidu.
 5. **English questions were never sent to Baidu or Naver** in any variant.
 
-## Google only vs multiple engines (`engines`)
+## Google only vs multiple engines (test name: `engines`)
 
 **Setup**
 - **Model:** qwen3.8:27b, the only model that picks Baidu and Naver on its own.
@@ -103,7 +103,7 @@ What we learned from the three tests. How we built the questions, ran the tests 
 
 **Caveat:** the research agents found and checked these answers with web search, which may favor facts that Google already indexes well.
 
-## Small model with search vs big model without (`known_facts`)
+## Small model with search vs big model without (test name: `known_facts`)
 
 **Setup**
 - **Questions:** 100 old, stable facts, all true since before 2020, so a model could know them from training.
