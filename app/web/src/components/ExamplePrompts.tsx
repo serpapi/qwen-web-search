@@ -8,7 +8,7 @@ interface Example {
 const EXAMPLES: Example[] = [
   { text: "What's the latest version of Next.js?", lang: 'en' },
   { text: '2026年全国高考报名人数是多少？', lang: 'zh', gloss: "China's 2026 gaokao applicants" },
-  { text: '2027년 최저시급은 얼마인가요?', lang: 'ko', gloss: "South Korea's 2027 minimum wage" },
+  { text: '2026 한국시리즈 우승팀은?', lang: 'ko', gloss: 'Winner of the 2026 Korean Series (baseball)' },
 ]
 
 interface ExamplePromptsProps {
