@@ -15,8 +15,9 @@ interface StatsPanelProps {
 const SECTION_TITLE = 'mb-2 text-xs font-bold text-neutral-600'
 const SUBSECTION_TITLE = 'mt-3 mb-1.5 text-xs text-neutral-600'
 
-function show(value: number | undefined, missing: string, format: (value: number) => string = formatNumber) {
-  return value === undefined ? missing : format(value)
+/** A value, or a dash until the answer brings it. Stopped and failed turns never get one. */
+function show(value: number | undefined, format: (value: number) => string = formatNumber) {
+  return value === undefined ? '—' : format(value)
 }
 
 export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
@@ -31,8 +32,6 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
 
   const { reply } = exchange
   const stats = turnStats(reply)
-  // Stopped turns never get the counts that come with the answer.
-  const missing = reply.status === 'stopped' ? 'n/a' : 'Pending'
 
   return (
     <div className="space-y-6 p-4">
@@ -59,7 +58,7 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
             {stats.engines.map(({ label, count: uses }) => (
               <li key={label} className="flex justify-between gap-3">
                 <span className="min-w-0 wrap-anywhere">{label}</span>
-                <span className="font-mono text-neutral-600 tabular-nums">× {uses}</span>
+                {uses > 1 && <span className="font-mono text-neutral-600 tabular-nums">× {uses}</span>}
               </li>
             ))}
           </ul>
@@ -76,18 +75,21 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
               {/* Drawn once the answer brings the prompt and completion counts. */}
               {reply.result && (
                 <TokenBar
-                  segments={[
-                    { label: 'Prompt', value: reply.result.prompt_tokens, color: 'bg-brand-blue' },
-                    { label: 'Completion', value: reply.result.completion_tokens, color: 'bg-brand-purple' },
-                    { label: 'Search payload', value: stats.searchTokens, color: 'bg-ink' },
-                  ]}
+                  prompt={reply.result.prompt_tokens}
+                  searchResults={stats.searchTokens}
+                  completion={reply.result.completion_tokens}
                 />
               )}
               <StatList
                 items={[
-                  { label: 'Prompt', value: show(stats.promptTokens, missing), swatch: 'bg-brand-blue' },
-                  { label: 'Completion', value: show(stats.completionTokens, missing), swatch: 'bg-brand-purple' },
-                  { label: 'Search payload', value: formatNumber(stats.searchTokens), swatch: 'bg-ink' },
+                  { label: 'Prompt', value: show(stats.promptTokens), swatch: 'bg-brand-blue/35' },
+                  {
+                    label: 'Including search results',
+                    value: formatNumber(stats.searchTokens),
+                    swatch: 'bg-brand-blue',
+                    nested: true,
+                  },
+                  { label: 'Completion', value: show(stats.completionTokens), swatch: 'bg-brand-purple' },
                 ]}
               />
             </div>
@@ -97,9 +99,9 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
             <h3 className={SECTION_TITLE}>Time</h3>
             <StatList
               items={[
-                { label: 'Total', value: show(stats.totalSeconds, missing, formatSeconds) },
+                { label: 'Total', value: show(stats.totalSeconds, formatSeconds) },
                 { label: 'Search', value: formatSeconds(stats.searchSeconds) },
-                { label: 'Model', value: show(stats.modelSeconds, missing, formatSeconds) },
+                { label: 'Model', value: show(stats.modelSeconds, formatSeconds) },
               ]}
             />
           </section>

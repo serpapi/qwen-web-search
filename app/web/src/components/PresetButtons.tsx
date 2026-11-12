@@ -10,6 +10,12 @@ interface PresetButtonsProps {
   onPick: (columns: Column[]) => void
 }
 
+function buttonStyle(active: boolean, unavailable: boolean): string {
+  if (active) return 'border-brand-blue bg-brand-blue/10 text-brand-blue-text'
+  if (unavailable) return 'cursor-not-allowed border-dashed border-neutral-300 text-neutral-500'
+  return 'border-neutral-300 text-neutral-600 hover:border-neutral-400'
+}
+
 export function PresetButtons({ presets, columns, onPick }: PresetButtonsProps) {
   const labelId = useId()
 
@@ -20,25 +26,22 @@ export function PresetButtons({ presets, columns, onPick }: PresetButtonsProps) 
       </span>
       {presets.map((preset) => {
         const active = sameColumns(preset.columns, columns)
+        const unavailable = preset.unavailable !== undefined
         return (
           <button
             key={preset.name}
             type="button"
             aria-pressed={active}
             // aria-disabled rather than disabled keeps the button focusable, so screen readers reach the reason.
-            aria-disabled={preset.unavailable !== undefined}
-            title={preset.unavailable}
+            aria-disabled={unavailable}
             onClick={() => {
-              if (preset.unavailable === undefined) onPick(preset.columns)
+              if (!unavailable) onPick(preset.columns)
             }}
-            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm font-bold transition-colors aria-disabled:cursor-not-allowed aria-disabled:opacity-50 ${
-              active
-                ? 'border-brand-blue bg-brand-blue/10 text-brand-blue-text'
-                : 'border-neutral-300 text-neutral-600 not-aria-disabled:hover:border-neutral-400'
-            }`}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm font-bold transition-colors ${buttonStyle(active, unavailable)}`}
           >
             {active && <Check className="size-3.5" aria-hidden="true" />}
             {preset.name}
+            {unavailable && <span className="font-normal">· {preset.unavailable}</span>}
           </button>
         )
       })}

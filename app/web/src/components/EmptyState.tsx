@@ -3,7 +3,7 @@ import icon from '../assets/serpapi-icon.svg'
 
 interface EmptyStateProps {
   title: string
-  description: string
+  description: ReactNode
   children: ReactNode
 }
 

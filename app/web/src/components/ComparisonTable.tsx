@@ -24,7 +24,7 @@ function show(value: number | undefined, format: (value: number) => string): str
   return value === undefined ? '—' : format(value)
 }
 
-const NUMBER_CELL = 'px-3 py-2 text-right font-mono tabular-nums'
+const NUMBER_CELL = 'px-3 py-1.5 text-right font-mono whitespace-nowrap tabular-nums'
 
 /** One row per column for the latest message, with the lowest search tokens and fastest time marked. */
 export function ComparisonTable({ round }: { round: Round }) {
@@ -39,18 +39,26 @@ export function ComparisonTable({ round }: { round: Round }) {
     <div className="relative overflow-x-auto rounded-xl border border-neutral-200">
       <table className="w-full min-w-[44rem] text-sm">
         <caption className="border-b border-neutral-200 bg-neutral-50 px-3 py-2 text-left">
-          <span className="font-bold">Latest turn</span>
-          <span className="ml-2 text-neutral-600">{round.question}</span>
+          <span className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+            <span>
+              <span className="font-bold">Latest turn</span>
+              <span className="ml-2 text-neutral-600">{round.question}</span>
+            </span>
+            <span className="flex items-center gap-1.5 text-xs text-neutral-600">
+              <span className="size-1.5 rounded-full bg-brand-gradient" aria-hidden="true" />
+              Lowest search tokens among columns that searched, and fastest total time
+            </span>
+          </span>
         </caption>
         <thead className="text-xs text-neutral-600">
           <tr>
-            <th scope="col" className="px-3 py-2 text-left font-bold">Column</th>
-            <th scope="col" className="px-3 py-2 text-left font-bold">Engines used</th>
-            <th scope="col" className="px-3 py-2 text-right font-bold">Searches</th>
-            <th scope="col" className="px-3 py-2 text-right font-bold">Search tokens</th>
-            <th scope="col" className="px-3 py-2 text-right font-bold">Prompt tokens</th>
-            <th scope="col" className="px-3 py-2 text-right font-bold">Completion tokens</th>
-            <th scope="col" className="px-3 py-2 text-right font-bold">Total time</th>
+            <th scope="col" className="px-3 py-1.5 text-left font-bold">Column</th>
+            <th scope="col" className="px-3 py-1.5 text-left font-bold">Engines used</th>
+            <th scope="col" className="px-3 py-1.5 text-right font-bold">Searches</th>
+            <th scope="col" className="px-3 py-1.5 text-right font-bold">Search tokens</th>
+            <th scope="col" className="px-3 py-1.5 text-right font-bold">Prompt tokens</th>
+            <th scope="col" className="px-3 py-1.5 text-right font-bold">Completion tokens</th>
+            <th scope="col" className="px-3 py-1.5 text-right font-bold">Total time</th>
           </tr>
         </thead>
         <tbody>
@@ -61,12 +69,12 @@ export function ComparisonTable({ round }: { round: Round }) {
             const status = rowStatus(turn, stats)
             return (
               <tr key={index} className="border-t border-neutral-200 align-top">
-                <th scope="row" className="px-3 py-2 text-left font-normal whitespace-nowrap">
-                  <ColumnLabel position={index + 1} model={turn.model} setup={turn.setup} />
+                <th scope="row" className="px-3 py-1.5 text-left font-normal whitespace-nowrap">
+                  <ColumnLabel position={index + 1} model={turn.model} setup={turn.setup} inline />
                 </th>
-                <td className="px-3 py-2">
+                <td className="px-3 py-1.5">
                   {stats.engines.length > 0 && (
-                    <ul>
+                    <ul className="flex flex-wrap gap-x-3">
                       {stats.engines.map(({ label, count }) => (
                         <li key={label}>
                           {label}
@@ -98,10 +106,6 @@ export function ComparisonTable({ round }: { round: Round }) {
           })}
         </tbody>
       </table>
-      <p className="flex items-center gap-1.5 border-t border-neutral-200 px-3 py-1.5 text-xs text-neutral-600">
-        <span className="size-1.5 rounded-full bg-brand-gradient" aria-hidden="true" />
-        Lowest search tokens among columns that searched, and fastest total time.
-      </p>
     </div>
   )
 }

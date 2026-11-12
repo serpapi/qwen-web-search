@@ -9,7 +9,7 @@ export interface ModelInfo {
   parameters: string
 }
 
-/** GET /api/config */
+/** GET /api/config. It answers 503 with ConfigUnavailable instead when the server can't reach Ollama. */
 export interface Config {
   /** Biggest first. Empty when no Qwen model with tool support is installed. */
   models: ModelInfo[]
@@ -19,6 +19,11 @@ export interface Config {
    */
   default_model: string | null
   setups: SetupId[]
+}
+
+/** The body of GET /api/config's 503: what's wrong in plain words, with how to fix it. */
+export interface ConfigUnavailable {
+  detail: string
 }
 
 export interface HistoryMessage {
@@ -71,7 +76,7 @@ export interface ThinkingEvent {
 
 /**
  * A piece of Qwen's reply text, streamed token by token. Usually the answer, but when a search event follows, the text
- * streamed before it wasn't: Qwen sometimes writes a line before it searches.
+ * streamed before it wasn't: Qwen sometimes writes a line, or a whole draft answer, before it searches again.
  */
 export interface DeltaEvent {
   delta: string
@@ -80,7 +85,10 @@ export interface DeltaEvent {
 /** Sent as soon as a search finishes. */
 export interface SearchEvent {
   search: SearchStep
-  /** The raw Markdown Qwen read, or "Search failed: <ExceptionType>". */
+  /**
+   * The raw Markdown Qwen read. When format is error, "Search failed: <reason>", with SerpApi's own message such as
+   * "Invalid API key…" when there is one.
+   */
   payload: string
 }
 
@@ -96,6 +104,10 @@ export interface AnswerEvent {
 }
 
 export interface ErrorEvent {
+  /**
+   * In plain words with a next step when the server recognizes the cause, such as "Can't reach Ollama. Start it with
+   * `ollama serve`, then try again." Otherwise the raw "Type: message".
+   */
   error: string
 }
 

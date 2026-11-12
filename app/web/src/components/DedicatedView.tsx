@@ -27,7 +27,7 @@ export function DedicatedView({ hidden, setups, exchanges, running, disabledReas
   const [setup, setSetup] = useState<SetupId>('serpapi')
   // The turn whose stats are shown. Null (or a cleared turn) means the latest one.
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const scrollRef = useStickToBottom<HTMLDivElement>(exchanges)
+  const endRef = useStickToBottom<HTMLDivElement>(exchanges)
 
   const found = exchanges.findIndex((exchange) => exchange.id === selectedId)
   const selectedIndex = found === -1 ? exchanges.length - 1 : found
@@ -54,7 +54,7 @@ export function DedicatedView({ hidden, setups, exchanges, running, disabledReas
       </aside>
 
       <section aria-label="Conversation" className="flex min-h-0 flex-col">
-        <div ref={scrollRef} className="relative flex-1 lg:overflow-y-auto">
+        <div className="relative flex-1 lg:overflow-y-auto">
           <div className="mx-auto max-w-3xl space-y-4 px-4 py-6 sm:px-6">
             {exchanges.length === 0 ? (
               <EmptyState
@@ -76,6 +76,8 @@ export function DedicatedView({ hidden, setups, exchanges, running, disabledReas
               ))
             )}
           </div>
+          {/* The scroll margin leaves room for the composer, which sticks over the bottom of the view on narrow screens. */}
+          <div ref={endRef} aria-hidden="true" className="h-px scroll-mb-28" />
         </div>
         <div className="sticky bottom-0 border-t border-neutral-200 bg-white px-4 pt-3 pb-2 sm:px-6">
           <Composer

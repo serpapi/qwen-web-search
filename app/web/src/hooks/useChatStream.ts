@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
+import { SERVER_UNREACHABLE, httpError, isProxyError } from '../api'
 import type { ChatEvent, ChatRequest } from '../types'
 
 /** Parses one server-sent event block: its `data:` lines hold one JSON event. */
@@ -81,14 +82,16 @@ export function useChatStream() {
           signal: controller.signal,
         })
         if (!response.ok || !response.body) {
-          throw new Error(`The server answered ${response.status} ${response.statusText}`)
+          batch.add({ error: isProxyError(response) ? SERVER_UNREACHABLE : httpError(response) })
+          return true
         }
         for await (const event of readEvents(response.body)) batch.add(event)
         return true
       } catch (error) {
         // Cancelling rejects fetch or the reader with an AbortError.
         if (controller.signal.aborted) return false
-        batch.add({ error: error instanceof Error ? error.message : String(error) })
+        // They reject with a TypeError when the connection fails or drops. Anything else is shown as "Type: message".
+        batch.add({ error: error instanceof TypeError ? SERVER_UNREACHABLE : String(error) })
         return true
       } finally {
         batch.flush()

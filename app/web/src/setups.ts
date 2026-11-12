@@ -1,7 +1,5 @@
 import type { SearchStep, SetupId } from './types'
 
-export const SETUP_IDS: SetupId[] = ['none', 'serpapi-google', 'serpapi']
-
 export const SETUP_INFO: Record<SetupId, { name: string; description: string }> = {
   none: { name: 'No search', description: 'Answers from its training data only' },
   'serpapi-google': { name: 'SerpApi · Google', description: 'Google only, top 5 results' },

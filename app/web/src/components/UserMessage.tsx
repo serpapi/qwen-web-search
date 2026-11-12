@@ -1,3 +1,5 @@
+import { koreanLang } from '../lang'
+
 interface UserMessageProps {
   text: string
   compact?: boolean
@@ -12,7 +14,7 @@ export function UserMessage({ text, compact = false }: UserMessageProps) {
         }`}
       >
         <span className="sr-only">You: </span>
-        {text}
+        <span lang={koreanLang(text)}>{text}</span>
       </p>
     </div>
   )

@@ -1,5 +1,6 @@
 import Markdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { koreanLang } from '../lang'
 
 const remarkPlugins = [remarkGfm]
 
@@ -18,7 +19,7 @@ const components: Components = {
 
 export function Answer({ text, compact = false }: { text: string; compact?: boolean }) {
   return (
-    <div className={`markdown ${compact ? 'text-sm' : 'text-[15px]'}`}>
+    <div lang={koreanLang(text)} className={`markdown ${compact ? 'text-sm' : 'text-[15px]'}`}>
       <Markdown remarkPlugins={remarkPlugins} components={components}>
         {text}
       </Markdown>

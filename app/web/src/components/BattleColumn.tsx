@@ -16,7 +16,9 @@ interface BattleColumnProps {
 /** One column's own conversation. */
 export function BattleColumn({ column, index, rounds }: BattleColumnProps) {
   const turns = rounds.map((round) => ({ round, reply: round.replies[index] }))
-  const totals = totalUsage(turns.map(({ reply }) => reply))
+  const replies = turns.map(({ reply }) => reply)
+  // With one finished turn, its numbers are already under it and in the comparison table.
+  const totals = replies.filter((reply) => reply.status === 'done').length >= 2 ? totalUsage(replies) : undefined
 
   return (
     <section
@@ -27,13 +29,11 @@ export function BattleColumn({ column, index, rounds }: BattleColumnProps) {
         <h2>
           <ColumnLabel position={index + 1} model={column.model} setup={column.setup} />
         </h2>
-        {totals ? (
+        {totals && (
           <div className="flex flex-wrap items-baseline gap-x-2">
             <span className="text-xs font-bold text-neutral-600">Totals</span>
             <UsageRow usage={totals} />
           </div>
-        ) : (
-          <p className="text-xs text-neutral-600">No finished turns yet</p>
         )}
       </header>
       <ol className="space-y-5 p-3">
@@ -41,13 +41,11 @@ export function BattleColumn({ column, index, rounds }: BattleColumnProps) {
           <li key={round.id} className="space-y-2.5">
             <UserMessage text={round.question} compact />
             <ReplyContent turn={reply} compact />
-            <div className="space-y-1 border-t border-neutral-200 pt-2">
-              <p className="text-xs">
-                <span className="text-neutral-600">Model</span>{' '}
-                <span className="font-mono font-bold wrap-anywhere">{reply.model}</span>
-              </p>
-              {reply.result && <UsageRow usage={turnStats(reply)} />}
-            </div>
+            {reply.result && (
+              <div className="border-t border-neutral-200 pt-2">
+                <UsageRow usage={turnStats(reply)} />
+              </div>
+            )}
           </li>
         ))}
       </ol>

@@ -1,12 +1,13 @@
+import { ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 import { columnLabel, type Column } from '../columns'
 import type { Round } from '../conversation'
 import { formatCount } from '../format'
+import { useHorizontalOverflow } from '../hooks/useHorizontalOverflow'
 import { buildPresets } from '../presets'
 import type { ModelInfo, SetupId } from '../types'
 import { BattleColumn } from './BattleColumn'
 import { ColumnSetup } from './ColumnSetup'
-import { ColumnSummary } from './ColumnSummary'
 import { ComparisonTable } from './ComparisonTable'
 import { Composer } from './Composer'
 import { EmptyState } from './EmptyState'
@@ -15,8 +16,8 @@ import { ExamplePrompts } from './ExamplePrompts'
 interface BattlegroundViewProps {
   hidden: boolean
   models: ModelInfo[]
-  /** The backend's default model. Null until the config arrives, or when there's no model at all. */
-  defaultModel: string | null
+  /** The backend's default model, which may not be among models. */
+  defaultModel: string
   setups: SetupId[]
   rounds: Round[]
   /** True while the latest round is running. */
@@ -25,7 +26,6 @@ interface BattlegroundViewProps {
   disabledReason: string | undefined
   onSend: (question: string, columns: Column[]) => void
   onStop: () => void
-  onNewComparison: () => void
 }
 
 /** "Running column 2 of 3: qwen3.8:27b · SerpApi · Google", or undefined when no column is running. */
@@ -47,20 +47,20 @@ export function BattlegroundView({
   disabledReason,
   onSend,
   onStop,
-  onNewComparison,
 }: BattlegroundViewProps) {
   const disabled = disabledReason !== undefined
-  const presets = defaultModel === null ? [] : buildPresets(models.map((model) => model.name), defaultModel)
-  // Null until the user picks columns, so the first preset applies once the config arrives.
+  const presets = buildPresets(models.map((model) => model.name), defaultModel)
+  // Null until the user picks columns, so the first preset applies.
   const [pickedColumns, setPickedColumns] = useState<Column[] | null>(null)
-  const columns = pickedColumns ?? presets.at(0)?.columns ?? []
+  const columns = pickedColumns ?? presets[0].columns
   // Each column keeps its own conversation, so the columns can't change until a new comparison starts.
   const locked = rounds.length > 0
   const latest = rounds.at(-1)
+  const [columnsRef, columnsOverflow] = useHorizontalOverflow()
   const status =
     (latest && progress(latest)) ??
     (locked
-      ? 'Columns stay the same for the whole comparison. Start a new comparison to change them.'
+      ? 'Columns stay the same for the whole comparison. Choose New comparison to change them.'
       : 'Columns run one after another, in this order, so they never compete for the local model.')
 
   function send(question: string) {
@@ -74,30 +74,33 @@ export function BattlegroundView({
         positioned) is laid out and clipped there. Otherwise it escapes to the page, and the page scrolls past the composer.
       */}
       <div className="relative min-h-0 flex-1 overflow-y-auto">
-        <div className="space-y-3 border-b border-neutral-200 px-4 py-3 sm:px-6">
-          {defaultModel !== null &&
-            (locked ? (
-              <ColumnSummary columns={columns} onNewComparison={onNewComparison} />
-            ) : (
-              <ColumnSetup
-                columns={columns}
-                presets={presets}
-                models={models}
-                defaultModel={defaultModel}
-                setups={setups}
-                onChange={setPickedColumns}
-              />
-            ))}
+        <div className="space-y-3 border-b border-neutral-200 px-4 py-2.5 sm:px-6">
+          {!locked && (
+            <ColumnSetup
+              columns={columns}
+              presets={presets}
+              models={models}
+              defaultModel={defaultModel}
+              setups={setups}
+              onChange={setPickedColumns}
+            />
+          )}
           <p aria-live="polite" className="text-sm text-neutral-600">
             {status}
           </p>
         </div>
 
         {latest ? (
-          <div className="space-y-4 p-4 sm:px-6">
+          <div className="space-y-3 px-4 py-3 sm:px-6">
             <ComparisonTable round={latest} />
-            <div className="relative overflow-x-auto pb-1">
-              <div className="grid auto-cols-[minmax(20rem,1fr)] grid-flow-col items-start gap-3">
+            {columnsOverflow && (
+              <p className="flex items-center justify-end gap-1 text-xs font-bold text-neutral-600">
+                Scroll sideways to see all {columns.length} columns
+                <ArrowRight className="size-3.5" aria-hidden="true" />
+              </p>
+            )}
+            <div ref={columnsRef} className="relative overflow-x-auto pb-1">
+              <div className="grid auto-cols-[minmax(17rem,1fr)] grid-flow-col items-start gap-3">
                 {columns.map((column, index) => (
                   <BattleColumn key={index} column={column} index={index} rounds={rounds} />
                 ))}

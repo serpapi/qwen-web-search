@@ -4,7 +4,7 @@ export interface Preset {
   name: string
   /** The columns it fills. Empty when it doesn't apply. */
   columns: Column[]
-  /** Why it doesn't apply to the installed models, or undefined when it does. */
+  /** Why it doesn't apply to the installed models, shown after its name, or undefined when it does. */
   unavailable?: string
 }
 
@@ -13,7 +13,7 @@ export interface Preset {
  * models are the installed ones, biggest first. defaultModel is the backend's default, which may not be among them.
  */
 export function buildPresets(models: string[], defaultModel: string): Preset[] {
-  const unavailable = models.length < 2 ? 'Needs at least 2 installed Qwen models' : undefined
+  const unavailable = models.length < 2 ? 'needs 2 installed Qwen models' : undefined
   const biggest = models[0]
   const smallest = models[models.length - 1]
   return [

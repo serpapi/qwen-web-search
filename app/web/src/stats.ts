@@ -1,4 +1,4 @@
-import type { AssistantTurn } from './conversation'
+import { searchesOf, type AssistantTurn } from './conversation'
 import { servedBy } from './setups'
 
 /** Counts for one turn or several. A value is undefined until it is known. */
@@ -27,7 +27,7 @@ function sumIfAll(values: (number | undefined)[]): number | undefined {
 }
 
 export function turnStats(turn: AssistantTurn): TurnStats {
-  const steps = turn.searches.map((event) => event.search)
+  const steps = searchesOf(turn).map((event) => event.search)
   const searchSeconds = steps.reduce((total, step) => total + step.seconds, 0)
   const result = turn.result
 

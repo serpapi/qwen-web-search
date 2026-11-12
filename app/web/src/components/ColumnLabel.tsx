@@ -7,12 +7,12 @@ interface ColumnLabelProps {
   position: number
   model: string
   setup: SetupId
-  /** Model and setup on one line, as in the summary chips. Otherwise the setup goes under the model. */
+  /** Model and setup on one line when they fit, as in the comparison table. Otherwise the setup goes under the model. */
   inline?: boolean
 }
 
 /**
- * A column's number, model and setup, styled the same in its heading, its comparison-table row and its summary chip.
+ * A column's number, model and setup, styled the same in its heading and its comparison-table row.
  * The number lines up with the model's first line, since both are 20px tall.
  */
 export function ColumnLabel({ position, model, setup, inline = false }: ColumnLabelProps) {

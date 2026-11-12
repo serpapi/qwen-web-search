@@ -4,7 +4,7 @@ import type { Usage } from '../stats'
 /** A compact row of counts, used under each Battleground turn and in column headers. */
 export function UsageRow({ usage }: { usage: Usage }) {
   const show = (value: number | undefined, format: (value: number) => string = formatNumber) =>
-    value === undefined ? 'n/a' : format(value)
+    value === undefined ? '—' : format(value)
   const items = [
     { label: 'Searches', value: show(usage.searches) },
     { label: 'Search tokens', value: show(usage.searchTokens) },
