@@ -1,6 +1,6 @@
-# Qwen + SerpApi: web search for local Qwen models
+# Web search for local Qwen models using SerpApi
 
-A chat app and two short Python examples that give a local Qwen model real-time web search with [SerpApi](https://serpapi.com). Qwen runs on your computer in [Ollama](https://ollama.com), searches when a question needs current information, and answers with sources.
+A chat app that gives a local Qwen model web search through [SerpApi](https://serpapi.com/). Qwen runs on your computer in Ollama. Compare Google with multiple search engines, see the tokens, searches and time behind every answer, and try the short terminal examples and our benchmark results.
 
 ![How a local Qwen model searches the web with SerpApi](assets/qwen-serpapi-flow.png)
 
@@ -156,5 +156,20 @@ To work on the UI, run `python server.py` in `app/` and `npm run dev` in `app/we
 
 ## Learn more
 
+**SerpApi**
+
+- [Google Search API](https://serpapi.com/search-api), [Google News API](https://serpapi.com/google-news-api), [Baidu Search API](https://serpapi.com/baidu-search-api) and [Naver Search API](https://serpapi.com/naver-search-api): the engines Qwen searches
+- [Markdown output](https://serpapi.com/markdown-output) and [JSON Restrictor](https://serpapi.com/json-restrictor): how the results stay small for the model
+- [serpapi-python](https://github.com/serpapi/serpapi-python): the official Python library the code uses
 - [How to Connect Your Local LLM with Web Search Data](https://serpapi.com/blog/how-to-connect-your-local-llm-with-web-search-data/) (SerpApi blog)
-- SerpApi [Markdown output](https://serpapi.com/markdown-output) and [JSON Restrictor](https://serpapi.com/json-restrictor)
+
+**Ollama**
+
+- [Tool calling](https://docs.ollama.com/capabilities/tool-calling): how models request a search
+- [OpenAI compatibility](https://docs.ollama.com/api/openai-compatibility): the API the app and examples call
+- [FAQ](https://docs.ollama.com/faq): server settings such as the context window
+
+**Qwen**
+
+- [qwen3.5](https://ollama.com/library/qwen3.5) and [qwen3.8](https://ollama.com/library/qwen3.8) on Ollama: model sizes and tags
+- [Function calling](https://qwen.readthedocs.io/en/latest/framework/function_call.html) in the Qwen docs
