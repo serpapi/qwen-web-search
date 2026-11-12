@@ -59,7 +59,7 @@ export function DedicatedView({ hidden, setups, exchanges, running, disabledReas
             {exchanges.length === 0 ? (
               <EmptyState
                 title="Ask Qwen"
-                description="Each answer shows the searches Qwen ran, which engine served them, and what they cost in tokens and time."
+                description="Watch its reasoning, searches, engine choices, and per-response stats."
               >
                 <ExamplePrompts onPick={send} disabled={disabled} />
               </EmptyState>
