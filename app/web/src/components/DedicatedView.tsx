@@ -58,7 +58,7 @@ export function DedicatedView({ hidden, setups, exchanges, running, disabledReas
           <div className="mx-auto max-w-3xl space-y-4 px-4 py-6 sm:px-6">
             {exchanges.length === 0 ? (
               <EmptyState
-                title="Ask Qwen something recent"
+                title="Ask Qwen"
                 description="Each answer shows the searches Qwen ran, which engine served them, and what they cost in tokens and time."
               >
                 <ExamplePrompts onPick={send} disabled={disabled} />

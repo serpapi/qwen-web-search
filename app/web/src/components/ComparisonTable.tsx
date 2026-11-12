@@ -37,16 +37,20 @@ export function ComparisonTable({ round }: { round: Round }) {
   return (
     // relative keeps the sr-only text (absolutely positioned) inside this scroll area, so it can't make the page scroll.
     <div className="relative overflow-x-auto rounded-xl border border-neutral-200">
-      <table className="w-full min-w-[44rem] text-sm">
+      <table className="w-full min-w-[50rem] text-sm">
         <caption className="border-b border-neutral-200 bg-neutral-50 px-3 py-2 text-left">
-          <span className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+          <span className="flex flex-wrap items-baseline gap-x-6 gap-y-1">
             <span>
               <span className="font-bold">Latest turn</span>
               <span className="ml-2 text-neutral-600">{round.question}</span>
             </span>
-            <span className="flex items-center gap-1.5 text-xs text-neutral-600">
-              <span className="size-1.5 rounded-full bg-brand-gradient" aria-hidden="true" />
-              Lowest search tokens among columns that searched, and fastest total time
+            <span className="ml-auto flex flex-col items-end gap-0.5 text-xs text-neutral-600">
+              {/* The text, not the centered dot, sets the baseline, so Highlights lines up with Latest turn. */}
+              <span className="flex items-baseline gap-1.5">
+                <span className="size-1.5 self-center rounded-full bg-brand-gradient" aria-hidden="true" />
+                Highlights
+              </span>
+              <span>Prompt tokens include search tokens</span>
             </span>
           </span>
         </caption>
@@ -58,6 +62,7 @@ export function ComparisonTable({ round }: { round: Round }) {
             <th scope="col" className="px-3 py-1.5 text-right font-bold">Search tokens</th>
             <th scope="col" className="px-3 py-1.5 text-right font-bold">Prompt tokens</th>
             <th scope="col" className="px-3 py-1.5 text-right font-bold">Completion tokens</th>
+            <th scope="col" className="px-3 py-1.5 text-right font-bold">Total tokens</th>
             <th scope="col" className="px-3 py-1.5 text-right font-bold">Total time</th>
           </tr>
         </thead>
@@ -96,6 +101,7 @@ export function ComparisonTable({ round }: { round: Round }) {
                 </td>
                 <td className={NUMBER_CELL}>{show(stats.promptTokens, formatNumber)}</td>
                 <td className={NUMBER_CELL}>{show(stats.completionTokens, formatNumber)}</td>
+                <td className={NUMBER_CELL}>{show(stats.totalTokens, formatNumber)}</td>
                 <td className={NUMBER_CELL}>
                   <BestValue best={stats.totalSeconds !== undefined && stats.totalSeconds === fastest} label="fastest">
                     {show(stats.totalSeconds, formatSeconds)}

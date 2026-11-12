@@ -2,6 +2,7 @@ import { CircleDashed, CircleStop, Clock } from 'lucide-react'
 import { memo } from 'react'
 import type { AssistantTurn } from '../conversation'
 import { Answer } from './Answer'
+import { CopyAnswer } from './CopyAnswer'
 import { DraftItem } from './DraftItem'
 import { ErrorNotice } from './ErrorNotice'
 import { Reasoning } from './Reasoning'
@@ -36,6 +37,7 @@ function announcement(turn: AssistantTurn): string {
 export const ReplyContent = memo(function ReplyContent({ turn, compact = false }: ReplyContentProps) {
   // A stopped or failed turn keeps the text that streamed before it ended.
   const answer = turn.result?.answer ?? turn.text
+  const hasAnswer = answer.trim() !== ''
 
   return (
     <div className={compact ? 'space-y-2' : 'space-y-3'}>
@@ -56,7 +58,9 @@ export const ReplyContent = memo(function ReplyContent({ turn, compact = false }
           ))}
         </ol>
       )}
-      {answer.trim() !== '' && <Answer text={answer} compact={compact} />}
+      {hasAnswer && <Answer text={answer} compact={compact} />}
+      {/* Only a finished answer can be copied. Streamed, stopped or failed text is partial. */}
+      {hasAnswer && turn.status === 'done' && <CopyAnswer answer={answer} />}
       {turn.status === 'stopped' && <StatusLine icon={CircleStop} label="Stopped" />}
       {turn.error && <ErrorNotice message={turn.error} />}
       <p aria-live="polite" className="sr-only">

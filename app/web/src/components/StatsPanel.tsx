@@ -83,11 +83,11 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
               <StatList
                 items={[
                   { label: 'Prompt', value: show(stats.promptTokens), swatch: 'bg-brand-blue' },
+                  { label: 'Search (included in prompt)', value: formatNumber(stats.searchTokens), swatch: 'bg-ink' },                  
                   { label: 'Completion', value: show(stats.completionTokens), swatch: 'bg-brand-purple' },
-                  { label: 'Search payload', value: formatNumber(stats.searchTokens), swatch: 'bg-ink' },
+                  { label: 'Total', value: show(stats.totalTokens), sum: true },
                 ]}
               />
-              <p className="text-xs text-neutral-600">Search payload is part of the prompt.</p>
             </div>
           </section>
 

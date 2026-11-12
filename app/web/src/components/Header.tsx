@@ -22,7 +22,7 @@ export function Header({ config, model, onModelChange, mode, onModeChange, onSta
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <img src={logo} alt="SerpApi" className="h-6 w-auto" />
         <span className="h-5 w-px bg-neutral-300" aria-hidden="true" />
-        <h1 className="text-lg font-bold whitespace-nowrap">Qwen + SerpApi</h1>
+        <h1 className="text-lg font-bold whitespace-nowrap">Qwen</h1>
         {config.status === 'loading' && (
           <span className="rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-0.5 text-xs text-neutral-700">
             Connecting…

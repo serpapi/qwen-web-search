@@ -10,6 +10,7 @@ export function UsageRow({ usage }: { usage: Usage }) {
     { label: 'Search tokens', value: show(usage.searchTokens) },
     { label: 'Prompt', value: show(usage.promptTokens) },
     { label: 'Completion', value: show(usage.completionTokens) },
+    { label: 'Total tokens', value: show(usage.totalTokens) },
     { label: 'Time', value: show(usage.totalSeconds, formatSeconds) },
   ]
   return (

@@ -7,6 +7,8 @@ export interface Usage {
   searchTokens: number
   promptTokens?: number
   completionTokens?: number
+  /** Prompt plus completion. Search tokens aren't added, because they're part of the prompt. */
+  totalTokens?: number
   totalSeconds?: number
 }
 
@@ -42,6 +44,7 @@ export function turnStats(turn: AssistantTurn): TurnStats {
     searchTokens: steps.reduce((total, step) => total + step.tokens, 0),
     promptTokens: result?.prompt_tokens,
     completionTokens: result?.completion_tokens,
+    totalTokens: result ? result.prompt_tokens + result.completion_tokens : undefined,
     totalSeconds: result?.total_seconds,
     searchSeconds,
     modelSeconds: result ? Math.max(0, result.total_seconds - searchSeconds) : undefined,
@@ -59,6 +62,7 @@ export function totalUsage(turns: AssistantTurn[]): Usage | undefined {
     searchTokens: finished.reduce((total, stats) => total + stats.searchTokens, 0),
     promptTokens: sum((stats) => stats.promptTokens),
     completionTokens: sum((stats) => stats.completionTokens),
+    totalTokens: sum((stats) => stats.totalTokens),
     totalSeconds: sum((stats) => stats.totalSeconds),
   }
 }

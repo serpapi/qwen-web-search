@@ -48,7 +48,7 @@ export function SetupPicker({ setups, value, onChange }: SetupPickerProps) {
         })}
       </div>
       <p className="mt-4 text-xs leading-relaxed text-neutral-600">
-        SerpApi setups send Qwen the top 5 results as compact Markdown. You can switch setups between messages.
+        Default app setup sends Qwen the top 5 results as compact Markdown. You can modify this as per your need.
       </p>
     </fieldset>
   )
