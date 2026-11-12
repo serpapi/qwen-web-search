@@ -76,22 +76,18 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
               {reply.result && (
                 <TokenBar
                   prompt={reply.result.prompt_tokens}
-                  searchResults={stats.searchTokens}
+                  searchPayload={stats.searchTokens}
                   completion={reply.result.completion_tokens}
                 />
               )}
               <StatList
                 items={[
-                  { label: 'Prompt', value: show(stats.promptTokens), swatch: 'bg-brand-blue/35' },
-                  {
-                    label: 'Including search results',
-                    value: formatNumber(stats.searchTokens),
-                    swatch: 'bg-brand-blue',
-                    nested: true,
-                  },
+                  { label: 'Prompt', value: show(stats.promptTokens), swatch: 'bg-brand-blue' },
                   { label: 'Completion', value: show(stats.completionTokens), swatch: 'bg-brand-purple' },
+                  { label: 'Search payload', value: formatNumber(stats.searchTokens), swatch: 'bg-ink' },
                 ]}
               />
+              <p className="text-xs text-neutral-600">Search payload is part of the prompt.</p>
             </div>
           </section>
 
