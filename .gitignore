@@ -3,8 +3,8 @@
 __pycache__/
 .DS_Store
 
-# Benchmark output
-app/results.jsonl
+# Your own benchmark runs (our results are in app/benchmark/results/)
+app/benchmark/runs.jsonl
 
 # Claude Code
 CLAUDE.md

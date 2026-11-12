@@ -1,7 +1,7 @@
 # Google only vs multiple engines: 100 questions asked with the serpapi-google and serpapi setups on the biggest model.
 # 40 Chinese and 40 Korean questions about local and long-tail 2026 facts, where Baidu and Naver may know more than
 # Google, plus 20 English controls (recent news and general web). Every answer was verified on recorded_on against
-# `source`. accept: case-insensitive substrings (whitespace ignored) that count as correct. Review every answer by hand;
+# `source`. accept: case-insensitive substrings (whitespace ignored) that count as correct. Review the answers;
 # `review` says what makes an answer wrong when a false match is possible.
 
 - id: e001

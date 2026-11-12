@@ -1,11 +1,12 @@
-"""Runs one benchmark test on each model and appends one row per answer to results.jsonl."""
+"""Runs one benchmark test on each model and appends one row per answer to benchmark/runs.jsonl."""
 import json, os, sys, time
 import yaml
 from models import load, qwen_models, unload
 from setups import SETUPS
 
 RUNS = 1
-# Each test asks the questions in questions/<test>.yaml with these setups, each on the first N models (None: all).
+RESULTS = "benchmark/runs.jsonl"  # your runs; our published ones are in benchmark/results/
+# Each test asks the questions in benchmark/questions/<test>.yaml with these setups, each on the first N models (None: all).
 TESTS = {
     "models": [("serpapi", None)],  # model vs model
     "engines": [("serpapi-google", 1), ("serpapi", 1)],  # Google only vs multiple engines, on the biggest model
@@ -15,12 +16,12 @@ TESTS = {
 test, *names = sys.argv[1:]  # python bench.py models [qwen3.5:9b qwen3.5:4b]
 models = names or [m["name"] for m in qwen_models()]  # default: every installed Qwen model, biggest first
 setups = TESTS[test]
-questions = yaml.safe_load(open(f"questions/{test}.yaml", encoding="utf-8"))
-done = set()  # rows already in results.jsonl, so an interrupted run picks up where it stopped
-if os.path.exists("results.jsonl"):
-    done = {(r["model"], r["setup"], r["question"], r["run"]) for r in map(json.loads, open("results.jsonl", encoding="utf-8"))}
+questions = yaml.safe_load(open(f"benchmark/questions/{test}.yaml", encoding="utf-8"))
+done = set()  # rows already in RESULTS, so an interrupted run picks up where it stopped
+if os.path.exists(RESULTS):
+    done = {(r["model"], r["setup"], r["question"], r["run"]) for r in map(json.loads, open(RESULTS, encoding="utf-8"))}
 
-with open("results.jsonl", "a", encoding="utf-8") as out:
+with open(RESULTS, "a", encoding="utf-8") as out:
     for model in models:
         todo = [(setup, q, run) for setup, first in setups if model in models[:first] for q in questions
                 for run in range(1, RUNS + 1) if (model, setup, q["id"], run) not in done]

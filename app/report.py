@@ -1,15 +1,17 @@
-"""Prints one benchmark test's tables from results.jsonl as Markdown: python report.py models"""
+"""Prints one benchmark test's tables as Markdown from your runs, or from another results file:
+python report.py models
+python report.py models benchmark/results/models.jsonl"""
 import json, sys
 from collections import Counter
 from statistics import mean
 import yaml
 
-test = sys.argv[1]
-questions = {q["id"]: q for q in yaml.safe_load(open(f"questions/{test}.yaml", encoding="utf-8"))}
-rows = [r for r in map(json.loads, open("results.jsonl", encoding="utf-8")) if r.get("test") == test]
+test, path = sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else "benchmark/runs.jsonl"
+questions = {q["id"]: q for q in yaml.safe_load(open(f"benchmark/questions/{test}.yaml", encoding="utf-8"))}
+rows = [r for r in map(json.loads, open(path, encoding="utf-8")) if r.get("test") == test]
 columns = list(dict.fromkeys((r["model"], r["setup"]) for r in rows))  # in the order bench.py ran them
 headers = [f"{model} · {setup}" for model, setup in columns]
-MARK = {True: "✓", "partial": "~", False: "✗"}  # "partial" is set by hand after review
+MARK = {True: "✓", "partial": "~", False: "✗"}  # "partial" is set after review
 
 def avg(values):
     return round(mean(values), 1) if values else "-"
@@ -50,7 +52,7 @@ table(["Question", "Category", "Prompt"] + headers,
       [[i, q["category"], q["prompt"][:50]] + ["".join(MARK[r["correct"]] for r in of(c, {i})) or "–" for c in columns]
        for i, q in questions.items()])
 
-failures = Counter((r["failure"], (r["model"], r["setup"])) for r in rows if r.get("failure"))  # set by hand review
+failures = Counter((r["failure"], (r["model"], r["setup"])) for r in rows if r.get("failure"))  # set by the review
 if failures:
     kinds = sorted({kind for kind, _ in failures}, key=lambda kind: -sum(n for (k, _), n in failures.items() if k == kind))
     table(["Why it wasn't correct"] + headers, [[kind] + [failures[kind, c] for c in columns] for kind in kinds])

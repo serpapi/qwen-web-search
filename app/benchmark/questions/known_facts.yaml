@@ -2,7 +2,7 @@
 # Every answer has been true since before 2020, so a model could know it from training; the questions run from common
 # knowledge (easy) to specialist long-tail facts (hard), to show where each model's memory runs out and whether search
 # closes the gap. Verified on recorded_on against `source` and a second source; disputed facts were left out.
-# accept: case-insensitive substrings (whitespace ignored) that count as correct. Review every answer by hand;
+# accept: case-insensitive substrings (whitespace ignored) that count as correct. Review the answers;
 # `review` says what makes an answer wrong when a false match is possible.
 
 - id: k001

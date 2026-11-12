@@ -6,7 +6,7 @@ A chat app that gives a local Qwen model web search through [SerpApi](https://se
 
 - **[Chat app](#use-the-app)** (`app/`): ask questions in your browser, see every search Qwen makes, and compare models and setups side by side.
 - **[Examples](#run-the-examples)** (`examples/`): two standalone Python scripts with the minimum code to connect Qwen to SerpApi.
-- **[Benchmark](#benchmark)** (`app/questions/`): three tests with 100 questions each, and our results.
+- **[Benchmark](#benchmark)** (`app/benchmark/`): three tests with 100 questions each, our results and what we learned.
 
 ## Quick start
 
@@ -113,7 +113,7 @@ Type a question after `You:`. A `[search]` line appears for each search Qwen mak
 
 Three tests with 100 questions each, in English, Chinese and Korean: which model searches best, Google alone vs multiple engines, and a small model with search vs a big model without it. In our runs, a 4B model with search beat a 27B model answering from memory.
 
-See the [results and how to run the tests](app/questions/README.md).
+See the [results and how to run the tests](app/benchmark/README.md), the [methodology](app/benchmark/methodology.md) and the [insights](app/benchmark/insights.md).
 
 ## Project structure
 
@@ -130,7 +130,7 @@ qwen-web-search/
 │   ├── serpapi_search.py             # SerpApi search
 │   ├── setups.py                     # The setups shared by the UI and the benchmark
 │   ├── bench.py, report.py           # Benchmark and result tables
-│   ├── questions/                    # Benchmark questions and results
+│   ├── benchmark/                    # Benchmark questions, results and insights
 │   └── web/                          # React chat UI
 ├── assets/                           # Images
 ├── .env.example

@@ -1,7 +1,7 @@
 # Model vs model: 100 questions that need a web search, asked with the serpapi setup on every model.
 # Every answer is from 2026 (or late 2025), so the models can't know it from training, and was verified on
 # recorded_on against `source`. Re-check fast-changing ones (m-ids with "Fragile" in review) before each run.
-# accept: case-insensitive substrings that count as correct. Review every answer by hand before publishing;
+# accept: case-insensitive substrings that count as correct. Review the answers before publishing;
 # `review` says what makes an answer wrong when a false match is possible.
 # false_premise questions assume something false; the answer is correct only if it rejects the premise.
 
