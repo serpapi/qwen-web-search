@@ -2,11 +2,15 @@
 
 Run Qwen on your device with web search through [SerpApi](https://serpapi.com/).
 
-![How a local Qwen model searches the web with SerpApi](assets/qwen-serpapi-flow.png)
-
-- **[Chat app](#use-the-app)** (`app/`): Ask questions in your browser, see every search Qwen makes, and compare models and web search options Battleground mode.
+- **[Chat app](#use-the-app)** (`app/`): Ask questions in your browser, see every search Qwen makes, and compare models and web search options in Battleground mode.
 - **[Examples](#run-the-examples)** (`examples/`): Sample Python scripts to connect Qwen with SerpApi.
 - **[Benchmark](#benchmark)** (`app/benchmark/`): Three tests with 100 questions each, our results and what we learned.
+
+## How it works
+
+Qwen gets a search tool through function calling. When it decides a question needs a search, it calls the tool with a query. The app runs that search through SerpApi and sends the top results back to Qwen as Markdown. Qwen can search again if the results fall short, then answers with sources.
+
+![How a local Qwen model searches the web with SerpApi](assets/qwen-serpapi-flow.png)
 
 ## Quick start
 
@@ -125,12 +129,12 @@ qwen-web-search/
 │   ├── qwen_search.py                # Google search in one file
 │   └── qwen_search_multi_engines.py  # Qwen chooses the SerpApi engine
 ├── app/
-│   ├── server.py                     # Web server for the chat UI
-│   ├── chat.py                       # Search loop with local Qwen, and the terminal chat
-│   ├── models.py                     # The installed Qwen models, and the default one
-│   ├── tools.py                      # The prompt and search tools Qwen sees
+│   ├── server.py                     # Web server for chat UI
+│   ├── chat.py                       # Search loop with local Qwen, and terminal chat
+│   ├── models.py                     # Installed Qwen models and the default one
+│   ├── tools.py                      # Prompt and search tools Qwen sees
 │   ├── serpapi_search.py             # SerpApi search
-│   ├── setups.py                     # The web search options shared by the UI and the benchmark
+│   ├── setups.py                     # Web search options shared by UI and benchmark
 │   ├── bench.py, report.py           # Benchmark and result tables
 │   ├── benchmark/                    # Benchmark questions, results and insights
 │   └── web/                          # React chat UI
