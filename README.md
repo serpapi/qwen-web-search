@@ -4,7 +4,7 @@ A chat app that gives a local Qwen model web search through [SerpApi](https://se
 
 ![How a local Qwen model searches the web with SerpApi](assets/qwen-serpapi-flow.png)
 
-- **[Chat app](#use-the-app)** (`app/`): ask questions in your browser, see every search Qwen makes, and compare models and setups side by side.
+- **[Chat app](#use-the-app)** (`app/`): ask questions in your browser, see every search Qwen makes, and compare models and web search options side by side.
 - **[Examples](#run-the-examples)** (`examples/`): two standalone Python scripts with the minimum code to connect Qwen to SerpApi.
 - **[Benchmark](#benchmark)** (`app/benchmark/`): three tests with 100 questions each, our results and what we learned.
 
@@ -56,17 +56,17 @@ Any Qwen model with the [tools tag on Ollama](https://ollama.com/search?c=tools&
 
 Pick a model and a mode at the top of the page. Switching to a model that isn't loaded yet makes the next answer slower while Ollama loads it.
 
-**Dedicated:** chat with one setup. Pick a setup, then type a question or click an example prompt. Each search appears as a card while Qwen works, with:
+**Dedicated:** chat with one web search option. Pick it under **Web search**, then type a question or click an example prompt. Each search appears as a card while Qwen works, with:
 
 - the engine Qwen chose and its search query
 - the tokens and time the search took
 - **What Qwen read**: the results sent back to Qwen
 
-The **Turn stats** panel adds up the searches, tokens and time for each answer.
+The **Answer stats** panel adds up the searches, tokens and time for each answer.
 
 ![Dedicated mode: Qwen searches with SerpApi and streams its answer](assets/chat-demo.gif)
 
-**Battleground:** send one question to up to four columns and read their answers side by side. Each column is a model and a setup, so you can compare search with no search, Google with multiple engines, or one model with another. The presets fill the columns in one click:
+**Battleground:** send one question to up to four columns and read their answers side by side. Each column is a model with a web search option, so you can compare search with no search, Google with multiple engines, or one model with another. The presets fill the columns in one click:
 
 | Preset | Columns |
 |---|---|
@@ -79,15 +79,15 @@ A table compares the engines used, searches, tokens and total time, and highligh
 
 ![Battleground mode: three Qwen models answer the same question, one after another (sped up 5x)](assets/battleground-demo.gif)
 
-### Setups
+### Web search options
 
-| Setup | Where the search results come from |
+| Option | Where the search results come from |
 |---|---|
 | No search | Nowhere. Qwen answers from its training data. |
 | SerpApi · Google | Google, through SerpApi, like [`qwen_search.py`](examples/qwen_search.py) |
 | SerpApi · Multiple engines | Qwen chooses Google, Google News, Baidu or Naver for each search, like [`qwen_search_multi_engines.py`](examples/qwen_search_multi_engines.py) |
 
-The SerpApi setups get the top 5 results as Markdown. In the app, Qwen can also limit a Google search to the past day, week, month or year when a question is about recent events. The examples leave this out to stay short.
+The SerpApi options get the top 5 results as Markdown. To change that, edit `app/serpapi_search.py`. In the app, Qwen can also limit a Google search to the past day, week, month or year when a question is about recent events. The examples leave this out to stay short.
 
 ### Chat in the terminal
 
@@ -128,7 +128,7 @@ qwen-web-search/
 │   ├── models.py                     # The installed Qwen models, and the default one
 │   ├── tools.py                      # The prompt and search tools Qwen sees
 │   ├── serpapi_search.py             # SerpApi search
-│   ├── setups.py                     # The setups shared by the UI and the benchmark
+│   ├── setups.py                     # The web search options shared by the UI and the benchmark
 │   ├── bench.py, report.py           # Benchmark and result tables
 │   ├── benchmark/                    # Benchmark questions, results and insights
 │   └── web/                          # React chat UI

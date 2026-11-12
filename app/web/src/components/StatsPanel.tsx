@@ -6,7 +6,7 @@ import { StatList } from './StatList'
 import { TokenBar } from './TokenBar'
 
 interface StatsPanelProps {
-  exchange: Exchange | undefined
+  exchange: Exchange
   /** 1-based position of the exchange in the conversation. */
   position: number
   count: number
@@ -21,15 +21,6 @@ function show(value: number | undefined, format: (value: number) => string = for
 }
 
 export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
-  if (!exchange) {
-    return (
-      <div className="p-4">
-        <h2 className="font-bold">Turn stats</h2>
-        <p className="mt-1 text-sm text-neutral-600">Send a message to see what each answer costs in tokens and time.</p>
-      </div>
-    )
-  }
-
   const { reply } = exchange
   const stats = turnStats(reply)
 
@@ -37,16 +28,16 @@ export function StatsPanel({ exchange, position, count }: StatsPanelProps) {
     <div className="space-y-6 p-4">
       <div>
         <div className="flex items-baseline justify-between gap-2">
-          <h2 className="font-bold">Turn stats</h2>
+          <h2 className="font-bold">Answer stats</h2>
           <span className="text-xs text-neutral-600">
-            {position === count ? 'Latest turn' : `Turn ${position} of ${count}`}
+            {position === count ? 'Latest answer' : `Answer ${position} of ${count}`}
           </span>
         </div>
         <p className="mt-1 line-clamp-2 text-sm text-neutral-600">{exchange.question}</p>
       </div>
 
       <section>
-        <h3 className={SECTION_TITLE}>Setup</h3>
+        <h3 className={SECTION_TITLE}>Web search</h3>
         <SetupTag setup={reply.setup} />
         <h4 className={SUBSECTION_TITLE}>Model</h4>
         <p className="font-mono text-sm wrap-anywhere">{reply.model}</p>

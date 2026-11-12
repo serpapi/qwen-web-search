@@ -110,8 +110,8 @@ export function BattlegroundView({
         ) : (
           <div className="px-4 sm:px-6">
             <EmptyState
-              title="Compare models and search setups side by side"
-              description="Each message goes to every column, one after another. Every column keeps its own conversation, so follow-up questions work in each one."
+              title="Model and Web Search Comparison"
+              description="Experiment with different models and web search options."
             >
               <ExamplePrompts onPick={send} disabled={disabled} />
             </EmptyState>

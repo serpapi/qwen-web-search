@@ -32,6 +32,11 @@ export function DedicatedView({ hidden, setups, exchanges, running, disabledReas
   const found = exchanges.findIndex((exchange) => exchange.id === selectedId)
   const selectedIndex = found === -1 ? exchanges.length - 1 : found
   const selected = exchanges.at(selectedIndex)
+  // The stats panel appears with the first message, so the layout changes once, when the user sends, rather than when
+  // the answer arrives. Until then the conversation takes its width.
+  const columns = selected
+    ? 'lg:grid-cols-[16rem_minmax(0,1fr)_19rem] xl:grid-cols-[18rem_minmax(0,1fr)_21rem]'
+    : 'lg:grid-cols-[16rem_minmax(0,1fr)] xl:grid-cols-[18rem_minmax(0,1fr)]'
 
   function send(question: string) {
     setSelectedId(null)
@@ -44,10 +49,10 @@ export function DedicatedView({ hidden, setups, exchanges, running, disabledReas
     // scrolls past the composer.
     <main
       hidden={hidden}
-      className="relative min-h-0 flex-1 overflow-y-auto lg:grid lg:grid-cols-[16rem_minmax(0,1fr)_19rem] lg:overflow-hidden xl:grid-cols-[18rem_minmax(0,1fr)_21rem]"
+      className={`relative min-h-0 flex-1 overflow-y-auto lg:grid lg:overflow-hidden ${columns}`}
     >
       <aside
-        aria-label="Search setup"
+        aria-label="Web search"
         className="relative border-b border-neutral-200 bg-neutral-50 p-4 lg:overflow-y-auto lg:border-r lg:border-b-0"
       >
         <SetupPicker setups={setups} value={setup} onChange={setSetup} />
@@ -90,12 +95,14 @@ export function DedicatedView({ hidden, setups, exchanges, running, disabledReas
         </div>
       </section>
 
-      <aside
-        aria-label="Turn stats"
-        className="relative border-t border-neutral-200 bg-neutral-50 lg:overflow-y-auto lg:border-t-0 lg:border-l"
-      >
-        <StatsPanel exchange={selected} position={selectedIndex + 1} count={exchanges.length} />
-      </aside>
+      {selected && (
+        <aside
+          aria-label="Answer stats"
+          className="relative border-t border-neutral-200 bg-neutral-50 lg:overflow-y-auto lg:border-t-0 lg:border-l"
+        >
+          <StatsPanel exchange={selected} position={selectedIndex + 1} count={exchanges.length} />
+        </aside>
+      )}
     </main>
   )
 }

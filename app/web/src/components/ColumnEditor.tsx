@@ -49,7 +49,7 @@ export function ColumnEditor({ column, position, modelOptions, setupOptions, onC
         onChange={(model) => onChange({ ...column, model })}
       />
       <label htmlFor={setupId} className={`mt-3 mb-1 ${LABEL}`}>
-        Setup
+        Web search
       </label>
       <Select
         id={setupId}

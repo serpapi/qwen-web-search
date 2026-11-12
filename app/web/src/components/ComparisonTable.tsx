@@ -41,11 +41,11 @@ export function ComparisonTable({ round }: { round: Round }) {
         <caption className="border-b border-neutral-200 bg-neutral-50 px-3 py-2 text-left">
           <span className="flex flex-wrap items-baseline gap-x-6 gap-y-1">
             <span>
-              <span className="font-bold">Latest turn</span>
+              <span className="font-bold">Latest question</span>
               <span className="ml-2 text-neutral-600">{round.question}</span>
             </span>
             <span className="ml-auto flex flex-col items-end gap-0.5 text-xs text-neutral-600">
-              {/* The text, not the centered dot, sets the baseline, so Highlights lines up with Latest turn. */}
+              {/* The text, not the centered dot, sets the baseline, so Highlights lines up with Latest question. */}
               <span className="flex items-baseline gap-1.5">
                 <span className="size-1.5 self-center rounded-full bg-brand-gradient" aria-hidden="true" />
                 Highlights

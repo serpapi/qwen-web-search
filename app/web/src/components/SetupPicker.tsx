@@ -12,7 +12,7 @@ export function SetupPicker({ setups, value, onChange }: SetupPickerProps) {
   const name = useId()
   return (
     <fieldset>
-      <legend className="mb-3 text-sm font-bold text-neutral-600">Search setup</legend>
+      <legend className="mb-3 text-sm font-bold text-neutral-600">Web search</legend>
       <div className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1">
         {setups.map((setup) => {
           const checked = setup === value
@@ -47,9 +47,6 @@ export function SetupPicker({ setups, value, onChange }: SetupPickerProps) {
           )
         })}
       </div>
-      <p className="mt-4 text-xs leading-relaxed text-neutral-600">
-        Default app setup sends Qwen the top 5 results as compact Markdown. You can modify this as per your need.
-      </p>
     </fieldset>
   )
 }
