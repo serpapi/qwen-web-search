@@ -3,6 +3,7 @@ import { BattlegroundView } from './components/BattlegroundView'
 import { DedicatedView } from './components/DedicatedView'
 import { Header } from './components/Header'
 import type { Mode } from './components/ModeToggle'
+import { ModelWarning } from './components/ModelWarning'
 import { StartupNotice } from './components/StartupNotice'
 import { useBattleground } from './hooks/useBattleground'
 import { useConfig } from './hooks/useConfig'
@@ -40,6 +41,7 @@ export default function App() {
         onStartOver={current.reset}
         canStartOver={!current.empty}
       />
+      <ModelWarning message={ready?.model_warning ?? null} />
       {ready && defaultModel !== null ? (
         // Both views stay mounted so each keeps its conversation, scroll position and draft.
         <>

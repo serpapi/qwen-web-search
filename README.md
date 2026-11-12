@@ -33,7 +33,7 @@ ollama pull qwen3.5:9b
 OLLAMA_CONTEXT_LENGTH=32768 OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 ollama serve
 ```
 
-The settings give Qwen room for search results (a 32k-token context) while keeping memory use down.
+The settings give Qwen room for search results (a 32k-token context) while keeping memory use down. If you pull a different model, set `LOCAL_MODEL` in `.env` to its name (see [Pick a model](#pick-a-model)).
 
 **3. Build the UI and start the app** in another terminal:
 
@@ -54,7 +54,7 @@ Pull the one that fits your computer's memory:
 | qwen3.5:9b | 6.6 GB | 8 GB |
 | qwen3.8:27b | 18 GB | 24 GB |
 
-Any Qwen model with the [tools tag on Ollama](https://ollama.com/search?c=tools&q=qwen) works. The app lists every Qwen model you've pulled and starts with the biggest. To start with a different one, set `LOCAL_MODEL` in `.env`.
+Any Qwen model with the [tools tag on Ollama](https://ollama.com/search?c=tools&q=qwen) works. Update `LOCAL_MODEL` with the model name in `.env`. `.env.example` has `qwen3.5:9b`. The app starts with that model and lists every other Qwen model you've pulled, and the examples use it too. If `LOCAL_MODEL` is empty, the app starts with your biggest Qwen model and the examples use `qwen3.8:27b`.
 
 ## Use the app
 
@@ -101,7 +101,7 @@ From `app/`, run `python chat.py` to chat in the terminal, with Qwen choosing th
 
 ## Run the examples
 
-Each example is one file. Set `MODEL` at the top of the file to the model you pulled, then run it from the repository root:
+Each example is one file and uses the model in `LOCAL_MODEL` in `.env`, or `qwen3.8:27b` if it's empty. Run them from the repository root:
 
 ```bash
 python examples/qwen_search.py
@@ -153,7 +153,7 @@ To work on the UI, run `python server.py` in `app/` and `npm run dev` in `app/we
 |---|---|
 | `address already in use` when you start Ollama | Ollama is already running. Quit the Ollama app, then start Ollama again. |
 | `Can't reach Ollama` | Ollama isn't running. Start it as in [Quick start](#quick-start), then start the app. |
-| `Ollama doesn't have ...` or `model "..." not found` | Pull the model with `ollama pull`, or set `LOCAL_MODEL` (app) or `MODEL` (examples) to a name from `ollama list`. |
+| `Ollama doesn't have ...` or `model "..." not found` | Pull the model with `ollama pull`, or set `LOCAL_MODEL` in `.env` to a name from `ollama list`. |
 | The app says no Qwen model was found | Pull one, for example `ollama pull qwen3.5:9b`, then reload the page. Only Qwen models with tool support are listed. |
 | `SERPAPI_API_KEY isn't set` | Create `.env` in the repository root, as in [Quick start](#quick-start). |
 | A search says `Search failed: Invalid API key` | The key in `.env` is wrong. Copy it again from your [SerpApi dashboard](https://serpapi.com/manage-api-key). |

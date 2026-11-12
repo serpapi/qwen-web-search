@@ -14,10 +14,15 @@ export interface Config {
   /** Biggest first. Empty when no Qwen model with tool support is installed. */
   models: ModelInfo[]
   /**
-   * LOCAL_MODEL from .env, otherwise the biggest model. It can name a model that isn't in models.
-   * Null when LOCAL_MODEL isn't set and there's no Qwen model.
+   * LOCAL_MODEL from .env when Ollama has it, otherwise the biggest model. Always installed, but it can be a non-Qwen
+   * model that isn't in models. Null when LOCAL_MODEL isn't usable and there's no Qwen model.
    */
   default_model: string | null
+  /**
+   * Why the app didn't start with LOCAL_MODEL: Ollama doesn't have it, from a typo or a model that isn't pulled. In plain
+   * words with commands in backticks. Null when LOCAL_MODEL is used, isn't set, or there's no Qwen model to fall back on.
+   */
+  model_warning: string | null
   setups: SetupId[]
 }
 

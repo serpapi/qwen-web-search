@@ -5,10 +5,10 @@ import serpapi
 from dotenv import load_dotenv
 from openai import OpenAI
 
-load_dotenv()  # reads SERPAPI_API_KEY from .env
+load_dotenv()  # reads SERPAPI_API_KEY and LOCAL_MODEL from .env
 serpapi_client = serpapi.Client(api_key=os.environ["SERPAPI_API_KEY"], timeout=60)
 qwen = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")  # Ollama's OpenAI-compatible API
-MODEL = "qwen3.5:9b"  # the model you pulled, as shown by `ollama list`
+MODEL = os.environ.get("LOCAL_MODEL") or "qwen3.8:27b"  # set LOCAL_MODEL in .env to use another model
 MAX_ROUNDS = 4  # calls to Qwen per question; the last one must answer
 
 def google_search(query):

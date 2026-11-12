@@ -9,7 +9,7 @@ from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from starlette.concurrency import iterate_in_threadpool
-from models import MODEL, is_loaded, load, qwen_models
+from models import MODEL, default_model, is_loaded, load, qwen_models
 from setups import SETUPS
 
 app = FastAPI()
@@ -34,9 +34,10 @@ def explain(error, model):
 def config():
     try:
         models = [{"name": m["name"], "parameters": m["details"]["parameter_size"]} for m in qwen_models()]
+        default, warning = default_model()  # checked on every page load, so pulling the model and reloading is enough
     except URLError:
         raise HTTPException(503, OLLAMA_DOWN)
-    return {"models": models, "default_model": MODEL, "setups": list(SETUPS)}
+    return {"models": models, "default_model": default, "model_warning": warning, "setups": list(SETUPS)}
 
 async def close_on_disconnect(events):
     """Streams a sync generator and closes it when the browser disconnects (Stop), which closes the Ollama stream.
