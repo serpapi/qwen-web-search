@@ -1,16 +1,16 @@
-# Web search for local Qwen models using SerpApi
+# Web search for Qwen models using SerpApi
 
-A chat app that gives a local Qwen model web search through [SerpApi](https://serpapi.com/). Qwen runs on your computer in Ollama. Compare Google with multiple search engines, see the tokens, searches and time behind every answer, and try the short terminal examples and our benchmark results.
+Run Qwen on your device with web search through [SerpApi](https://serpapi.com/).
 
 ![How a local Qwen model searches the web with SerpApi](assets/qwen-serpapi-flow.png)
 
-- **[Chat app](#use-the-app)** (`app/`): ask questions in your browser, see every search Qwen makes, and compare models and web search options side by side.
-- **[Examples](#run-the-examples)** (`examples/`): two standalone Python scripts with the minimum code to connect Qwen to SerpApi.
-- **[Benchmark](#benchmark)** (`app/benchmark/`): three tests with 100 questions each, our results and what we learned.
+- **[Chat app](#use-the-app)** (`app/`): Ask questions in your browser, see every search Qwen makes, and compare models and web search options Battleground mode.
+- **[Examples](#run-the-examples)** (`examples/`): Sample Python scripts to connect Qwen with SerpApi.
+- **[Benchmark](#benchmark)** (`app/benchmark/`): Three tests with 100 questions each, our results and what we learned.
 
 ## Quick start
 
-You need [Ollama](https://ollama.com/download), Python 3.10 or newer, Node.js 20 or newer (to build the chat app), and a [SerpApi API key](https://serpapi.com/dashboard). The free plan includes 250 searches a month.
+You need [Ollama](https://ollama.com/download), Python 3.10 or newer, Node.js 20 or newer (to build the chat app), and a [SerpApi API key](https://serpapi.com/manage-api-key). The free plan includes 250 searches a month.
 
 **1. Install.** Then open `.env` and set `SERPAPI_API_KEY` to your key.
 
@@ -54,19 +54,21 @@ Any Qwen model with the [tools tag on Ollama](https://ollama.com/search?c=tools&
 
 ## Use the app
 
-Pick a model and a mode at the top of the page. Switching to a model that isn't loaded yet makes the next answer slower while Ollama loads it.
+The app has two modes:
+ - Dedicated
+ - Battleground
 
-**Dedicated:** chat with one web search option. Pick it under **Web search**, then type a question or click an example prompt. Each search appears as a card while Qwen works, with:
+**Dedicated:** Choose a model and a web search option, then type a question or click an example prompt. Each search appears as a card while Qwen works, with:
 
-- the engine Qwen chose and its search query
-- the tokens and time the search took
-- **What Qwen read**: the results sent back to Qwen
+- Search engine chosen by Qwen and its search query
+- **What Qwen read**: Search results received by Qwen
+- Token usage and time taken for the search
 
 The **Answer stats** panel adds up the searches, tokens and time for each answer.
 
 ![Dedicated mode: Qwen searches with SerpApi and streams its answer](assets/chat-demo.gif)
 
-**Battleground:** send one question to up to four columns and read their answers side by side. Each column is a model with a web search option, so you can compare search with no search, Google with multiple engines, or one model with another. The presets fill the columns in one click:
+**Battleground:** Compare up to 4 Qwen models with different web search options side by side. Presets fill the columns in one click:
 
 | Preset | Columns |
 |---|---|
@@ -87,7 +89,7 @@ A table compares the engines used, searches, tokens and total time, and highligh
 | SerpApi · Google | Google, through SerpApi, like [`qwen_search.py`](examples/qwen_search.py) |
 | SerpApi · Multiple engines | Qwen chooses Google, Google News, Baidu or Naver for each search, like [`qwen_search_multi_engines.py`](examples/qwen_search_multi_engines.py) |
 
-The SerpApi options get the top 5 results as Markdown. To change that, edit `app/serpapi_search.py`. In the app, Qwen can also limit a Google search to the past day, week, month or year when a question is about recent events. The examples leave this out to stay short.
+The SerpApi options get the top 5 results as Markdown. To change that, edit `app/serpapi_search.py`. In the app, Qwen can also limit a Google search to the past day, week, month or year when a question is about recent events. The search card shows a badge such as "Past week" next to the engine name. The examples leave this out to stay short.
 
 ### Chat in the terminal
 
@@ -111,7 +113,7 @@ Type a question after `You:`. A `[search]` line appears for each search Qwen mak
 
 ## Benchmark
 
-Three tests with 100 questions each, in English, Chinese and Korean: which model searches best, Google alone vs multiple engines, and a small model with search vs a big model without it. In our runs, a 4B model with search beat a 27B model answering from memory.
+Three tests with 100 questions each, in English, Chinese and Korean: which model searches best, Google alone vs multiple engines, and a small model with search vs a big model without it. In our runs, a 4B model with search beat a 27B model answering from memory on old facts.
 
 See the [results and how to run the tests](app/benchmark/README.md), the [methodology](app/benchmark/methodology.md) and the [insights](app/benchmark/insights.md).
 
@@ -150,7 +152,7 @@ To work on the UI, run `python server.py` in `app/` and `npm run dev` in `app/we
 | `Ollama doesn't have ...` or `model "..." not found` | Pull the model with `ollama pull`, or set `LOCAL_MODEL` (app) or `MODEL` (examples) to a name from `ollama list`. |
 | The app says no Qwen model was found | Pull one, for example `ollama pull qwen3.5:9b`, then reload the page. Only Qwen models with tool support are listed. |
 | `SERPAPI_API_KEY isn't set` | Create `.env` in the repository root, as in [Quick start](#quick-start). |
-| A search says `Search failed: Invalid API key` | The key in `.env` is wrong. Copy it again from your [SerpApi dashboard](https://serpapi.com/dashboard). |
+| A search says `Search failed: Invalid API key` | The key in `.env` is wrong. Copy it again from your [SerpApi dashboard](https://serpapi.com/manage-api-key). |
 | A search says `Search failed: Your account has run out of searches` | You've used this month's searches. Check your usage on the [SerpApi dashboard](https://serpapi.com/dashboard). |
 | Your computer slows down while Qwen answers | Close other apps or pick a smaller model. Run `ollama stop <model>` to free the memory. |
 
@@ -158,18 +160,18 @@ To work on the UI, run `python server.py` in `app/` and `npm run dev` in `app/we
 
 **SerpApi**
 
-- [Google Search API](https://serpapi.com/search-api), [Google News API](https://serpapi.com/google-news-api), [Baidu Search API](https://serpapi.com/baidu-search-api) and [Naver Search API](https://serpapi.com/naver-search-api): the engines Qwen searches
-- [Markdown output](https://serpapi.com/markdown-output) and [JSON Restrictor](https://serpapi.com/json-restrictor): how the results stay small for the model
-- [serpapi-python](https://github.com/serpapi/serpapi-python): the official Python library the code uses
+- [Google Search API](https://serpapi.com/search-api), [Google News API](https://serpapi.com/google-news-api), [Baidu Search API](https://serpapi.com/baidu-search-api) and [Naver Search API](https://serpapi.com/naver-search-api): Search engines provided to Qwen in this app
+- [Markdown output](https://serpapi.com/markdown-output) and [JSON Restrictor](https://serpapi.com/json-restrictor): For token-efficient web search
+- [SerpApi Python SDK](https://github.com/serpapi/serpapi-python): Official SerpApi Python library used in the code
 - [How to Connect Your Local LLM with Web Search Data](https://serpapi.com/blog/how-to-connect-your-local-llm-with-web-search-data/) (SerpApi blog)
 
 **Ollama**
 
-- [Tool calling](https://docs.ollama.com/capabilities/tool-calling): how models request a search
-- [OpenAI compatibility](https://docs.ollama.com/api/openai-compatibility): the API the app and examples call
-- [FAQ](https://docs.ollama.com/faq): server settings such as the context window
+- [Tool calling](https://docs.ollama.com/capabilities/tool-calling): How models downloaded from Ollama request a search
+- [OpenAI compatibility](https://docs.ollama.com/api/openai-compatibility): The API used in the app and examples
+- [FAQ](https://docs.ollama.com/faq): Server settings such as the context window
 
 **Qwen**
 
-- [qwen3.5](https://ollama.com/library/qwen3.5) and [qwen3.8](https://ollama.com/library/qwen3.8) on Ollama: model sizes and tags
+- [qwen3.5](https://ollama.com/library/qwen3.5) and [qwen3.8](https://ollama.com/library/qwen3.8) on Ollama: Model sizes and tags
 - [Function calling](https://qwen.readthedocs.io/en/latest/framework/function_call.html) in the Qwen docs
