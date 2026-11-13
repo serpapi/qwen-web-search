@@ -119,6 +119,8 @@ Type a question after `You:`. A `[search]` line appears for each search Qwen mak
 
 Three tests with 100 questions each, in English, Chinese and Korean: which model searches best, Google alone vs multiple engines, and a small model with search vs a big model without it. In our runs, a 4B model with search beat a 27B model answering from memory on old facts.
 
+![Correct answers, seconds and tokens per answer, without and with SerpApi search, for qwen3.8:27b, qwen3.5:9b and qwen3.5:4b](assets/charts/known-facts.png)
+
 See the [results and how to run the tests](app/benchmark/README.md), the [methodology](app/benchmark/methodology.md) and the [insights](app/benchmark/insights.md).
 
 ## Project structure

@@ -18,6 +18,8 @@ We ran the tests in November 2026 on a MacBook Pro with 36 GB of memory, using q
 
 All 100 questions are about events in 2026, so the models have to search.
 
+![Correct answers and seconds per answer: qwen3.8:27b 90 in 36.9 s, qwen3.5:9b 73 in 18.5 s, qwen3.5:4b 67 in 21.9 s](../../assets/charts/models.png)
+
 | Metric | qwen3.8:27b | qwen3.5:9b | qwen3.5:4b |
 |---|---|---|---|
 | Correct answers | **90** | 73 | 67 |
@@ -30,6 +32,8 @@ All 100 questions are about events in 2026, so the models have to search.
 
 100 local and recent questions, mostly in Chinese and Korean, on qwen3.8:27b.
 
+![Google only: 93 correct in 32.5 s per answer. Google, Google News, Baidu or Naver: 95 correct in 39.5 s per answer](../../assets/charts/engines.png)
+
 | Category | Google only | Google, Google News, Baidu or Naver |
 |---|---|---|
 | Correct answers | 93 | 95 |
@@ -40,6 +44,8 @@ All 100 questions are about events in 2026, so the models have to search.
 ### Small model with search vs big model without (test name: `known_facts`)
 
 100 old, stable facts that the models could know from training.
+
+![Correct answers, seconds and tokens per answer, without and with SerpApi search, for qwen3.8:27b, qwen3.5:9b and qwen3.5:4b](../../assets/charts/known-facts.png)
 
 | Model | Without search | With search |
 |---|---|---|
