@@ -25,7 +25,7 @@ What we learned from the three tests. How we built the questions, ran the tests 
 
 **Insights**
 1. **The 27B model is clearly better; 9B vs 4B is close to a coin flip.** 27b alone answered 24 questions that 9b missed, against 7 the other way (p = 0.003). The 9b vs 4b difference (20 vs 14) could be chance.
-2. **The bigger model wins by searching better, not just by reading better.** Whenever 27b answered wrong, the right answer was in its search results; that happened 9 times to 9b and 12 times to 4b. 27b runs more searches, writes sharper queries and follows up when the first results fall short.
+2. **The bigger model wins mostly by searching better, and it also reads results a little better.** The right answer was in 27b's search results for 88 of 98 questions it searched, against 78 of 98 for 9b and 73 of 100 for 4b. 27b runs more searches, writes sharper queries and follows up when the first results fall short. Even with the answer in the results, 9b still got 7 questions wrong and 4b 5, against 2 for 27b.
 3. **Only the big model uses local search engines on its own.** 27b sent 13 of its 44 Chinese searches to Baidu and also used Naver, and scored 20/20 on Chinese and 19/20 on Korean. 9b and 4b used Baidu twice in total and Naver never.
 4. **Small models stop after the first fact.** On multi-hop questions (for example, how old a prize winner was when it was announced), 27b got 16 of 18, 9b 12 and 4b 6.
 5. **The big model fails by trusting its memory.** Most of 27b's misses came from:
