@@ -21,6 +21,8 @@ RESTRICTORS = {
 
 def serpapi_search(engine, query):
     """Searches one SerpApi engine and returns the top 5 results as Markdown."""
+    if engine not in RESTRICTORS:  # Qwen sometimes invents engine names; Ollama doesn't enforce the enum
+        return f"Unknown engine '{engine}'. Use one of: {', '.join(RESTRICTORS)}."
     query_key = "query" if engine == "naver" else "q"  # Naver calls its query parameter "query"
     return serpapi_client.search({
         "engine": engine,
