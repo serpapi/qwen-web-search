@@ -1,5 +1,6 @@
 openai~=3.35
 serpapi~=1.2
+mcp~=1.30  # Qwen-Agent 0.0.34 doesn't work with mcp 2
 python-dotenv>=1.2
 pyyaml>=6.0
 tokenizers>=0.23

@@ -20,3 +20,6 @@ QWEN.md
 AGENTS.md
 .agents/
 .codex/
+
+# Qwen-Agent creates this folder where it runs
+workspace/
