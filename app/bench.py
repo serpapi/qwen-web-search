@@ -2,21 +2,29 @@
 import json, os, sys, time
 import yaml
 from models import load, qwen_models, unload
-from setups import SETUPS
+from setups import BENCH_SETUPS as SETUPS
 
 RUNS = 1
 RESULTS = "benchmark/runs.jsonl"  # your runs; our published ones are in benchmark/results/
-# Each test asks the questions in benchmark/questions/<test>.yaml with these setups, each on the first N models (None: all).
+# Each test runs these setups, each on the first N models (None: all).
 TESTS = {
     "models": [("serpapi", None)],  # model vs model
     "engines": [("serpapi-google", 1), ("serpapi", 1)],  # Google only vs multiple engines, on the biggest model
     "known_facts": [("none", None), ("serpapi", None)],  # small model with search vs big model without, on old facts
+    "simpleqa_verified": [("serpapi", None)],
+    "frames": [("serpapi", None)],
+    "livenewsbench": [("serpapi", None)],
 }
+# Pages that may publish the answers: the benchmarks' own pages and this repo.
+LEAKS = ("qwen-web-search", "simpleqa", "frames-benchmark", "frames benchmark", "livenewsbench", "huggingface.co/datasets")
 
 test, *names = sys.argv[1:]  # python bench.py models [qwen3.5:9b qwen3.5:4b]
-models = names or [m["name"] for m in qwen_models()]  # default: every installed Qwen model, biggest first
+models = names or [m["name"] for m in qwen_models()]
 setups = TESTS[test]
-questions = yaml.safe_load(open(f"benchmark/questions/{test}.yaml", encoding="utf-8"))
+question_file = f"benchmark/questions/{test}.yaml"
+if not os.path.exists(question_file):
+    question_file = f"benchmark/questions/public/{test}.yaml"
+questions = yaml.safe_load(open(question_file, encoding="utf-8"))
 done = set()  # rows already in RESULTS, so an interrupted run picks up where it stopped
 if os.path.exists(RESULTS):
     done = {(r["model"], r["setup"], r["question"], r["run"]) for r in map(json.loads, open(RESULTS, encoding="utf-8"))}
@@ -42,8 +50,9 @@ with open(RESULTS, "a", encoding="utf-8") as out:
                 result = {"answer": "", "searches": [], "error": str(e)}
             row = {"test": test, "model": model, "setup": setup, "question": q["id"], "run": run, **result,
                    "total_seconds": round(time.time() - start, 1), "correct": found(result["answer"]),
-                   "grounded": any(map(found, payloads)) if payloads else None}  # did the results hold the answer?
+                   "grounded": any(map(found, payloads)) if payloads else None,  # did the results hold the answer?
+                   "leak": any(m in p.lower() for p in payloads for m in LEAKS)}
             print(f"  -> {[s['tool'] for s in result['searches']]} | correct: {row['correct']} | grounded: {row['grounded']}")
             out.write(json.dumps(row, ensure_ascii=False) + "\n")
             out.flush()
-        unload(model)  # free its memory before the next model loads
+        unload(model)

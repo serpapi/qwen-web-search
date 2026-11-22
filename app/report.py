@@ -1,19 +1,27 @@
 """Prints one benchmark test's tables as Markdown from your runs, or from another results file:
 python report.py models
 python report.py models benchmark/results/models.jsonl"""
-import json, sys
+import json, os, sys
 from collections import Counter
 from statistics import mean
 import yaml
 
 test, path = sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else "benchmark/runs.jsonl"
-questions = {q["id"]: q for q in yaml.safe_load(open(f"benchmark/questions/{test}.yaml", encoding="utf-8"))}
+question_file = f"benchmark/questions/{test}.yaml"
+if not os.path.exists(question_file):
+    question_file = f"benchmark/questions/public/{test}.yaml"
+questions = {q["id"]: q for q in yaml.safe_load(open(question_file, encoding="utf-8"))}
 rows = [r for r in map(json.loads, open(path, encoding="utf-8")) if r.get("test") == test]
 columns = list(dict.fromkeys((r["model"], r["setup"]) for r in rows))  # in the order bench.py ran them
 headers = [f"{model} · {setup}" for model, setup in columns]
-MARK = {True: "✓", "partial": "~", False: "✗"}  # "partial" is set after review
+MARK = {"correct": "✓", "partial": "~", "incorrect": "✗", "not_attempted": "○"}
+
+def verdict(row):
+    """grade.py's grade, or else the text match ("partial" comes from a review)."""
+    return row.get("grade") or {True: "correct", "partial": "partial", False: "incorrect"}[row["correct"]]
 
 def avg(values):
+    values = [v for v in values if v is not None]  # Qwen-Agent doesn't report token counts
     return round(mean(values), 1) if values else "-"
 
 def table(header, lines):
@@ -26,17 +34,20 @@ def of(column, qids=questions):
 
 def summary(column):
     rs = of(column)
-    grades = Counter(r["correct"] for r in rs)
+    grades = Counter(map(verdict, rs))
     searches = [s for r in rs for s in r["searches"]]
     ok = [s for s in searches if s["format"] != "error"]
     searched = [r for r in rs if r["grounded"] is not None]
-    return [*column, grades[True], grades["partial"], grades[False], sum("error" in r for r in rs),
-            avg([len(r["searches"]) for r in rs]), f"{sum(r['grounded'] for r in searched)}/{len(searched)}",
-            len(searches) - len(ok), avg([s["tokens"] for s in ok]), avg([r["total_seconds"] for r in rs]),
-            avg([r.get("completion_tokens", 0) for r in rs])]
+    leaks = [r["leak"] for r in rs if "leak" in r]  # older rows weren't checked
+    return [*column, grades["correct"], grades["partial"], grades["incorrect"], grades["not_attempted"],
+            sum("error" in r for r in rs), avg([len(r["searches"]) for r in rs]),
+            f"{sum(r['grounded'] for r in searched)}/{len(searched)}", len(searches) - len(ok),
+            avg([s["tokens"] for s in ok]), avg([r["total_seconds"] for r in rs]),
+            avg([r.get("completion_tokens", 0) for r in rs]), sum(leaks) if leaks else "-"]
 
-table(["Model", "Setup", "Correct", "Partly", "Wrong", "Errors", "Searches per question", "Answer in results",
-       "Failed searches", "Tokens per search", "Answer s", "Completion tokens"], map(summary, columns))
+table(["Model", "Setup", "Correct", "Partly", "Wrong", "Not attempted", "Errors", "Searches per question",
+       "Answer in results", "Failed searches", "Tokens per search", "Answer s", "Completion tokens",
+       "Results from a benchmark page"], map(summary, columns))
 
 for field in ("language", "category", "difficulty", "hop", "locality"):  # correct answers per group, for each model and setup
     if field not in next(iter(questions.values())):
@@ -45,11 +56,11 @@ for field in ("language", "category", "difficulty", "hop", "locality"):  # corre
     lines = []
     for group in groups:
         qids = {i for i, q in questions.items() if q[field] == group}
-        lines.append([group] + [f"{sum(r['correct'] is True for r in of(c, qids))}/{len(of(c, qids))}" for c in columns])
+        lines.append([group] + [f"{sum(verdict(r) == 'correct' for r in of(c, qids))}/{len(of(c, qids))}" for c in columns])
     table([field.capitalize()] + headers, lines)
 
 table(["Question", "Category", "Prompt"] + headers,
-      [[i, q["category"], q["prompt"][:50]] + ["".join(MARK[r["correct"]] for r in of(c, {i})) or "–" for c in columns]
+      [[i, q["category"], q["prompt"][:50]] + ["".join(MARK.get(verdict(r), "?") for r in of(c, {i})) or "–" for c in columns]
        for i, q in questions.items()])
 
 failures = Counter((r["failure"], (r["model"], r["setup"])) for r in rows if r.get("failure"))  # set by the review
