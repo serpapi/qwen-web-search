@@ -22,7 +22,6 @@ def is_loaded(model):
     return model in [m["name"] for m in ollama("/api/ps")["models"]]
 
 def load(model):
-    """Loads a model into memory, so the next answer's time doesn't include loading it."""
     ollama("/api/generate", {"model": model, "stream": False})  # without a prompt, Ollama only loads the model
 
 def unload(model):

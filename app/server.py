@@ -17,7 +17,7 @@ app = FastAPI()
 class ChatRequest(BaseModel):
     setup: str
     message: str
-    history: list[dict] = []  # earlier {"role", "content"} turns of this conversation
+    history: list[dict] = []  # earlier {"role", "content"} messages
     model: str | None = MODEL
 
 OLLAMA_DOWN = "Can't reach Ollama. Start it with `ollama serve`, then try again."
@@ -34,14 +34,14 @@ def explain(error, model):
 def config():
     try:
         models = [{"name": m["name"], "parameters": m["details"]["parameter_size"]} for m in qwen_models()]
-        default, warning = default_model()  # checked on every page load, so pulling the model and reloading is enough
+        default, warning = default_model()  # again on every page load, so a model pulled meanwhile shows up
     except URLError:
         raise HTTPException(503, OLLAMA_DOWN)
     return {"models": models, "default_model": default, "model_warning": warning, "setups": list(SETUPS)}
 
 async def close_on_disconnect(events):
-    """Streams a sync generator and closes it when the browser disconnects (Stop), which closes the Ollama stream.
-    Starlette only abandons it, and Ollama would finish the reply for nobody."""
+    """Streams a sync generator and closes it when the browser disconnects (Stop), so Ollama stops too.
+    Starlette would only abandon the generator."""
     try:
         async for event in iterate_in_threadpool(events):
             yield event

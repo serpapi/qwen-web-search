@@ -1,8 +1,7 @@
 from datetime import date
 from serpapi_search import RESTRICTORS
 
-# One prompt for every setup, with or without search, so only the tools differ. It never mentions
-# search: when it did, Qwen without tools replied "let me search…" and stopped.
+# The same prompt for every setup, with or without search, so it doesn't mention search.
 SYSTEM = f"""You are a helpful assistant. Today's date is {date.today()}.
 - If you don't know something or can't confirm it, say so instead of guessing.
 - Cite the sources you used as Markdown links.
@@ -31,7 +30,7 @@ GOOGLE_TOOLS = [{"type": "function", "function": {
     },
 }}]
 
-# Qwen passes the SerpApi engine that fits each search, like examples/qwen_search_multi_engines.py.
+# Qwen picks the engine, like examples/qwen_search_multi_engines.py.
 SERPAPI_TOOLS = [{"type": "function", "function": {
     "name": "serpapi_search",
     "description": "Search the web with SerpApi. Returns the top 5 results with titles, links, snippets and dates. "
@@ -42,7 +41,7 @@ SERPAPI_TOOLS = [{"type": "function", "function": {
         "properties": {
             "engine": {
                 "type": "string",
-                "enum": list(RESTRICTORS),  # the SerpApi engines Qwen can choose from
+                "enum": list(RESTRICTORS),
                 "description": "google: Google web search. "
                                "google_news: Google News, recent news articles. "
                                "baidu: China's main search engine, Chinese-language web. "
