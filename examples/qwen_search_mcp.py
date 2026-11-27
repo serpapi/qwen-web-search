@@ -20,9 +20,10 @@ RESTRICTORS = {
     "baidu": "answer_box,organic_results[0:5].{title,link,snippet},error",
     "naver": "web_results[0:5].{title,link,snippet},error",
 }
-LOCALE_HINT = ("\n\nFor google, google_light and google_news, set gl (country) and hl (language) to match the question, "
-               "such as gl: kr, hl: ko for a Korean question. Without them, Google searches in US English, "
-               "and google_news often finds nothing in other languages.")
+LOCALE_HINT = ('\n\nFor google, google_light and google_news, set gl (country) and hl (language) to match the question, '
+               'such as "gl": "kr", "hl": "ko" for Korean or "gl": "cn", "hl": "zh-cn" for Chinese. '
+               'Without them, Google searches in US English, and google_news often finds nothing, '
+               'or only English news, for other languages.')
 
 SYSTEM = f"""You are a helpful assistant. Today's date is {date.today()}.
 - If you don't know something or can't confirm it, say so instead of guessing.
